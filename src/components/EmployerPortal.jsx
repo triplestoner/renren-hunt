@@ -76,6 +76,8 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
   const [activeTab, setActiveTab] = useState('candidates');
   const [selectedJob, setSelectedJob] = useState(null);
   const [selectedCandidate, setSelectedCandidate] = useState(null);
+  const [viewedCandidate, setViewedCandidate] = useState(null);
+  const [candidates, setCandidates] = useState(mockCandidates);
   const [showNewJobModal, setShowNewJobModal] = useState(false);
   const [showCloseConfirm, setShowCloseConfirm] = useState(false);
   const [pendingClose, setPendingClose] = useState(false);
@@ -463,7 +465,7 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
 
           <div className="candidates-layout">
             <div className="candidates-list">
-              {mockCandidates.map((candidate, index) => (
+              {candidates.map((candidate, index) => (
                 <div 
                   key={candidate.id}
                   className={`candidate-card ${selectedCandidate === candidate.id ? 'selected' : ''} animate-fade-in animate-delay-${index + 1}`}
@@ -505,9 +507,20 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
                     <div className="candidate-expanded">
                       <div className="action-buttons">
                         {candidate.status === '待查看' && (
-                          <button className="btn-primary">查看三维简历</button>
+                          <button 
+                            className="btn-primary"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setViewedCandidate(candidate.id);
+                              setCandidates(candidates.map(c => 
+                                c.id === candidate.id ? { ...c, status: '已查看' } : c
+                              ));
+                            }}
+                          >
+                            查看三维简历
+                          </button>
                         )}
-                        {candidate.status === '已查看' && (
+                        {candidate.status === '已查看' && viewedCandidate === candidate.id && (
                           <>
                             <button className="btn-primary">安排面试</button>
                             <button className="btn-secondary">不合适</button>
@@ -523,11 +536,17 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
               ))}
             </div>
 
-            {selectedCandidate && (
+            {viewedCandidate && (
               <div className="candidate-detail">
                 <div className="detail-header">
+                  <button 
+                    className="close-detail-btn"
+                    onClick={() => setViewedCandidate(null)}
+                  >
+                    ✕
+                  </button>
                   <h3>📋 三维简历</h3>
-                  <span className="dimension-badge">Recommender信用：💎 {mockCandidates.find(c => c.id === selectedCandidate)?.referrer.score}分</span>
+                  <span className="dimension-badge">Recommender信用：💎 {candidates.find(c => c.id === viewedCandidate)?.referrer.score}分</span>
                 </div>
                 
                 <div className="resume-3d">
@@ -547,7 +566,7 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
                     <h4>🤝 维度二：主观面（Recommender背调）</h4>
                     <div className="dimension-content">
                       <div className="review-card-mini">
-                        <span className="reviewer">推荐人：{mockCandidates.find(c => c.id === selectedCandidate)?.referrer.name}（{mockCandidates.find(c => c.id === selectedCandidate)?.referrer.level}）</span>
+                        <span className="reviewer">推荐人：{candidates.find(c => c.id === viewedCandidate)?.referrer.name}（{candidates.find(c => c.id === viewedCandidate)?.referrer.level}）</span>
                         <p className="review-text">"技术能力极强，架构思维优秀，有带领20人团队的经验。"</p>
                         <div className="review-ratings">
                           <span className="rating">技术能力 ⭐⭐⭐⭐⭐</span>
@@ -614,7 +633,7 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
                   <span className="pipeline-count" style={{ background: stage.color }}>{stage.count}</span>
                 </div>
                 <div className="pipeline-content">
-                  {index === 0 && mockCandidates.slice(0, 2).map(candidate => (
+                  {index === 0 && candidates.slice(0, 2).map(candidate => (
                     <div key={candidate.id} className="pipeline-card">
                       <div className="pipeline-card-header">
                         <span className="candidate-name">{candidate.name}</span>
@@ -1519,13 +1538,33 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
 
         .detail-header {
           display: flex;
-          justify-content: space-between;
           align-items: center;
+          gap: 12px;
           margin-bottom: 20px;
+        }
+
+        .close-detail-btn {
+          width: 32px;
+          height: 32px;
+          border-radius: 50%;
+          background: var(--bg-tertiary);
+          border: 1px solid var(--border-subtle);
+          color: var(--text-secondary);
+          font-size: 1rem;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .close-detail-btn:hover {
+          background: var(--bg-card-hover);
+          color: var(--text-primary);
         }
 
         .detail-header h3 {
           font-size: 1.1rem;
+          flex: 1;
         }
 
         .dimension-badge {
