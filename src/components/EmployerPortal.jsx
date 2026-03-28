@@ -103,7 +103,7 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
 
   const [pipelineData, setPipelineData] = useState([
     { stage: '新推荐', count: 5, color: '#60a5fa' },
-    { stage: '简历初筛', count: 3, color: '#a78bfa' },
+    { stage: '简历初筛', count: 3, color: '#10b981' },
     { stage: '面试安排', count: 2, color: '#fbbf24' },
     { stage: 'Offer发放', count: 1, color: '#4ade80' },
     { stage: '入职', count: 0, color: '#22c55e' },
@@ -1410,8 +1410,8 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
         }
 
         .status-badge.已推荐 {
-          background: rgba(167, 139, 250, 0.1);
-          color: #a78bfa;
+          background: rgba(16, 185, 129, 0.1);
+          color: #10b981;
         }
 
         .candidate-title {
@@ -1676,7 +1676,7 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
           align-items: center;
           gap: 16px;
           padding: 16px;
-          background: linear-gradient(135deg, rgba(30, 138, 240, 0.1) 0%, rgba(99, 102, 241, 0.1) 100%);
+          background: linear-gradient(135deg, rgba(30, 138, 240, 0.1) 0%, rgba(5, 150, 105, 0.1) 100%);
           border: 1px solid rgba(30, 138, 240, 0.3);
           border-radius: var(--radius-md);
           margin-top: 16px;
@@ -2130,7 +2130,7 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
         }
 
         .finance-card.locked .finance-value { color: #fbbf24; }
-        .finance-card.pending .finance-value { color: #a78bfa; }
+        .finance-card.pending .finance-value { color: #10b981; }
         .finance-card.released .finance-value { color: #4ade80; }
 
         .finance-actions {
@@ -2523,8 +2523,8 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
         }
 
         .jd-analysis-result {
-          background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(99, 102, 241, 0.1) 100%);
-          border: 1px solid rgba(139, 92, 246, 0.3);
+          background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(5, 150, 105, 0.1) 100%);
+          border: 1px solid rgba(16, 185, 129, 0.3);
           border-radius: var(--radius-md);
           padding: 16px;
           margin-top: 12px;
@@ -2538,7 +2538,7 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
         }
 
         .analysis-item:not(:last-child) {
-          border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+          border-bottom: 1px solid rgba(16, 185, 129, 0.2);
         }
 
         .analysis-label {
@@ -2554,8 +2554,8 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
         }
 
         .analysis-tag {
-          background: rgba(139, 92, 246, 0.2);
-          color: #a78bfa;
+          background: rgba(16, 185, 129, 0.2);
+          color: #10b981;
           padding: 4px 10px;
           border-radius: 15px;
           font-size: 0.8rem;
@@ -2856,7 +2856,7 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
           align-items: center;
           gap: 8px;
           padding: 10px 16px;
-          background: linear-gradient(135deg, #8b5cf6, #6366f1);
+          background: linear-gradient(135deg, #10b981, #10b981);
           color: white;
           border-radius: var(--radius-md);
           font-weight: 600;
@@ -2866,7 +2866,7 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
 
         .btn-lock-funds:hover {
           transform: translateY(-2px);
-          box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);
+          box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4);
         }
 
         .contract-hash {
@@ -2981,7 +2981,7 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
 
         .contract-modal {
           background: var(--bg-card);
-          border: 1px solid rgba(139, 92, 246, 0.3);
+          border: 1px solid rgba(16, 185, 129, 0.3);
           border-radius: var(--radius-xl);
           padding: 32px;
           max-width: 480px;
@@ -3014,7 +3014,7 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
 
         .lock-progress-fill {
           height: 100%;
-          background: linear-gradient(90deg, #8b5cf6, #6366f1);
+          background: linear-gradient(90deg, #10b981, #10b981);
           transition: width 0.2s ease;
         }
 

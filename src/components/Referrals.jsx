@@ -55,7 +55,7 @@ const statusConfig = {
   '已入职': { color: '#4ade80', bg: 'rgba(74, 222, 128, 0.1)', label: '已入职' },
   '面试中': { color: '#60a5fa', bg: 'rgba(96, 165, 250, 0.1)', label: '面试中' },
   '待授权': { color: '#fbbf24', bg: 'rgba(251, 191, 36, 0.1)', label: '待授权' },
-  '已推荐': { color: '#a78bfa', bg: 'rgba(167, 139, 250, 0.1)', label: '已推荐' },
+  '已推荐': { color: '#10b981', bg: 'rgba(16, 185, 129, 0.1)', label: '已推荐' },
 };
 
 export default function Referrals() {
@@ -354,13 +354,13 @@ export default function Referrals() {
         }
 
         .btn-follow {
-          background: rgba(167, 139, 250, 0.1);
-          color: #a78bfa;
-          border: 1px solid rgba(167, 139, 250, 0.3);
+          background: rgba(16, 185, 129, 0.1);
+          color: #10b981;
+          border: 1px solid rgba(16, 185, 129, 0.3);
         }
 
         .btn-follow:hover {
-          background: rgba(167, 139, 250, 0.2);
+          background: rgba(16, 185, 129, 0.2);
         }
 
         .btn-update {

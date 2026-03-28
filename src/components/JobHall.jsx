@@ -839,7 +839,7 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
           display: flex;
           align-items: center;
           gap: 6px;
-          background: linear-gradient(135deg, #8b5cf6, #6366f1);
+          background: linear-gradient(135deg, #10b981, #10b981);
           color: white;
           padding: 10px 14px;
           border-radius: var(--radius-md);
@@ -849,7 +849,7 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
 
         .btn-ai-match:hover {
           transform: translateY(-1px);
-          box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
+          box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
         }
 
         .btn-share {
@@ -1038,12 +1038,12 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
         }
 
         .ai-scan-tab {
-          background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(99, 102, 241, 0.2)) !important;
-          border-color: rgba(139, 92, 246, 0.4) !important;
+          background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.2)) !important;
+          border-color: rgba(16, 185, 129, 0.4) !important;
         }
 
         .ai-scan-tab:hover {
-          background: linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(99, 102, 241, 0.3)) !important;
+          background: linear-gradient(135deg, rgba(16, 185, 129, 0.3), rgba(5, 150, 105, 0.3)) !important;
         }
 
         .ai-scan-tab.scanning {
@@ -1107,7 +1107,7 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
 
         .progress-fill {
           height: 100%;
-          background: linear-gradient(90deg, #8b5cf6, #6366f1);
+          background: linear-gradient(90deg, #10b981, #10b981);
           border-radius: 4px;
           transition: width 0.1s ease;
         }
@@ -1120,7 +1120,7 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
         }
 
         .progress-percent {
-          color: #8b5cf6;
+          color: #10b981;
           font-weight: 600;
         }
 
@@ -1144,8 +1144,8 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
         }
 
         .scan-stage.complete {
-          background: rgba(139, 92, 246, 0.2);
-          color: #8b5cf6;
+          background: rgba(16, 185, 129, 0.2);
+          color: #10b981;
         }
 
         .scan-stage .stage-icon {
@@ -1204,12 +1204,12 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
           padding: 16px 20px;
           background: var(--bg-tertiary);
           border-radius: var(--radius-md);
-          border-left: 4px solid #8b5cf6;
+          border-left: 4px solid #10b981;
         }
 
         .funnel-stage.final .funnel-bar {
-          background: rgba(139, 92, 246, 0.15);
-          border-left-color: #a78bfa;
+          background: rgba(16, 185, 129, 0.15);
+          border-left-color: #10b981;
         }
 
         .funnel-info {
@@ -1239,7 +1239,7 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
 
         .funnel-count {
           font-weight: 700;
-          color: #8b5cf6;
+          color: #10b981;
           font-size: 1.1rem;
         }
 
@@ -1271,7 +1271,7 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
         }
 
         .ai-badge {
-          background: linear-gradient(135deg, #8b5cf6, #6366f1);
+          background: linear-gradient(135deg, #10b981, #10b981);
           color: white;
           padding: 6px 12px;
           border-radius: 20px;
@@ -1319,7 +1319,7 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
         }
 
         .ai-contact-card:hover {
-          border-color: rgba(139, 92, 246, 0.4);
+          border-color: rgba(16, 185, 129, 0.4);
           background: var(--bg-secondary);
         }
 
@@ -1327,7 +1327,7 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
           width: 48px;
           height: 48px;
           min-width: 48px;
-          background: linear-gradient(135deg, #8b5cf6, #6366f1);
+          background: linear-gradient(135deg, #10b981, #10b981);
           border-radius: 50%;
           display: flex;
           align-items: center;
@@ -1363,7 +1363,7 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
         }
 
         .ai-circle-大厂圈 { background: rgba(30, 138, 240, 0.15); color: #1e8af0; }
-        .ai-circle-校友圈 { background: rgba(167, 139, 250, 0.15); color: #a78bfa; }
+        .ai-circle-校友圈 { background: rgba(16, 185, 129, 0.15); color: #10b981; }
         .ai-circle-AI圈 { background: rgba(74, 222, 128, 0.15); color: #4ade80; }
         .ai-circle-技术圈 { background: rgba(251, 191, 36, 0.15); color: #fbbf24; }
 
@@ -1402,7 +1402,7 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
 
         .ai-btn-invite {
           padding: 10px 20px;
-          background: linear-gradient(135deg, #8b5cf6, #6366f1);
+          background: linear-gradient(135deg, #10b981, #10b981);
           color: white;
           border-radius: var(--radius-md);
           font-weight: 600;
@@ -1412,7 +1412,7 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
 
         .ai-btn-invite:hover {
           transform: translateY(-2px);
-          box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
+          box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
         }
 
         .ai-contact-summary {
@@ -1490,7 +1490,7 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
         .preview-avatar {
           width: 56px;
           height: 56px;
-          background: linear-gradient(135deg, #8b5cf6, #6366f1);
+          background: linear-gradient(135deg, #10b981, #10b981);
           border-radius: 50%;
           display: flex;
           align-items: center;
@@ -1599,13 +1599,13 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
         }
 
         .c2-reason-section h4 {
-          color: #a78bfa;
+          color: #10b981;
         }
 
         .btn-submit-recommend {
           width: 100%;
           padding: 14px;
-          background: linear-gradient(135deg, #8b5cf6, #6366f1);
+          background: linear-gradient(135deg, #10b981, #10b981);
           color: white;
           border-radius: var(--radius-md);
           font-weight: 600;
@@ -1614,7 +1614,7 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
 
         .btn-submit-recommend:hover {
           transform: translateY(-2px);
-          box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);
+          box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4);
         }
 
         @media (max-width: 768px) {

@@ -3,7 +3,7 @@ import { useState } from 'react';
 const initialCircles = [
   { id: 1, name: '清华校友圈', type: 'school', count: 156, color: '#3b82f6', desc: '清华大学校友网络' },
   { id: 2, name: '阿里同事圈', type: 'company', count: 89, color: '#f97316', desc: '阿里巴巴前同事' },
-  { id: 3, name: 'AI技术圈', type: 'tech', count: 234, color: '#8b5cf6', desc: '人工智能领域从业者' },
+  { id: 3, name: 'AI技术圈', type: 'tech', count: 234, color: '#10b981', desc: '人工智能领域从业者' },
   { id: 4, name: '字节好友圈', type: 'company', count: 67, color: '#06b6d4', desc: '字节跳动朋友' },
 ];
 
@@ -57,7 +57,7 @@ export default function Circles() {
     setShowModal(false);
   };
 
-  const colors = ['#3b82f6', '#f97316', '#8b5cf6', '#06b6d4', '#10b981', '#ef4444', '#ec4899', '#6366f1'];
+  const colors = ['#3b82f6', '#f97316', '#10b981', '#06b6d4', '#10b981', '#ef4444', '#ec4899', '#6366f1'];
 
   return (
     <div className="circles-page">

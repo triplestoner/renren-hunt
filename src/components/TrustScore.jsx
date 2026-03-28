@@ -11,7 +11,7 @@ export default function TrustScore() {
   const metrics = [
     { label: '成功入职', value: 23, total: 25, color: '#4ade80' },
     { label: '面试转化', value: 68, total: 100, color: '#60a5fa' },
-    { label: '响应速度', value: 95, total: 100, color: '#d4a853' },
+    { label: '响应速度', value: 95, total: 100, color: '#10b981' },
     { label: '活跃度', value: 88, total: 100, color: '#c084fc' },
   ];
 
@@ -54,9 +54,9 @@ export default function TrustScore() {
               />
               <defs>
                 <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor="#d4a853" />
-                  <stop offset="50%" stopColor="#f0d78c" />
-                  <stop offset="100%" stopColor="#d4a853" />
+                  <stop offset="0%" stopColor="#10b981" />
+                  <stop offset="50%" stopColor="#34d399" />
+                  <stop offset="100%" stopColor="#10b981" />
                 </linearGradient>
               </defs>
             </svg>

@@ -234,7 +234,7 @@ function App() {
         }
 
         .role-tab.active[onclick*="c2"] {
-          color: #a78bfa;
+          color: #10b981;
         }
 
         .role-tab.active[onclick*="b"] {
@@ -260,8 +260,8 @@ function App() {
         }
 
         .role-badge.c2 {
-          background: rgba(167, 139, 250, 0.15);
-          color: #a78bfa;
+          background: rgba(16, 185, 129, 0.15);
+          color: #10b981;
         }
 
         .role-badge.b {

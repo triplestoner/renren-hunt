@@ -641,7 +641,7 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
         .avatar {
           width: 72px;
           height: 72px;
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          background: linear-gradient(135deg, #10b981 0%, #059669 100%);
           border-radius: 50%;
           display: flex;
           align-items: center;
@@ -755,11 +755,11 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
         .tab.active {
           background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
           border-color: rgba(102, 126, 234, 0.4);
-          color: #a78bfa;
+          color: #10b981;
         }
 
         .tab-badge {
-          background: #a78bfa;
+          background: #10b981;
           color: white;
           font-size: 0.7rem;
           font-weight: 600;
@@ -800,7 +800,7 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
           position: absolute;
           top: -8px;
           right: 16px;
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          background: linear-gradient(135deg, #10b981 0%, #059669 100%);
           color: white;
           font-size: 0.7rem;
           font-weight: 600;
@@ -809,12 +809,12 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
         }
 
         .recommend-badge {
-          background: linear-gradient(135deg, #a78bfa 0%, #6366f1 100%);
+          background: linear-gradient(135deg, #10b981 0%, #6366f1 100%);
         }
 
         .c2-recommendation-card {
-          background: linear-gradient(135deg, rgba(167, 139, 250, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
-          border: 1px solid rgba(167, 139, 250, 0.3);
+          background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+          border: 1px solid rgba(16, 185, 129, 0.3);
           border-radius: var(--radius-md);
           padding: 20px;
         }
@@ -824,7 +824,7 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
           align-items: center;
           gap: 8px;
           font-weight: 600;
-          color: #a78bfa;
+          color: #10b981;
           margin-bottom: 12px;
         }
 
@@ -936,7 +936,7 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
         }
 
         .salary {
-          color: #a78bfa;
+          color: #10b981;
           font-weight: 600;
         }
 
@@ -964,7 +964,7 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
           align-items: center;
           gap: 8px;
           font-weight: 600;
-          color: #a78bfa;
+          color: #10b981;
           margin-bottom: 12px;
         }
 
@@ -991,7 +991,7 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
           align-items: center;
           justify-content: center;
           gap: 8px;
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          background: linear-gradient(135deg, #10b981 0%, #059669 100%);
           color: white;
           padding: 14px;
           border-radius: var(--radius-md);
@@ -1069,7 +1069,7 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
 
         .skill-tag {
           background: rgba(102, 126, 234, 0.1);
-          color: #a78bfa;
+          color: #10b981;
           padding: 4px 12px;
           border-radius: 20px;
           font-size: 0.8rem;
@@ -1181,7 +1181,7 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
         .reviewer-avatar {
           width: 40px;
           height: 40px;
-          background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+          background: linear-gradient(135deg, #10b981 0%, #059669 100%);
           border-radius: 50%;
           display: flex;
           align-items: center;
@@ -1416,8 +1416,8 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
         }
 
         .referral-review {
-          background: linear-gradient(135deg, rgba(167, 139, 250, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
-          border: 1px solid rgba(167, 139, 250, 0.3);
+          background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+          border: 1px solid rgba(16, 185, 129, 0.3);
           border-radius: var(--radius-md);
           padding: 16px;
           margin-bottom: 16px;
@@ -1426,7 +1426,7 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
 
         .review-label {
           font-size: 0.8rem;
-          color: #a78bfa;
+          color: #10b981;
           margin-bottom: 8px;
         }
 
