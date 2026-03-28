@@ -1,0 +1,416 @@
+import { useState } from 'react';
+
+const mockReferrals = [
+  {
+    id: 1,
+    candidate: '张同学',
+    position: '资深前端架构师',
+    company: '字节跳动',
+    status: '已入职',
+    date: '2026-03-20',
+    trustScore: 92,
+    stage: '已入职',
+    bonus: '¥25,000',
+    avatar: '张',
+  },
+  {
+    id: 2,
+    candidate: '王同学',
+    position: 'AI算法工程师',
+    company: 'MiniMax',
+    status: '面试中',
+    date: '2026-03-15',
+    trustScore: 88,
+    stage: '三面',
+    bonus: '¥18,000',
+    avatar: '王',
+  },
+  {
+    id: 3,
+    candidate: '李同学',
+    position: '产品总监',
+    company: '美团',
+    status: '待授权',
+    date: '2026-03-10',
+    trustScore: 0,
+    stage: '待授权',
+    bonus: '¥35,000',
+    avatar: '李',
+  },
+  {
+    id: 4,
+    candidate: '赵同学',
+    position: '后端资深工程师',
+    company: '蚂蚁集团',
+    status: '已推荐',
+    date: '2026-03-08',
+    trustScore: 75,
+    stage: 'HR评估中',
+    bonus: '¥20,000',
+    avatar: '赵',
+  },
+];
+
+const statusConfig = {
+  '已入职': { color: '#4ade80', bg: 'rgba(74, 222, 128, 0.1)', label: '已入职' },
+  '面试中': { color: '#60a5fa', bg: 'rgba(96, 165, 250, 0.1)', label: '面试中' },
+  '待授权': { color: '#fbbf24', bg: 'rgba(251, 191, 36, 0.1)', label: '待授权' },
+  '已推荐': { color: '#a78bfa', bg: 'rgba(167, 139, 250, 0.1)', label: '已推荐' },
+};
+
+export default function Referrals() {
+  const [filter, setFilter] = useState('all');
+
+  const filteredReferrals = mockReferrals.filter(r => 
+    filter === 'all' || r.status === filter
+  );
+
+  return (
+    <div className="referrals">
+      <header className="page-header">
+        <h1>我的推荐</h1>
+        <p className="subtitle">追踪推荐进度，管理候选人关系</p>
+      </header>
+
+      <div className="filter-tabs">
+        <button 
+          className={`filter-tab ${filter === 'all' ? 'active' : ''}`}
+          onClick={() => setFilter('all')}
+        >
+          全部 ({mockReferrals.length})
+        </button>
+        <button 
+          className={`filter-tab ${filter === '待授权' ? 'active' : ''}`}
+          onClick={() => setFilter('待授权')}
+        >
+          待授权
+        </button>
+        <button 
+          className={`filter-tab ${filter === '已推荐' ? 'active' : ''}`}
+          onClick={() => setFilter('已推荐')}
+        >
+          已推荐
+        </button>
+        <button 
+          className={`filter-tab ${filter === '面试中' ? 'active' : ''}`}
+          onClick={() => setFilter('面试中')}
+        >
+          面试中
+        </button>
+        <button 
+          className={`filter-tab ${filter === '已入职' ? 'active' : ''}`}
+          onClick={() => setFilter('已入职')}
+        >
+          已入职
+        </button>
+      </div>
+
+      <div className="referral-list">
+        {filteredReferrals.map((referral, index) => {
+          const config = statusConfig[referral.status];
+          return (
+            <div 
+              key={referral.id} 
+              className={`referral-card animate-fade-in animate-delay-${index + 1}`}
+            >
+              <div className="card-main">
+                <div className="candidate-section">
+                  <div className="avatar">{referral.avatar}</div>
+                  <div className="candidate-info">
+                    <div className="candidate-header">
+                      <span className="candidate-name">{referral.candidate}</span>
+                      {referral.trustScore > 0 && (
+                        <span className="trust-badge">
+                          ⭐ {referral.trustScore}分
+                        </span>
+                      )}
+                    </div>
+                    <span className="position">{referral.position}</span>
+                    <span className="company">{referral.company}</span>
+                  </div>
+                </div>
+
+                <div className="status-section">
+                  <span 
+                    className="status-tag"
+                    style={{ 
+                      color: config.color, 
+                      background: config.bg,
+                      border: `1px solid ${config.color}30`
+                    }}
+                  >
+                    {config.label}
+                  </span>
+                  <span className="stage">{referral.stage}</span>
+                </div>
+              </div>
+
+              <div className="card-footer">
+                <div className="meta-info">
+                  <span className="date">📅 {referral.date}</span>
+                  <span className="bonus">💰 {referral.bonus}</span>
+                </div>
+                <div className="card-actions">
+                  {referral.status === '待授权' && (
+                    <button className="btn-remind">提醒授权</button>
+                  )}
+                  {referral.status === '已推荐' && (
+                    <button className="btn-follow">跟进状态</button>
+                  )}
+                  {referral.status === '面试中' && (
+                    <button className="btn-update">更新进度</button>
+                  )}
+                  <button className="btn-detail">查看详情</button>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      <style>{`
+        .referrals {
+          max-width: 900px;
+        }
+
+        .page-header {
+          margin-bottom: 32px;
+        }
+
+        .subtitle {
+          color: var(--text-secondary);
+          margin-top: 8px;
+        }
+
+        .filter-tabs {
+          display: flex;
+          gap: 8px;
+          margin-bottom: 24px;
+          overflow-x: auto;
+          padding-bottom: 8px;
+        }
+
+        .filter-tab {
+          padding: 10px 16px;
+          background: var(--bg-card);
+          border: 1px solid var(--border-subtle);
+          border-radius: 20px;
+          color: var(--text-secondary);
+          font-size: 0.9rem;
+          white-space: nowrap;
+        }
+
+        .filter-tab:hover {
+          background: var(--bg-card-hover);
+        }
+
+        .filter-tab.active {
+          background: var(--accent-glow);
+          border-color: var(--border-accent);
+          color: var(--accent-primary);
+        }
+
+        .referral-list {
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+        }
+
+        .referral-card {
+          background: var(--bg-card);
+          border: 1px solid var(--border-subtle);
+          border-radius: var(--radius-lg);
+          padding: 20px 24px;
+          opacity: 0;
+          animation: fadeIn 0.5s ease forwards;
+        }
+
+        .referral-card:hover {
+          background: var(--bg-card-hover);
+          border-color: var(--border-accent);
+        }
+
+        .card-main {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+          margin-bottom: 16px;
+        }
+
+        .candidate-section {
+          display: flex;
+          gap: 16px;
+        }
+
+        .avatar {
+          width: 56px;
+          height: 56px;
+          background: var(--accent-gradient);
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: 600;
+          font-size: 1.25rem;
+          color: #0a0a0f;
+        }
+
+        .candidate-info {
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+        }
+
+        .candidate-header {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+        }
+
+        .candidate-name {
+          font-weight: 600;
+          color: var(--text-primary);
+          font-size: 1.1rem;
+        }
+
+        .trust-badge {
+          font-size: 0.75rem;
+          color: var(--accent-primary);
+          background: var(--accent-glow);
+          padding: 2px 8px;
+          border-radius: 4px;
+        }
+
+        .position {
+          color: var(--text-secondary);
+          font-size: 0.95rem;
+        }
+
+        .company {
+          color: var(--text-tertiary);
+          font-size: 0.85rem;
+        }
+
+        .status-section {
+          text-align: right;
+        }
+
+        .status-tag {
+          display: inline-block;
+          padding: 6px 14px;
+          border-radius: 6px;
+          font-size: 0.85rem;
+          font-weight: 500;
+          margin-bottom: 4px;
+        }
+
+        .stage {
+          display: block;
+          font-size: 0.8rem;
+          color: var(--text-tertiary);
+        }
+
+        .card-footer {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding-top: 16px;
+          border-top: 1px solid var(--border-subtle);
+        }
+
+        .meta-info {
+          display: flex;
+          gap: 16px;
+        }
+
+        .date,
+        .bonus {
+          font-size: 0.85rem;
+          color: var(--text-secondary);
+        }
+
+        .card-actions {
+          display: flex;
+          gap: 10px;
+        }
+
+        .btn-remind,
+        .btn-follow,
+        .btn-update,
+        .btn-detail {
+          padding: 8px 14px;
+          border-radius: var(--radius-sm);
+          font-size: 0.85rem;
+        }
+
+        .btn-remind {
+          background: rgba(251, 191, 36, 0.1);
+          color: var(--warning);
+          border: 1px solid rgba(251, 191, 36, 0.3);
+        }
+
+        .btn-remind:hover {
+          background: rgba(251, 191, 36, 0.2);
+        }
+
+        .btn-follow {
+          background: rgba(167, 139, 250, 0.1);
+          color: #a78bfa;
+          border: 1px solid rgba(167, 139, 250, 0.3);
+        }
+
+        .btn-follow:hover {
+          background: rgba(167, 139, 250, 0.2);
+        }
+
+        .btn-update {
+          background: rgba(96, 165, 250, 0.1);
+          color: var(--info);
+          border: 1px solid rgba(96, 165, 250, 0.3);
+        }
+
+        .btn-update:hover {
+          background: rgba(96, 165, 250, 0.2);
+        }
+
+        .btn-detail {
+          background: var(--bg-tertiary);
+          color: var(--text-secondary);
+          border: 1px solid var(--border-subtle);
+        }
+
+        .btn-detail:hover {
+          background: var(--bg-card-hover);
+          color: var(--text-primary);
+        }
+
+        @media (max-width: 768px) {
+          .card-main {
+            flex-direction: column;
+            gap: 16px;
+          }
+
+          .status-section {
+            text-align: left;
+          }
+
+          .card-footer {
+            flex-direction: column;
+            gap: 12px;
+            align-items: flex-start;
+          }
+
+          .card-actions {
+            width: 100%;
+            flex-wrap: wrap;
+          }
+
+          .card-actions button {
+            flex: 1;
+            min-width: 80px;
+          }
+        }
+      `}</style>
+    </div>
+  );
+}
