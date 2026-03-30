@@ -168,9 +168,16 @@ export default function TrustScore() {
           flex-direction: column;
           align-items: center;
           padding: 32px;
-          background: var(--bg-card);
-          border: 1px solid var(--border-subtle);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          -webkit-backdrop-filter: var(--glass-blur);
+          border: 1px solid var(--glass-border);
           border-radius: var(--radius-xl);
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .score-main:hover {
+          box-shadow: var(--shadow-glass);
         }
 
         .score-ring {
@@ -237,13 +244,20 @@ export default function TrustScore() {
         }
 
         .score-breakdown {
-          background: var(--bg-card);
-          border: 1px solid var(--border-subtle);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          -webkit-backdrop-filter: var(--glass-blur);
+          border: 1px solid var(--glass-border);
           border-radius: var(--radius-xl);
           padding: 32px;
           display: flex;
           flex-direction: column;
           justify-content: center;
+          transition: all 0.25s ease;
+        }
+
+        .score-breakdown:hover {
+          box-shadow: var(--shadow-glass);
         }
 
         .metric-row {
@@ -252,7 +266,7 @@ export default function TrustScore() {
           gap: 16px;
           margin-bottom: 20px;
           opacity: 0;
-          animation: fadeIn 0.5s ease forwards;
+          animation: fadeIn 0.4s ease forwards;
         }
 
         .metric-row:last-child {
@@ -268,7 +282,7 @@ export default function TrustScore() {
         .metric-bar {
           flex: 1;
           height: 8px;
-          background: var(--bg-tertiary);
+          background: rgba(0, 0, 0, 0.3);
           border-radius: 4px;
           overflow: hidden;
         }
@@ -309,16 +323,21 @@ export default function TrustScore() {
           align-items: center;
           gap: 16px;
           padding: 20px;
-          background: var(--bg-card);
-          border: 1px solid var(--border-subtle);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          -webkit-backdrop-filter: var(--glass-blur);
+          border: 1px solid var(--glass-border);
           border-radius: var(--radius-lg);
           opacity: 0;
-          animation: fadeIn 0.5s ease forwards;
+          animation: fadeIn 0.4s ease forwards;
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .privilege-card:hover {
           background: var(--bg-card-hover);
           border-color: var(--border-accent);
+          transform: translateY(-2px);
+          box-shadow: var(--shadow-glass);
         }
 
         .priv-icon {
@@ -353,11 +372,19 @@ export default function TrustScore() {
           justify-content: space-between;
           align-items: center;
           padding: 16px 20px;
-          background: var(--bg-card);
-          border: 1px solid var(--border-subtle);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          -webkit-backdrop-filter: var(--glass-blur);
+          border: 1px solid var(--glass-border);
           border-radius: var(--radius-md);
           opacity: 0;
-          animation: fadeIn 0.5s ease forwards;
+          animation: fadeIn 0.4s ease forwards;
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .circle-item:hover {
+          background: var(--bg-card-hover);
+          border-color: var(--border-default);
         }
 
         .circle-info {
@@ -375,8 +402,9 @@ export default function TrustScore() {
           font-size: 0.75rem;
           padding: 2px 8px;
           border-radius: 4px;
-          background: var(--bg-tertiary);
+          background: rgba(255, 255, 255, 0.05);
           color: var(--text-secondary);
+          border: 1px solid var(--glass-border);
         }
 
         .circle-level.Lv3,
@@ -394,24 +422,34 @@ export default function TrustScore() {
         }
 
         .btn-manage {
-          background: var(--bg-tertiary);
+          background: rgba(255, 255, 255, 0.05);
           color: var(--text-secondary);
           padding: 8px 16px;
           border-radius: var(--radius-sm);
           font-size: 0.85rem;
-          border: 1px solid var(--border-subtle);
+          border: 1px solid var(--glass-border);
+          cursor: pointer;
+          transition: all 0.2s ease;
         }
 
         .btn-manage:hover {
           background: var(--bg-card-hover);
           color: var(--text-primary);
+          border-color: var(--border-default);
         }
 
         .chart-placeholder {
-          background: var(--bg-card);
-          border: 1px solid var(--border-subtle);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          -webkit-backdrop-filter: var(--glass-blur);
+          border: 1px solid var(--glass-border);
           border-radius: var(--radius-lg);
           padding: 32px;
+          transition: all 0.25s ease;
+        }
+
+        .chart-placeholder:hover {
+          box-shadow: var(--shadow-glass);
         }
 
         .chart-bars {
@@ -445,6 +483,21 @@ export default function TrustScore() {
           margin-top: 16px;
           font-size: 0.85rem;
           color: var(--text-tertiary);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .metric-row,
+          .privilege-card,
+          .circle-item,
+          .chart-bar,
+          .score-progress {
+            animation: none;
+            opacity: 1;
+          }
+          
+          .metric-fill {
+            transition: none;
+          }
         }
 
         @media (max-width: 768px) {

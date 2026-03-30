@@ -192,16 +192,20 @@ export default function Referrals() {
 
         .filter-tab {
           padding: 10px 16px;
-          background: var(--bg-card);
-          border: 1px solid var(--border-subtle);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          border: 1px solid var(--glass-border);
           border-radius: 20px;
           color: var(--text-secondary);
           font-size: 0.9rem;
           white-space: nowrap;
+          cursor: pointer;
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .filter-tab:hover {
-          background: var(--bg-card-hover);
+          background: rgba(255, 255, 255, 0.1);
+          border-color: var(--accent-primary);
         }
 
         .filter-tab.active {
@@ -217,17 +221,21 @@ export default function Referrals() {
         }
 
         .referral-card {
-          background: var(--bg-card);
-          border: 1px solid var(--border-subtle);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          border: 1px solid var(--glass-border);
           border-radius: var(--radius-lg);
           padding: 20px 24px;
           opacity: 0;
           animation: fadeIn 0.5s ease forwards;
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .referral-card:hover {
-          background: var(--bg-card-hover);
-          border-color: var(--border-accent);
+          background: rgba(255, 255, 255, 0.08);
+          border-color: var(--accent-primary);
+          transform: translateY(-2px);
+          box-shadow: var(--shadow-glass);
         }
 
         .card-main {
@@ -341,6 +349,8 @@ export default function Referrals() {
           padding: 8px 14px;
           border-radius: var(--radius-sm);
           font-size: 0.85rem;
+          cursor: pointer;
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .btn-remind {
@@ -351,6 +361,7 @@ export default function Referrals() {
 
         .btn-remind:hover {
           background: rgba(251, 191, 36, 0.2);
+          transform: translateY(-1px);
         }
 
         .btn-follow {
@@ -361,6 +372,7 @@ export default function Referrals() {
 
         .btn-follow:hover {
           background: rgba(16, 185, 129, 0.2);
+          transform: translateY(-1px);
         }
 
         .btn-update {
@@ -371,17 +383,20 @@ export default function Referrals() {
 
         .btn-update:hover {
           background: rgba(96, 165, 250, 0.2);
+          transform: translateY(-1px);
         }
 
         .btn-detail {
-          background: var(--bg-tertiary);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
           color: var(--text-secondary);
-          border: 1px solid var(--border-subtle);
+          border: 1px solid var(--glass-border);
         }
 
         .btn-detail:hover {
-          background: var(--bg-card-hover);
+          background: rgba(255, 255, 255, 0.1);
           color: var(--text-primary);
+          transform: translateY(-1px);
         }
 
         @media (max-width: 768px) {

@@ -565,15 +565,24 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
 
         .stats-row {
           display: flex;
-          gap: 24px;
+          gap: 16px;
         }
 
         .stat-item {
           text-align: center;
-          padding: 12px 20px;
-          background: var(--bg-card);
-          border-radius: var(--radius-md);
-          border: 1px solid var(--border-subtle);
+          padding: 16px 24px;
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          -webkit-backdrop-filter: var(--glass-blur);
+          border: 1px solid var(--glass-border);
+          border-radius: var(--radius-lg);
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .stat-item:hover {
+          background: var(--bg-card-hover);
+          transform: translateY(-2px);
+          box-shadow: var(--shadow-glass);
         }
 
         .stat-item.highlight {
@@ -629,16 +638,21 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
           display: flex;
           align-items: center;
           gap: 8px;
-          padding: 12px 20px;
-          background: var(--bg-card);
-          border: 1px solid var(--border-subtle);
+          padding: 14px 24px;
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          -webkit-backdrop-filter: var(--glass-blur);
+          border: 1px solid var(--glass-border);
           border-radius: var(--radius-md);
           color: var(--text-secondary);
           font-size: 0.95rem;
+          cursor: pointer;
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .tab:hover {
-          background: var(--bg-card-hover);
+          background: rgba(255, 255, 255, 0.04);
+          color: var(--text-primary);
         }
 
         .tab.active {
@@ -668,12 +682,14 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
         }
 
         .job-card {
-          background: var(--bg-card);
-          border: 1px solid var(--border-subtle);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          -webkit-backdrop-filter: var(--glass-blur);
+          border: 1px solid var(--glass-border);
           border-radius: var(--radius-lg);
           padding: 20px 24px;
           cursor: pointer;
-          transition: all 0.3s ease;
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .job-card:hover,
@@ -681,7 +697,7 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
           background: var(--bg-card-hover);
           border-color: var(--border-accent);
           transform: translateY(-2px);
-          box-shadow: var(--shadow-card);
+          box-shadow: var(--shadow-glass);
         }
 
         .job-header {
@@ -754,11 +770,12 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
         }
 
         .tag {
-          background: var(--bg-tertiary);
+          background: rgba(255, 255, 255, 0.05);
           color: var(--text-secondary);
           padding: 4px 12px;
           border-radius: 20px;
           font-size: 0.8rem;
+          border: 1px solid var(--glass-border);
         }
 
         .circle-tag {
@@ -839,12 +856,14 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
           display: flex;
           align-items: center;
           gap: 6px;
-          background: linear-gradient(135deg, #10b981, #10b981);
-          color: white;
+          background: var(--accent-gradient);
+          color: #0a0a0f;
           padding: 10px 14px;
           border-radius: var(--radius-md);
           font-weight: 600;
           font-size: 0.85rem;
+          cursor: pointer;
+          transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .btn-ai-match:hover {
@@ -856,17 +875,21 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
           display: flex;
           align-items: center;
           gap: 6px;
-          background: var(--accent-gradient);
-          color: #0a0a0f;
+          background: transparent;
+          border: 1px solid var(--border-default);
+          color: var(--text-primary);
           padding: 10px 16px;
           border-radius: var(--radius-md);
-          font-weight: 600;
+          font-weight: 500;
           font-size: 0.9rem;
+          cursor: pointer;
+          transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .btn-share:hover {
-          transform: translateY(-1px);
-          box-shadow: var(--shadow-glow);
+          background: var(--bg-card-hover);
+          border-color: var(--border-accent);
+          color: var(--accent-primary);
         }
 
         .btn-detail {
@@ -876,6 +899,7 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
           border-radius: var(--radius-md);
           font-size: 0.9rem;
           border: 1px solid var(--border-subtle);
+          cursor: pointer;
         }
 
         .btn-detail:hover {
@@ -889,8 +913,9 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
           gap: 12px;
           margin-bottom: 16px;
           padding: 16px;
-          background: var(--bg-tertiary);
+          background: rgba(0, 0, 0, 0.2);
           border-radius: var(--radius-md);
+          border: 1px solid var(--glass-border);
         }
 
         .detail-row {
@@ -935,7 +960,7 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
           margin-top: 20px;
           padding-top: 20px;
           border-top: 1px solid var(--border-subtle);
-          animation: fadeIn 0.3s ease;
+          animation: fadeIn 0.25s ease;
         }
 
         .share-preview {
@@ -946,10 +971,10 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
 
         .share-card {
           flex: 1;
-          background: var(--bg-tertiary);
+          background: rgba(0, 0, 0, 0.2);
           border-radius: var(--radius-md);
           padding: 16px;
-          border: 1px solid var(--border-subtle);
+          border: 1px solid var(--glass-border);
         }
 
         .share-header {
@@ -994,6 +1019,8 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
           border-radius: var(--radius-md);
           font-weight: 600;
           white-space: nowrap;
+          cursor: pointer;
+          transition: all 0.2s ease;
         }
 
         .btn-wechat:hover {
@@ -1056,22 +1083,27 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
           left: 0;
           right: 0;
           bottom: 0;
-          background: rgba(0, 0, 0, 0.8);
+          background: rgba(0, 0, 0, 0.85);
+          backdrop-filter: blur(8px);
+          -webkit-backdrop-filter: blur(8px);
           display: flex;
           align-items: center;
           justify-content: center;
           z-index: 1000;
-          animation: fadeIn 0.3s ease;
+          animation: fadeIn 0.25s ease;
         }
 
         .ai-scan-modal {
-          background: var(--bg-card);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          -webkit-backdrop-filter: var(--glass-blur);
           border: 1px solid var(--border-accent);
           border-radius: var(--radius-xl);
           padding: 40px;
           max-width: 500px;
           width: 90%;
           text-align: center;
+          box-shadow: var(--shadow-elevated);
         }
 
         .ai-scan-header {
@@ -1107,7 +1139,7 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
 
         .progress-fill {
           height: 100%;
-          background: linear-gradient(90deg, #10b981, #10b981);
+          background: var(--accent-gradient);
           border-radius: 4px;
           transition: width 0.1s ease;
         }
@@ -1136,16 +1168,18 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
           align-items: center;
           gap: 8px;
           padding: 16px 12px;
-          background: var(--bg-tertiary);
+          background: rgba(255, 255, 255, 0.03);
           border-radius: var(--radius-md);
           font-size: 0.8rem;
           color: var(--text-tertiary);
-          transition: all 0.3s ease;
+          transition: all 0.25s ease;
+          border: 1px solid var(--glass-border);
         }
 
         .scan-stage.complete {
           background: rgba(16, 185, 129, 0.2);
           color: #10b981;
+          border-color: rgba(16, 185, 129, 0.3);
         }
 
         .scan-stage .stage-icon {
@@ -1155,10 +1189,12 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
         .ai-funnel-section {
           margin: 24px 0;
           padding: 24px;
-          background: var(--bg-card);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          -webkit-backdrop-filter: var(--glass-blur);
           border: 1px solid var(--border-accent);
           border-radius: var(--radius-lg);
-          animation: fadeIn 0.5s ease;
+          animation: fadeIn 0.4s ease;
         }
 
         .funnel-header {
@@ -1182,7 +1218,7 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
         }
 
         .funnel-stage {
-          animation: slideIn 0.5s ease forwards;
+          animation: slideIn 0.4s ease forwards;
           opacity: 0;
         }
 
@@ -1202,9 +1238,10 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
           justify-content: space-between;
           align-items: center;
           padding: 16px 20px;
-          background: var(--bg-tertiary);
+          background: rgba(0, 0, 0, 0.2);
           border-radius: var(--radius-md);
           border-left: 4px solid #10b981;
+          border: 1px solid var(--glass-border);
         }
 
         .funnel-stage.final .funnel-bar {
@@ -1253,10 +1290,12 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
         .ai-contact-section {
           margin-top: 24px;
           padding: 24px;
-          background: var(--bg-card);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          -webkit-backdrop-filter: var(--glass-blur);
           border: 1px solid var(--border-accent);
           border-radius: var(--radius-lg);
-          animation: fadeIn 0.5s ease;
+          animation: fadeIn 0.4s ease;
         }
 
         .ai-contact-header {
@@ -1271,8 +1310,8 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
         }
 
         .ai-badge {
-          background: linear-gradient(135deg, #10b981, #10b981);
-          color: white;
+          background: var(--accent-gradient);
+          color: #0a0a0f;
           padding: 6px 12px;
           border-radius: 20px;
           font-size: 0.8rem;
@@ -1300,11 +1339,12 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
           align-items: center;
           gap: 16px;
           padding: 16px 20px;
-          background: var(--bg-tertiary);
-          border: 1px solid var(--border-subtle);
+          background: rgba(0, 0, 0, 0.2);
+          border: 1px solid var(--glass-border);
           border-radius: var(--radius-lg);
-          animation: slideUp 0.4s ease forwards;
+          animation: slideUp 0.35s ease forwards;
           opacity: 0;
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         @keyframes slideUp {
@@ -1320,21 +1360,24 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
 
         .ai-contact-card:hover {
           border-color: rgba(16, 185, 129, 0.4);
-          background: var(--bg-secondary);
+          background: rgba(255, 255, 255, 0.03);
+          transform: translateY(-2px);
+          box-shadow: var(--shadow-glass);
         }
 
         .ai-contact-avatar {
           width: 48px;
           height: 48px;
           min-width: 48px;
-          background: linear-gradient(135deg, #10b981, #10b981);
+          background: var(--accent-gradient);
           border-radius: 50%;
           display: flex;
           align-items: center;
           justify-content: center;
-          color: white;
+          color: #0a0a0f;
           font-weight: 600;
           font-size: 1.1rem;
+          box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
         }
 
         .ai-contact-info {
@@ -1395,19 +1438,22 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
         .ai-skill-tag {
           font-size: 0.7rem;
           padding: 2px 8px;
-          background: var(--bg-card);
+          background: rgba(255, 255, 255, 0.05);
           color: var(--text-secondary);
           border-radius: 10px;
+          border: 1px solid var(--glass-border);
         }
 
         .ai-btn-invite {
           padding: 10px 20px;
-          background: linear-gradient(135deg, #10b981, #10b981);
-          color: white;
+          background: var(--accent-gradient);
+          color: #0a0a0f;
           border-radius: var(--radius-md);
           font-weight: 600;
           font-size: 0.9rem;
           white-space: nowrap;
+          cursor: pointer;
+          transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .ai-btn-invite:hover {
@@ -1418,8 +1464,8 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
         .ai-contact-summary {
           margin-top: 16px;
           padding: 12px 16px;
-          background: var(--bg-tertiary);
-          border: 1px solid var(--border-subtle);
+          background: rgba(0, 0, 0, 0.2);
+          border: 1px solid var(--glass-border);
           border-radius: var(--radius-md);
           text-align: center;
           font-size: 0.85rem;
@@ -1432,23 +1478,28 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
           left: 0;
           right: 0;
           bottom: 0;
-          background: rgba(0, 0, 0, 0.8);
+          background: rgba(0, 0, 0, 0.85);
+          backdrop-filter: blur(8px);
+          -webkit-backdrop-filter: blur(8px);
           display: flex;
           align-items: center;
           justify-content: center;
           z-index: 1000;
-          animation: fadeIn 0.3s ease;
+          animation: fadeIn 0.25s ease;
         }
 
         .recommend-modal {
-          background: var(--bg-card);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          -webkit-backdrop-filter: var(--glass-blur);
           border: 1px solid var(--border-accent);
           border-radius: var(--radius-xl);
           width: 90%;
           max-width: 500px;
           max-height: 90vh;
           overflow-y: auto;
-          animation: slideUp 0.3s ease;
+          animation: slideUp 0.25s ease;
+          box-shadow: var(--shadow-elevated);
         }
 
         @keyframes slideUp {
@@ -1467,11 +1518,23 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
           justify-content: space-between;
           align-items: center;
           padding: 20px 24px;
-          border-bottom: 1px solid var(--border-subtle);
+          border-bottom: 1px solid var(--glass-border);
         }
 
         .recommend-header h3 {
           font-size: 1.1rem;
+        }
+
+        .close-btn {
+          background: transparent;
+          color: var(--text-secondary);
+          font-size: 1.25rem;
+          cursor: pointer;
+          transition: color 0.2s ease;
+        }
+
+        .close-btn:hover {
+          color: var(--text-primary);
         }
 
         .recommend-body {
@@ -1482,22 +1545,24 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
           display: flex;
           gap: 16px;
           padding: 16px;
-          background: var(--bg-tertiary);
+          background: rgba(0, 0, 0, 0.2);
           border-radius: var(--radius-md);
           margin-bottom: 20px;
+          border: 1px solid var(--glass-border);
         }
 
         .preview-avatar {
           width: 56px;
           height: 56px;
-          background: linear-gradient(135deg, #10b981, #10b981);
+          background: var(--accent-gradient);
           border-radius: 50%;
           display: flex;
           align-items: center;
           justify-content: center;
-          color: white;
+          color: #0a0a0f;
           font-weight: 600;
           font-size: 1.25rem;
+          box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
         }
 
         .preview-info {
@@ -1528,9 +1593,10 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
         .preview-skill-tag {
           font-size: 0.75rem;
           padding: 2px 8px;
-          background: var(--bg-card);
+          background: rgba(255, 255, 255, 0.05);
           color: var(--text-secondary);
           border-radius: 10px;
+          border: 1px solid var(--glass-border);
         }
 
         .rating-section, .reason-section, .c2-reason-section {
@@ -1553,7 +1619,7 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
           align-items: center;
           justify-content: space-between;
           padding: 12px 0;
-          border-bottom: 1px solid var(--border-subtle);
+          border-bottom: 1px solid var(--glass-border);
         }
 
         .rating-item label {
@@ -1571,6 +1637,7 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
           font-size: 1.25rem;
           opacity: 0.3;
           transition: all 0.2s;
+          cursor: pointer;
         }
 
         .star-btn.active {
@@ -1585,13 +1652,15 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
         .reason-section textarea, .c2-reason-section textarea {
           width: 100%;
           padding: 12px;
-          background: var(--bg-tertiary);
-          border: 1px solid var(--border-subtle);
+          background: rgba(0, 0, 0, 0.2);
+          border: 1px solid var(--glass-border);
           border-radius: var(--radius-md);
           color: var(--text-primary);
           font-size: 0.9rem;
+          font-family: var(--font-sans);
           resize: none;
           outline: none;
+          transition: border-color 0.2s ease;
         }
 
         .reason-section textarea:focus, .c2-reason-section textarea:focus {
@@ -1605,11 +1674,13 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
         .btn-submit-recommend {
           width: 100%;
           padding: 14px;
-          background: linear-gradient(135deg, #10b981, #10b981);
-          color: white;
+          background: var(--accent-gradient);
+          color: #0a0a0f;
           border-radius: var(--radius-md);
           font-weight: 600;
           font-size: 1rem;
+          cursor: pointer;
+          transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .btn-submit-recommend:hover {
@@ -1660,6 +1731,26 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
             flex-direction: column;
             align-items: flex-start;
             gap: 8px;
+          }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .job-card,
+          .ai-contact-card,
+          .btn-ai-match,
+          .btn-share,
+          .btn-wechat,
+          .ai-btn-invite,
+          .btn-submit-recommend,
+          .stat-item,
+          .tab {
+            transition: none;
+          }
+          
+          .funnel-stage,
+          .ai-contact-card {
+            animation: none;
+            opacity: 1;
           }
         }
       `}</style>

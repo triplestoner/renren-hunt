@@ -250,11 +250,13 @@ export default function EarningsCenter() {
         }
 
         .earnings-summary {
-          background: var(--bg-card);
-          border: 1px solid var(--border-subtle);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          border: 1px solid var(--glass-border);
           border-radius: var(--radius-xl);
           padding: 32px;
           margin-bottom: 32px;
+          box-shadow: var(--shadow-glass);
         }
 
         .summary-main {
@@ -299,6 +301,8 @@ export default function EarningsCenter() {
           border-radius: var(--radius-md);
           font-weight: 600;
           font-size: 1rem;
+          cursor: pointer;
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .btn-withdraw:hover {
@@ -316,6 +320,18 @@ export default function EarningsCenter() {
           text-align: center;
           opacity: 0;
           animation: fadeIn 0.5s ease forwards;
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          border: 1px solid var(--glass-border);
+          border-radius: var(--radius-lg);
+          padding: 20px;
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .stat-card:hover {
+          border-color: var(--accent-primary);
+          transform: translateY(-2px);
+          box-shadow: var(--shadow-glass);
         }
 
         .stat-label {
@@ -358,15 +374,19 @@ export default function EarningsCenter() {
 
         .tab {
           padding: 10px 20px;
-          background: var(--bg-card);
-          border: 1px solid var(--border-subtle);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          border: 1px solid var(--glass-border);
           border-radius: var(--radius-md);
           color: var(--text-secondary);
           font-size: 0.9rem;
+          cursor: pointer;
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .tab:hover {
-          background: var(--bg-card-hover);
+          background: rgba(255, 255, 255, 0.1);
+          border-color: var(--accent-primary);
         }
 
         .tab.active {
@@ -387,16 +407,20 @@ export default function EarningsCenter() {
           justify-content: space-between;
           align-items: center;
           padding: 20px 24px;
-          background: var(--bg-card);
-          border: 1px solid var(--border-subtle);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          border: 1px solid var(--glass-border);
           border-radius: var(--radius-lg);
           opacity: 0;
           animation: fadeIn 0.5s ease forwards;
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .earnings-card:hover {
-          background: var(--bg-card-hover);
-          border-color: var(--border-accent);
+          background: rgba(255, 255, 255, 0.08);
+          border-color: var(--accent-primary);
+          transform: translateY(-2px);
+          box-shadow: var(--shadow-glass);
         }
 
         .card-left {
@@ -493,10 +517,12 @@ export default function EarningsCenter() {
         }
 
         .withdraw-tips {
-          background: var(--bg-card);
-          border: 1px solid var(--border-subtle);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          border: 1px solid var(--glass-border);
           border-radius: var(--radius-lg);
           padding: 24px;
+          box-shadow: var(--shadow-glass);
         }
 
         .withdraw-tips h3 {
@@ -538,12 +564,14 @@ export default function EarningsCenter() {
         }
 
         .modal {
-          background: var(--bg-secondary);
-          border: 1px solid var(--border-subtle);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          border: 1px solid var(--glass-border);
           border-radius: var(--radius-xl);
           width: 90%;
           max-width: 420px;
           animation: fadeIn 0.3s ease;
+          box-shadow: var(--shadow-glass);
         }
 
         .modal-header {
@@ -562,6 +590,12 @@ export default function EarningsCenter() {
           background: transparent;
           color: var(--text-secondary);
           font-size: 1.25rem;
+          cursor: pointer;
+          transition: color 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .close-btn:hover {
+          color: var(--accent-primary);
         }
 
         .modal-body {
@@ -608,16 +642,19 @@ export default function EarningsCenter() {
           align-items: center;
           gap: 8px;
           padding: 16px;
-          background: var(--bg-tertiary);
-          border: 1px solid var(--border-subtle);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          border: 1px solid var(--glass-border);
           border-radius: var(--radius-md);
           cursor: pointer;
           font-size: 0.85rem;
           color: var(--text-secondary);
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .method:hover {
-          background: var(--bg-card-hover);
+          background: rgba(255, 255, 255, 0.1);
+          border-color: var(--accent-primary);
         }
 
         .method.selected {
@@ -638,6 +675,8 @@ export default function EarningsCenter() {
           border-radius: var(--radius-md);
           font-weight: 600;
           font-size: 1rem;
+          cursor: pointer;
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .btn-confirm-withdraw:hover {

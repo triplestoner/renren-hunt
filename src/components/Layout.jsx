@@ -63,8 +63,10 @@ export default function Layout({ children, activeTab, onTabChange }) {
 
         .sidebar {
           width: 260px;
-          background: var(--bg-secondary);
-          border-right: 1px solid var(--border-subtle);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          -webkit-backdrop-filter: var(--glass-blur);
+          border-right: 1px solid var(--glass-border);
           padding: 24px 16px;
           display: flex;
           flex-direction: column;
@@ -94,6 +96,7 @@ export default function Layout({ children, activeTab, onTabChange }) {
           font-weight: 700;
           font-size: 14px;
           color: #0a0a0f;
+          box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
         }
 
         .logo-text {
@@ -119,10 +122,12 @@ export default function Layout({ children, activeTab, onTabChange }) {
           color: var(--text-secondary);
           font-size: 0.95rem;
           text-align: left;
+          transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+          cursor: pointer;
         }
 
         .nav-item:hover {
-          background: var(--bg-tertiary);
+          background: rgba(255, 255, 255, 0.04);
           color: var(--text-primary);
         }
 
@@ -141,9 +146,15 @@ export default function Layout({ children, activeTab, onTabChange }) {
           align-items: center;
           gap: 12px;
           padding: 16px;
-          background: var(--bg-tertiary);
+          background: rgba(255, 255, 255, 0.03);
           border-radius: var(--radius-md);
-          border: 1px solid var(--border-subtle);
+          border: 1px solid var(--glass-border);
+          transition: all 0.2s ease;
+        }
+
+        .user-card:hover {
+          background: rgba(255, 255, 255, 0.05);
+          border-color: var(--border-default);
         }
 
         .avatar {
@@ -156,6 +167,7 @@ export default function Layout({ children, activeTab, onTabChange }) {
           justify-content: center;
           font-weight: 600;
           color: #0a0a0f;
+          box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
         }
 
         .user-info {
@@ -193,11 +205,20 @@ export default function Layout({ children, activeTab, onTabChange }) {
           z-index: 200;
           width: 44px;
           height: 44px;
-          background: var(--bg-secondary);
-          border: 1px solid var(--border-subtle);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          -webkit-backdrop-filter: var(--glass-blur);
+          border: 1px solid var(--glass-border);
           border-radius: var(--radius-md);
           color: var(--text-primary);
           font-size: 1.25rem;
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
+
+        .mobile-menu-btn:hover {
+          background: var(--bg-card-hover);
+          border-color: var(--border-default);
         }
 
         @media (max-width: 1024px) {

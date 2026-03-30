@@ -209,6 +209,7 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
       setShowCloseConfirm(true);
     } else {
       resetForm();
+      setShowNewJobModal(false);
     }
   };
 
@@ -222,6 +223,9 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
     setJobForm({
       title: '',
       salary: '',
+      salaryMin: '',
+      salaryMax: '',
+      salaryMonths: '12',
       bonus: '',
       education: '',
       experience: '',
@@ -351,10 +355,24 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
     }
   };
 
+  const formatSalary = (min, max, months) => {
+    if (!min && !max) return '';
+    if (min && max) return `${min}-${max}K·${months}薪`;
+    if (min) return `${min}K起·${months}薪`;
+    if (max) return `${max}K以下·${months}薪`;
+    return '';
+  };
+
   const calculateBonus = (salary) => {
-    const match = salary.match(/(\d+)/);
+    if (!salary) return 0;
+    const match = salary.match(/(\d+)[Kk]?-(\d+)?[Kk]?/);
     if (match) {
-      const annualSalary = parseInt(match[1]) * 12;
+      const min = parseInt(match[1]) || 0;
+      const max = parseInt(match[2]) || min;
+      const avgMonthly = (min + max) / 2 * 1000;
+      const months = salary.match(/(\d+)薪/);
+      const numMonths = months ? parseInt(months[1]) : 12;
+      const annualSalary = avgMonthly * numMonths;
       return Math.round(annualSalary * 0.1);
     }
     return 0;
@@ -914,20 +932,50 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
                   />
                 </div>
                 <div className="form-row">
-                  <div className="form-group">
+                  <div className="form-group salary-group">
                     <label>薪资范围 <span className="auto-tag">自动试算悬赏</span></label>
-                    <input 
-                      type="text" 
-                      placeholder="如：30-60K·15薪"
-                      value={jobForm.salary}
-                      onChange={e => {
-                        setJobForm({ ...jobForm, salary: e.target.value });
-                        const bonus = calculateBonus(e.target.value);
-                        if (bonus > 0) {
-                          setJobForm(prev => ({ ...prev, bonus: `¥${bonus.toLocaleString()}` }));
-                        }
-                      }}
-                    />
+                    <div className="salary-inputs">
+                      <div className="salary-monthly">
+                        <select 
+                          value={jobForm.salaryMin || ''}
+                          onChange={e => {
+                            const min = e.target.value;
+                            setJobForm({ ...jobForm, salaryMin: min, salary: formatSalary(min, jobForm.salaryMax, jobForm.salaryMonths) });
+                          }}
+                        >
+                          <option value="">月薪下限</option>
+                          {[5, 8, 10, 12, 15, 18, 20, 25, 30, 35, 40, 45, 50, 60, 70, 80, 100, 120, 150].map(v => (
+                            <option key={v} value={v}>{v}K</option>
+                          ))}
+                        </select>
+                        <span className="salary-separator">-</span>
+                        <select 
+                          value={jobForm.salaryMax || ''}
+                          onChange={e => {
+                            const max = e.target.value;
+                            setJobForm({ ...jobForm, salaryMax: max, salary: formatSalary(jobForm.salaryMin, max, jobForm.salaryMonths) });
+                          }}
+                        >
+                          <option value="">月薪上限</option>
+                          {[8, 10, 12, 15, 18, 20, 25, 30, 35, 40, 45, 50, 60, 70, 80, 100, 120, 150, 200].map(v => (
+                            <option key={v} value={v}>{v}K</option>
+                          ))}
+                        </select>
+                      </div>
+                      <div className="salary-months">
+                        <select 
+                          value={jobForm.salaryMonths || '12'}
+                          onChange={e => {
+                            const months = e.target.value;
+                            setJobForm({ ...jobForm, salaryMonths: months, salary: formatSalary(jobForm.salaryMin, jobForm.salaryMax, months) });
+                          }}
+                        >
+                          {[12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24].map(v => (
+                            <option key={v} value={v}>{v}薪</option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
                   </div>
                   <div className="form-group">
                     <label>悬赏金额 <span className="required">*</span></label>
@@ -1209,6 +1257,8 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
           padding: 12px 24px;
           border-radius: var(--radius-md);
           font-weight: 600;
+          cursor: pointer;
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .btn-new-job:hover {
@@ -1227,9 +1277,12 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
           align-items: center;
           gap: 16px;
           padding: 20px;
-          background: var(--bg-card);
-          border: 1px solid var(--border-subtle);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          border: var(--glass-border);
           border-radius: var(--radius-lg);
+          box-shadow: var(--shadow-glass);
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .stat-icon {
@@ -1259,20 +1312,24 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
           align-items: center;
           gap: 8px;
           padding: 12px 20px;
-          background: var(--bg-card);
-          border: 1px solid var(--border-subtle);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          border: var(--glass-border);
           border-radius: var(--radius-md);
           color: var(--text-secondary);
           font-size: 0.95rem;
+          cursor: pointer;
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .tab:hover {
-          background: var(--bg-card-hover);
+          background: var(--glass-bg);
+          border-color: rgba(30, 138, 240, 0.3);
         }
 
         .tab.active {
-          background: rgba(30, 138, 240, 0.1);
-          border-color: rgba(30, 138, 240, 0.4);
+          background: rgba(30, 138, 240, 0.15);
+          border-color: rgba(30, 138, 240, 0.5);
           color: #1e8af0;
         }
 
@@ -1289,11 +1346,18 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
           align-items: center;
           gap: 12px;
           padding: 12px 16px;
-          background: var(--bg-card);
-          border: 1px solid var(--border-subtle);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          border: var(--glass-border);
           border-radius: var(--radius-md);
+          box-shadow: var(--shadow-glass);
           flex: 1;
           max-width: 400px;
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .search-box:focus-within {
+          border-color: rgba(30, 138, 240, 0.5);
         }
 
         .search-box input {
@@ -1316,16 +1380,23 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
 
         .filter-tag {
           padding: 8px 16px;
-          background: var(--bg-card);
-          border: 1px solid var(--border-subtle);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          border: var(--glass-border);
           border-radius: 20px;
           color: var(--text-secondary);
           font-size: 0.85rem;
+          cursor: pointer;
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .filter-tag:hover {
+          border-color: rgba(30, 138, 240, 0.3);
         }
 
         .filter-tag.active {
-          background: rgba(30, 138, 240, 0.1);
-          border-color: rgba(30, 138, 240, 0.4);
+          background: rgba(30, 138, 240, 0.15);
+          border-color: rgba(30, 138, 240, 0.5);
           color: #1e8af0;
         }
 
@@ -1342,20 +1413,22 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
         }
 
         .candidate-card {
-          background: var(--bg-card);
-          border: 1px solid var(--border-subtle);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          border: var(--glass-border);
           border-radius: var(--radius-lg);
           padding: 20px;
           cursor: pointer;
-          transition: all 0.3s ease;
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+          box-shadow: var(--shadow-glass);
           opacity: 0;
           animation: fadeIn 0.5s ease forwards;
         }
 
         .candidate-card:hover,
         .candidate-card.selected {
-          background: var(--bg-card-hover);
-          border-color: rgba(30, 138, 240, 0.4);
+          border-color: rgba(30, 138, 240, 0.5);
+          transform: translateY(-2px);
         }
 
         .candidate-main {
@@ -1514,26 +1587,41 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
           color: white;
           border-radius: var(--radius-md);
           font-weight: 600;
+          cursor: pointer;
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+          border: none;
         }
 
         .btn-primary:hover {
-          transform: translateY(-1px);
+          transform: translateY(-2px);
+          box-shadow: 0 4px 20px rgba(30, 138, 240, 0.4);
         }
 
         .btn-secondary {
           padding: 12px 20px;
-          background: var(--bg-tertiary);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          border: var(--glass-border);
           color: var(--text-secondary);
           border-radius: var(--radius-md);
+          cursor: pointer;
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn-secondary:hover {
+          border-color: rgba(30, 138, 240, 0.4);
+          color: var(--text-primary);
         }
 
         .candidate-detail {
-          background: var(--bg-card);
-          border: 1px solid var(--border-subtle);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          border: var(--glass-border);
           border-radius: var(--radius-lg);
           padding: 24px;
           position: sticky;
           top: 24px;
+          box-shadow: var(--shadow-glass);
         }
 
         .detail-header {
@@ -1547,18 +1635,21 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
           width: 32px;
           height: 32px;
           border-radius: 50%;
-          background: var(--bg-tertiary);
-          border: 1px solid var(--border-subtle);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          border: var(--glass-border);
           color: var(--text-secondary);
           font-size: 1rem;
           cursor: pointer;
           display: flex;
           align-items: center;
           justify-content: center;
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .close-detail-btn:hover {
-          background: var(--bg-card-hover);
+          background: rgba(30, 138, 240, 0.15);
+          border-color: rgba(30, 138, 240, 0.4);
           color: var(--text-primary);
         }
 
@@ -1770,12 +1861,21 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
         }
 
         .job-card {
-          background: var(--bg-card);
-          border: 1px solid var(--border-subtle);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          border: var(--glass-border);
           border-radius: var(--radius-lg);
           padding: 20px 24px;
+          box-shadow: var(--shadow-glass);
           opacity: 0;
           animation: fadeIn 0.5s ease forwards;
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+          cursor: pointer;
+        }
+
+        .job-card:hover {
+          border-color: rgba(30, 138, 240, 0.4);
+          transform: translateY(-2px);
         }
 
         .job-main {
@@ -1849,17 +1949,31 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
           padding: 8px 16px;
           border-radius: var(--radius-sm);
           font-size: 0.85rem;
+          cursor: pointer;
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .btn-edit {
-          background: var(--bg-tertiary);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          border: var(--glass-border);
           color: var(--text-secondary);
         }
 
+        .btn-edit:hover {
+          border-color: rgba(30, 138, 240, 0.4);
+          color: var(--text-primary);
+        }
+
         .btn-manage {
-          background: rgba(30, 138, 240, 0.1);
+          background: rgba(30, 138, 240, 0.15);
           color: #1e8af0;
-          border: 1px solid rgba(30, 138, 240, 0.3);
+          border: 1px solid rgba(30, 138, 240, 0.4);
+        }
+
+        .btn-manage:hover {
+          background: rgba(30, 138, 240, 0.25);
+          transform: translateY(-1px);
         }
 
         .analytics-grid {
@@ -1869,10 +1983,12 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
         }
 
         .analytics-card {
-          background: var(--bg-card);
-          border: 1px solid var(--border-subtle);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          border: var(--glass-border);
           border-radius: var(--radius-lg);
           padding: 24px;
+          box-shadow: var(--shadow-glass);
         }
 
         .analytics-card h3 {
@@ -1971,10 +2087,12 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
         .pipeline-column {
           min-width: 200px;
           flex: 1;
-          background: var(--bg-card);
-          border: 1px solid var(--border-subtle);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          border: var(--glass-border);
           border-radius: var(--radius-lg);
           overflow: hidden;
+          box-shadow: var(--shadow-glass);
         }
 
         .pipeline-header {
@@ -1982,7 +2100,7 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
           justify-content: space-between;
           align-items: center;
           padding: 16px;
-          border-bottom: 1px solid var(--border-subtle);
+          border-bottom: var(--glass-border);
           border-left: 4px solid;
         }
 
@@ -2009,11 +2127,19 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
         }
 
         .pipeline-card {
-          background: var(--bg-tertiary);
-          border: 1px solid var(--border-subtle);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          border: var(--glass-border);
           border-radius: var(--radius-md);
           padding: 12px;
           margin-bottom: 8px;
+          cursor: pointer;
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .pipeline-card:hover {
+          border-color: rgba(30, 138, 240, 0.4);
+          transform: translateY(-1px);
         }
 
         .pipeline-card-header {
@@ -2051,14 +2177,17 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
 
         .btn-move {
           padding: 4px 12px;
-          background: rgba(30, 138, 240, 0.1);
+          background: rgba(30, 138, 240, 0.15);
           color: #1e8af0;
           border-radius: var(--radius-sm);
           font-size: 0.85rem;
+          cursor: pointer;
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+          border: none;
         }
 
         .btn-move:hover {
-          background: rgba(30, 138, 240, 0.2);
+          background: rgba(30, 138, 240, 0.25);
         }
 
         .pipeline-stats {
@@ -2073,9 +2202,12 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
           align-items: center;
           gap: 8px;
           padding: 20px;
-          background: var(--bg-card);
-          border: 1px solid var(--border-subtle);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          border: var(--glass-border);
           border-radius: var(--radius-lg);
+          box-shadow: var(--shadow-glass);
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .pipeline-stats .stat-icon {
@@ -2104,9 +2236,11 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
           align-items: center;
           gap: 16px;
           padding: 24px;
-          background: var(--bg-card);
-          border: 1px solid var(--border-subtle);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          border: var(--glass-border);
           border-radius: var(--radius-lg);
+          box-shadow: var(--shadow-glass);
         }
 
         .finance-icon {
@@ -2145,24 +2279,28 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
           justify-content: center;
           gap: 8px;
           padding: 14px;
-          background: var(--bg-card);
-          border: 1px solid var(--border-subtle);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          border: var(--glass-border);
           border-radius: var(--radius-md);
           color: var(--text-secondary);
           font-size: 0.9rem;
+          cursor: pointer;
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .finance-action-btn:hover {
-          background: var(--bg-card-hover);
+          border-color: rgba(30, 138, 240, 0.5);
           color: var(--text-primary);
-          border-color: var(--border-accent);
         }
 
         .invoice-section, .settle-section {
-          background: var(--bg-card);
-          border: 1px solid var(--border-subtle);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          border: var(--glass-border);
           border-radius: var(--radius-lg);
           padding: 24px;
+          box-shadow: var(--shadow-glass);
         }
 
         .invoice-section h3, .settle-section h3 {
@@ -2308,6 +2446,7 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
           right: 0;
           bottom: 0;
           background: rgba(0, 0, 0, 0.7);
+          backdrop-filter: blur(4px);
           display: flex;
           align-items: center;
           justify-content: center;
@@ -2316,12 +2455,14 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
         }
 
         .modal {
-          background: var(--bg-secondary);
-          border: 1px solid var(--border-subtle);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          border: var(--glass-border);
           border-radius: var(--radius-xl);
           width: 90%;
           max-width: 500px;
           animation: fadeIn 0.3s ease;
+          box-shadow: var(--shadow-glass);
         }
 
         .modal-header {
@@ -2329,7 +2470,7 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
           justify-content: space-between;
           align-items: center;
           padding: 20px 24px;
-          border-bottom: 1px solid var(--border-subtle);
+          border-bottom: var(--glass-border);
         }
 
         .modal-header h3 {
@@ -2340,6 +2481,13 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
           background: transparent;
           color: var(--text-secondary);
           font-size: 1.25rem;
+          cursor: pointer;
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+          border: none;
+        }
+
+        .close-btn:hover {
+          color: var(--text-primary);
         }
 
         .modal-body {
@@ -2361,36 +2509,91 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
         .form-group textarea {
           width: 100%;
           padding: 12px 16px;
-          background: var(--bg-tertiary);
-          border: 1px solid var(--border-subtle);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          border: var(--glass-border);
           border-radius: var(--radius-md);
           color: var(--text-primary);
           font-size: 0.95rem;
           outline: none;
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .form-group input:focus,
         .form-group textarea:focus,
         .form-group select:focus {
-          border-color: #1e8af0;
+          border-color: rgba(30, 138, 240, 0.6);
         }
 
         .form-group select {
           width: 100%;
           padding: 12px 16px;
-          background: var(--bg-tertiary);
-          border: 1px solid var(--border-subtle);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          border: var(--glass-border);
           border-radius: var(--radius-md);
           color: var(--text-primary);
           font-size: 0.95rem;
           outline: none;
           cursor: pointer;
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .form-row {
           display: grid;
           grid-template-columns: 1fr 1fr;
           gap: 16px;
+        }
+
+        .salary-group .salary-inputs {
+          display: flex;
+          gap: 12px;
+          align-items: center;
+        }
+
+        .salary-monthly {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          flex: 1;
+        }
+
+        .salary-monthly select {
+          flex: 1;
+          min-width: 80px;
+        }
+
+        .salary-separator {
+          color: var(--text-tertiary);
+          font-size: 0.9rem;
+        }
+
+        .salary-months select {
+          width: 80px;
+        }
+
+        .bonus-calculation {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          padding: 12px 16px;
+          background: rgba(30, 138, 240, 0.1);
+          border: 1px solid rgba(30, 138, 240, 0.2);
+          border-radius: var(--radius-md);
+          margin-top: 12px;
+          font-size: 0.9rem;
+          color: var(--text-secondary);
+        }
+
+        .bonus-calculation .calc-value {
+          font-weight: 700;
+          color: var(--accent-primary);
+          font-size: 1.1rem;
+        }
+
+        .bonus-calculation .urgent-hint {
+          color: var(--warning);
+          font-size: 0.8rem;
         }
 
         .required {
@@ -2430,10 +2633,16 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
         }
 
         .skill-input-wrapper {
-          background: var(--bg-tertiary);
-          border: 1px solid var(--border-subtle);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          border: var(--glass-border);
           border-radius: var(--radius-md);
           padding: 8px 12px;
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .skill-input-wrapper:focus-within {
+          border-color: rgba(30, 138, 240, 0.5);
         }
 
         .skill-input {
@@ -2488,16 +2697,18 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
 
         .skill-rec-btn {
           padding: 4px 12px;
-          background: var(--bg-card);
-          border: 1px solid var(--border-subtle);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          border: var(--glass-border);
           border-radius: 15px;
           color: var(--text-secondary);
           font-size: 0.8rem;
-          transition: all 0.2s ease;
+          cursor: pointer;
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .skill-rec-btn:hover {
-          border-color: var(--accent-primary);
+          border-color: rgba(30, 138, 240, 0.5);
           color: var(--accent-primary);
         }
 
@@ -2653,16 +2864,18 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
         .circle-detail-input input {
           width: 100%;
           padding: 12px 16px;
-          background: var(--bg-tertiary);
-          border: 1px solid var(--border-subtle);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          border: var(--glass-border);
           border-radius: var(--radius-md);
           color: var(--text-primary);
           font-size: 0.9rem;
           outline: none;
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .circle-detail-input input:focus {
-          border-color: #1e8af0;
+          border-color: rgba(30, 138, 240, 0.6);
         }
 
         .urgent-section {
@@ -2820,11 +3033,13 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
           align-items: center;
           gap: 20px;
           padding: 16px 20px;
-          background: var(--bg-card);
-          border: 1px solid var(--border-subtle);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          border: var(--glass-border);
           border-radius: var(--radius-md);
           margin-top: 16px;
           flex-wrap: wrap;
+          box-shadow: var(--shadow-glass);
         }
 
         .contract-item {
@@ -2856,12 +3071,15 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
           align-items: center;
           gap: 8px;
           padding: 10px 16px;
-          background: linear-gradient(135deg, #10b981, #10b981);
+          background: linear-gradient(135deg, #10b981, #059669);
           color: white;
           border-radius: var(--radius-md);
           font-weight: 600;
           font-size: 0.9rem;
           margin-left: auto;
+          cursor: pointer;
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+          border: none;
         }
 
         .btn-lock-funds:hover {
@@ -2877,7 +3095,8 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
         }
 
         .confirm-modal {
-          background: var(--bg-card);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
           border: 1px solid rgba(251, 191, 36, 0.3);
           border-radius: var(--radius-xl);
           padding: 32px;
@@ -2885,6 +3104,7 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
           width: 90%;
           text-align: center;
           animation: fadeIn 0.2s ease;
+          box-shadow: var(--shadow-glass);
         }
 
         .confirm-icon {
@@ -2972,6 +3192,7 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
           right: 0;
           bottom: 0;
           background: rgba(0, 0, 0, 0.8);
+          backdrop-filter: blur(4px);
           display: flex;
           align-items: center;
           justify-content: center;
@@ -2980,13 +3201,15 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
         }
 
         .contract-modal {
-          background: var(--bg-card);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
           border: 1px solid rgba(16, 185, 129, 0.3);
           border-radius: var(--radius-xl);
           padding: 32px;
           max-width: 480px;
           width: 90%;
           text-align: center;
+          box-shadow: var(--shadow-glass);
         }
 
         .contract-modal-icon {

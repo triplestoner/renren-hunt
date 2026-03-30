@@ -182,6 +182,12 @@ function App() {
       {activeRole === 'c2' && <CandidatePortal onSwitchRole={handleSwitchRole} recommendations={c2ReceivedRecommendations} onAccept={handleC2Accept} />}
       {activeRole === 'b' && <EmployerPortal publishedJobs={publishedJobs} setPublishedJobs={setPublishedJobs} />}
 
+      <footer className="app-footer">
+        <span>最后更新：{new Date().toLocaleString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })}</span>
+        <span className="footer-separator">|</span>
+        <span>by lql</span>
+      </footer>
+
       <style>{`
         .app {
           min-height: 100vh;
@@ -192,8 +198,10 @@ function App() {
           justify-content: center;
           align-items: center;
           padding: 20px;
-          background: var(--bg-secondary);
-          border-bottom: 1px solid var(--border-subtle);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          -webkit-backdrop-filter: var(--glass-blur);
+          border-bottom: 1px solid var(--glass-border);
           position: sticky;
           top: 0;
           z-index: 200;
@@ -201,10 +209,11 @@ function App() {
 
         .role-tabs {
           display: flex;
-          background: var(--bg-tertiary);
+          background: rgba(0, 0, 0, 0.3);
           border-radius: var(--radius-lg);
           padding: 4px;
           gap: 4px;
+          border: 1px solid var(--glass-border);
         }
 
         .role-tab {
@@ -217,10 +226,13 @@ function App() {
           color: var(--text-secondary);
           font-size: 0.95rem;
           font-weight: 500;
+          cursor: pointer;
+          transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .role-tab:hover {
           color: var(--text-primary);
+          background: rgba(255, 255, 255, 0.05);
         }
 
         .role-tab.active {
@@ -257,16 +269,19 @@ function App() {
         .role-badge.c1 {
           background: var(--accent-glow);
           color: var(--accent-primary);
+          border: 1px solid var(--border-accent);
         }
 
         .role-badge.c2 {
           background: rgba(16, 185, 129, 0.15);
           color: #10b981;
+          border: 1px solid rgba(16, 185, 129, 0.2);
         }
 
         .role-badge.b {
           background: rgba(30, 138, 240, 0.15);
           color: #1e8af0;
+          border: 1px solid rgba(30, 138, 240, 0.2);
         }
 
         @media (max-width: 768px) {
@@ -323,6 +338,22 @@ function App() {
             top: 0;
             z-index: 200;
           }
+        }
+
+        .app-footer {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 12px;
+          padding: 20px;
+          color: var(--text-tertiary);
+          font-size: 0.8rem;
+          border-top: 1px solid var(--glass-border);
+          margin-top: 40px;
+        }
+
+        .footer-separator {
+          color: var(--glass-border);
         }
       `}</style>
     </div>

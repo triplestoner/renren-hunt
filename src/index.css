@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
 
 :root {
   /* Slate & Zinc Dark Theme - 2026 Professional Palette */
@@ -9,12 +9,21 @@
   --bg-card-hover: #222228;
   --bg-elevated: #27272d;
   
+  /* Glassmorphism Effect */
+  --glass-bg: rgba(28, 28, 33, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-blur: blur(16px);
+  
   /* Emerald Primary - Success & CTAs */
   --accent-primary: #10b981;
   --accent-primary-hover: #059669;
   --accent-secondary: #34d399;
   --accent-glow: rgba(16, 185, 129, 0.12);
   --accent-gradient: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+  
+  /* Trust Blue - Professional accent */
+  --trust-primary: #0ea5e9;
+  --trust-glow: rgba(14, 165, 233, 0.12);
   
   /* Zinc text tones */
   --text-primary: #fafafa;
@@ -41,6 +50,7 @@
   --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.5);
   --shadow-glow: 0 0 40px var(--accent-glow);
   --shadow-elevated: 0 8px 32px rgba(0, 0, 0, 0.6);
+  --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
   
   /* Border radius */
   --radius-sm: 6px;
@@ -49,8 +59,8 @@
   --radius-xl: 20px;
   --radius-full: 9999px;
   
-  /* Typography */
-  --font-sans: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  /* Typography - Inter for professional look */
+  --font-sans: 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   
   font-family: var(--font-sans);
   font-size: 16px;
@@ -71,9 +81,10 @@ body {
   min-height: 100vh;
   background: var(--bg-primary);
   background-image: 
-    radial-gradient(ellipse 100% 60% at 50% -30%, rgba(16, 185, 129, 0.08) 0%, transparent 50%),
-    radial-gradient(circle at 85% 15%, rgba(16, 185, 129, 0.04) 0%, transparent 30%),
-    linear-gradient(180deg, var(--bg-primary) 0%, #070709 100%);
+    radial-gradient(ellipse 100% 80% at 50% -40%, rgba(16, 185, 129, 0.06) 0%, transparent 60%),
+    radial-gradient(circle at 90% 10%, rgba(14, 165, 233, 0.04) 0%, transparent 40%),
+    radial-gradient(circle at 10% 90%, rgba(16, 185, 129, 0.03) 0%, transparent 30%),
+    linear-gradient(180deg, var(--bg-primary) 0%, #050507 100%);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -160,18 +171,20 @@ button {
 }
 
 .card {
-  background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
   padding: 24px;
-  transition: all 0.3s ease;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .card:hover {
   background: var(--bg-card-hover);
   border-color: var(--border-default);
   transform: translateY(-2px);
-  box-shadow: var(--shadow-card);
+  box-shadow: var(--shadow-glass);
 }
 
 /* Animation keyframes */

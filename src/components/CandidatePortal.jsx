@@ -672,24 +672,30 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
           align-items: center;
           gap: 8px;
           padding: 10px 16px;
-          background: var(--bg-tertiary);
-          border: 1px solid var(--border-subtle);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          border: 1px solid var(--glass-border);
           border-radius: var(--radius-md);
           color: var(--text-secondary);
           font-size: 0.9rem;
+          cursor: pointer;
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .btn-switch-role:hover {
           background: var(--bg-card-hover);
           color: var(--accent-primary);
-          border-color: var(--accent-accent);
+          border-color: var(--accent-primary);
+          transform: translateY(-2px);
         }
 
         .privacy-control {
-          background: var(--bg-card);
-          border: 1px solid var(--border-subtle);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          border: 1px solid var(--glass-border);
           border-radius: var(--radius-lg);
           padding: 20px;
+          box-shadow: var(--shadow-glass);
         }
 
         .privacy-toggle {
@@ -717,6 +723,12 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
           font-size: 0.9rem;
           color: var(--text-secondary);
           background: transparent;
+          cursor: pointer;
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .toggle-btn:hover {
+          color: var(--text-primary);
         }
 
         .toggle-btn.active {
@@ -741,15 +753,20 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
           align-items: center;
           gap: 8px;
           padding: 12px 20px;
-          background: var(--bg-card);
-          border: 1px solid var(--border-subtle);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          border: 1px solid var(--glass-border);
           border-radius: var(--radius-md);
           color: var(--text-secondary);
           font-size: 0.95rem;
+          cursor: pointer;
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .tab:hover {
           background: var(--bg-card-hover);
+          border-color: var(--accent-primary);
+          transform: translateY(-2px);
         }
 
         .tab.active {
@@ -780,13 +797,15 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
         }
 
         .offer-card {
-          background: var(--bg-card);
-          border: 1px solid var(--border-subtle);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          border: 1px solid var(--glass-border);
           border-radius: var(--radius-lg);
           padding: 20px 24px;
           cursor: pointer;
           position: relative;
-          transition: all 0.3s ease;
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+          box-shadow: var(--shadow-glass);
         }
 
         .offer-card:hover,
@@ -813,10 +832,12 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
         }
 
         .c2-recommendation-card {
-          background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
           border: 1px solid rgba(16, 185, 129, 0.3);
           border-radius: var(--radius-md);
           padding: 20px;
+          box-shadow: var(--shadow-glass);
         }
 
         .c2-recommend-header {
@@ -866,6 +887,8 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
           padding: 14px;
           border-radius: var(--radius-md);
           font-weight: 600;
+          cursor: pointer;
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .btn-accept-recommend:hover {
@@ -953,10 +976,12 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
         }
 
         .auth-card {
-          background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
           border: 1px solid rgba(102, 126, 234, 0.3);
           border-radius: var(--radius-md);
           padding: 20px;
+          box-shadow: var(--shadow-glass);
         }
 
         .auth-header {
@@ -996,6 +1021,8 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
           padding: 14px;
           border-radius: var(--radius-md);
           font-weight: 600;
+          cursor: pointer;
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .btn-authorize:hover {
@@ -1005,15 +1032,20 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
 
         .btn-decline {
           padding: 14px 24px;
-          background: var(--bg-tertiary);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          border: 1px solid var(--glass-border);
           color: var(--text-secondary);
           border-radius: var(--radius-md);
           font-size: 0.9rem;
+          cursor: pointer;
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .btn-decline:hover {
           background: var(--bg-card-hover);
           color: var(--text-primary);
+          border-color: var(--accent-primary);
         }
 
         .auth-note {
@@ -1028,10 +1060,17 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
         }
 
         .profile-card {
-          background: var(--bg-card);
-          border: 1px solid var(--border-subtle);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          border: 1px solid var(--glass-border);
           border-radius: var(--radius-lg);
           padding: 24px;
+          box-shadow: var(--shadow-glass);
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .profile-card:hover {
+          border-color: var(--accent-primary);
         }
 
         .profile-card h3 {
@@ -1087,16 +1126,20 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
           width: 100%;
           margin-top: 20px;
           padding: 12px;
-          background: var(--bg-tertiary);
-          border: 1px solid var(--border-subtle);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          border: 1px solid var(--glass-border);
           border-radius: var(--radius-md);
           color: var(--text-secondary);
           font-size: 0.9rem;
+          cursor: pointer;
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .btn-edit-profile:hover {
           background: var(--bg-card-hover);
           color: var(--text-primary);
+          border-color: var(--accent-primary);
         }
 
         .privacy-settings {
@@ -1139,16 +1182,20 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
 
         .btn-manage {
           padding: 6px 14px;
-          background: var(--bg-tertiary);
-          border: 1px solid var(--border-subtle);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          border: 1px solid var(--glass-border);
           border-radius: var(--radius-sm);
           color: var(--text-secondary);
           font-size: 0.85rem;
+          cursor: pointer;
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .btn-manage:hover {
           background: var(--bg-card-hover);
           color: var(--text-primary);
+          border-color: var(--accent-primary);
         }
 
         .reviews-list {
@@ -1158,12 +1205,20 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
         }
 
         .review-card {
-          background: var(--bg-card);
-          border: 1px solid var(--border-subtle);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          border: 1px solid var(--glass-border);
           border-radius: var(--radius-lg);
           padding: 20px;
           opacity: 0;
           animation: fadeIn 0.5s ease forwards;
+          box-shadow: var(--shadow-glass);
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .review-card:hover {
+          border-color: var(--accent-primary);
+          transform: translateY(-2px);
         }
 
         .review-header {
@@ -1297,13 +1352,15 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
         }
 
         .auth-modal {
-          background: var(--bg-card);
-          border: 1px solid var(--border-accent);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          border: 1px solid var(--glass-border);
           border-radius: var(--radius-xl);
           padding: 32px;
           max-width: 420px;
           width: 90%;
           text-align: center;
+          box-shadow: var(--shadow-glass);
         }
 
         .auth-modal-icon {
@@ -1322,7 +1379,9 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
         }
 
         .did-info {
-          background: var(--bg-tertiary);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          border: 1px solid var(--glass-border);
           border-radius: var(--radius-md);
           padding: 16px;
           margin-bottom: 20px;
@@ -1377,11 +1436,14 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
           width: 100%;
           margin-top: 12px;
           padding: 12px;
-          background: transparent;
-          border: 1px solid var(--border-subtle);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          border: 1px solid var(--glass-border);
           border-radius: var(--radius-md);
           color: var(--text-secondary);
           font-size: 0.95rem;
+          cursor: pointer;
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .btn-deny:hover {
@@ -1416,7 +1478,8 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
         }
 
         .referral-review {
-          background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
           border: 1px solid rgba(16, 185, 129, 0.3);
           border-radius: var(--radius-md);
           padding: 16px;
@@ -1459,7 +1522,9 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
           align-items: center;
           gap: 8px;
           padding: 12px;
-          background: var(--bg-tertiary);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          border: 1px solid var(--glass-border);
           border-radius: var(--radius-md);
           margin-bottom: 16px;
           text-align: left;
@@ -1484,7 +1549,9 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
         .bonus-item {
           flex: 1;
           padding: 12px;
-          background: var(--bg-tertiary);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          border: 1px solid var(--glass-border);
           border-radius: var(--radius-md);
           text-align: center;
         }
@@ -1524,10 +1591,17 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
         }
 
         .progress-card, .wallet-card {
-          background: var(--bg-card);
-          border: 1px solid var(--border-subtle);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          border: 1px solid var(--glass-border);
           border-radius: var(--radius-lg);
           padding: 24px;
+          box-shadow: var(--shadow-glass);
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .progress-card:hover, .wallet-card:hover {
+          border-color: var(--accent-primary);
         }
 
         .progress-header {
@@ -1656,10 +1730,12 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
         }
 
         .feedback-card {
-          background: var(--bg-card);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
           border: 1px solid rgba(248, 113, 113, 0.3);
           border-radius: var(--radius-md);
           padding: 16px;
+          box-shadow: var(--shadow-glass);
         }
 
         .feedback-header {
@@ -1765,11 +1841,18 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
         }
 
         .wallet-stat {
-          background: var(--bg-card);
-          border: 1px solid var(--border-subtle);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          border: 1px solid var(--glass-border);
           border-radius: var(--radius-md);
           padding: 16px;
           text-align: center;
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .wallet-stat:hover {
+          border-color: var(--accent-primary);
+          transform: translateY(-2px);
         }
 
         .wallet-stat .stat-value {
@@ -1786,10 +1869,12 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
         }
 
         .wallet-history {
-          background: var(--bg-card);
-          border: 1px solid var(--border-subtle);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          border: 1px solid var(--glass-border);
           border-radius: var(--radius-lg);
           padding: 20px;
+          box-shadow: var(--shadow-glass);
         }
 
         .wallet-history h4 {
@@ -1840,9 +1925,11 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
           display: flex;
           gap: 12px;
           padding: 16px;
-          background: var(--bg-card);
-          border: 1px solid var(--border-subtle);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          border: 1px solid var(--glass-border);
           border-radius: var(--radius-md);
+          box-shadow: var(--shadow-glass);
         }
 
         .info-icon {
@@ -1877,14 +1964,16 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
         }
 
         .c2-to-c1-modal {
-          background: var(--bg-card);
-          border: 1px solid var(--border-accent);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          border: 1px solid var(--glass-border);
           border-radius: var(--radius-xl);
           padding: 32px;
           max-width: 400px;
           width: 90%;
           text-align: center;
           animation: slideUp 0.3s ease;
+          box-shadow: var(--shadow-glass);
         }
 
         @keyframes slideUp {
@@ -1914,11 +2003,13 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
         }
 
         .incentive-card {
-          background: linear-gradient(135deg, rgba(212, 168, 83, 0.15) 0%, rgba(240, 216, 140, 0.15) 100%);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
           border: 1px solid rgba(212, 168, 83, 0.3);
           border-radius: var(--radius-lg);
           padding: 24px;
           margin-bottom: 24px;
+          box-shadow: var(--shadow-glass);
         }
 
         .incentive-header {
@@ -1956,6 +2047,8 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
           border-radius: var(--radius-md);
           font-weight: 600;
           font-size: 1rem;
+          cursor: pointer;
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .btn-switch-now:hover {
@@ -1966,16 +2059,20 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
         .btn-later {
           width: 100%;
           padding: 12px;
-          background: transparent;
-          border: 1px solid var(--border-subtle);
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          border: 1px solid var(--glass-border);
           border-radius: var(--radius-md);
           color: var(--text-secondary);
           font-size: 0.9rem;
+          cursor: pointer;
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .btn-later:hover {
           background: var(--bg-tertiary);
           color: var(--text-primary);
+          border-color: var(--accent-primary);
         }
       `}</style>
     </div>
