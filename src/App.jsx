@@ -65,6 +65,7 @@ function App() {
   const [publishedJobs, setPublishedJobs] = useState(initialJobs)
   const [c2ReceivedRecommendations, setC2ReceivedRecommendations] = useState([])
   const [employerCandidates, setEmployerCandidates] = useState([])
+  const [submittedRecommendations, setSubmittedRecommendations] = useState([])
 
   const handleRecommend = (recommendation) => {
     const newRecommendation = {
@@ -74,6 +75,7 @@ function App() {
       date: new Date().toISOString().split('T')[0],
     }
     setC2ReceivedRecommendations([...c2ReceivedRecommendations, newRecommendation])
+    setSubmittedRecommendations([...submittedRecommendations, newRecommendation])
   }
 
   const handleC2Accept = (recommendationId) => {
@@ -113,7 +115,7 @@ function App() {
   const renderC1Content = () => {
     switch (activeTab) {
       case 'hall':
-        return <JobHall publishedJobs={publishedJobs} onRecommend={handleRecommend} />
+        return <JobHall publishedJobs={publishedJobs} onRecommend={handleRecommend} submittedRecommendations={submittedRecommendations} />
       case 'referrals':
         return <Referrals />
       case 'circles':

@@ -87,6 +87,9 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
     recommendation: '',
     reasonForC2: '',
   });
+  const [recommendError, setRecommendError] = useState('');
+  const [showShareModal, setShowShareModal] = useState(false);
+  const [sharingRecommendation, setSharingRecommendation] = useState(null);
   const funnelTimersRef = useRef([]);
 
   const runAIScan = () => {
@@ -328,8 +331,8 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
               </div>
 
               <div className="rating-section">
-                <h4>📊 对企业的结构性评价</h4>
-                <p className="rating-desc">您的评价将帮助企业快速了解候选人匹配度（Candidate不可见）</p>
+                <h4>📝 对候选人点评</h4>
+                <p className="rating-desc">您的评价将帮助企业快速了解候选人匹配度（候选人不可见）</p>
                 
                 <div className="rating-item">
                   <label>技能匹配度</label>
@@ -400,6 +403,11 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
               <button 
                 className="btn-submit-recommend"
                 onClick={() => {
+                  if (!recommendForm.recommendation.trim()) {
+                    setRecommendError('请填写推荐理由');
+                    return;
+                  }
+                  setRecommendError('');
                   if (onRecommend) {
                     onRecommend({
                       ...selectedContact,
@@ -407,7 +415,14 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
                       jobTitle: selectedJob,
                     });
                   }
+                  const newRec = {
+                    ...selectedContact,
+                    ...recommendForm,
+                    jobTitle: selectedJob,
+                  };
+                  setSharingRecommendation(newRec);
                   setShowRecommendModal(false);
+                  setShowShareModal(true);
                   setRecommendForm({
                     skillMatch: 5,
                     experienceMatch: 5,
@@ -415,10 +430,79 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
                     recommendation: '',
                     reasonForC2: '',
                   });
-                  alert('推荐已发送给候选人！');
                 }}
               >
                 🚀 确认推荐
+              </button>
+              {recommendError && <div className="recommend-error">{recommendError}</div>}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showShareModal && sharingRecommendation && (
+        <div className="recommend-modal-overlay" onClick={() => setShowShareModal(false)}>
+          <div className="recommend-modal" onClick={e => e.stopPropagation()}>
+            <div className="recommend-header">
+              <h3>📤 分享推荐卡片</h3>
+              <button className="close-btn" onClick={() => setShowShareModal(false)}>✕</button>
+            </div>
+            <div className="recommend-body">
+              <div className="share-card-preview">
+                <div className="share-card-header">🎯 职位推荐</div>
+                <div className="share-card-content">
+                  <div className="share-candidate-info">
+                    <div className="share-avatar">{sharingRecommendation.name[0]}</div>
+                    <div className="share-candidate-details">
+                      <span className="share-candidate-name">{sharingRecommendation.name}</span>
+                      <span className="share-candidate-title">{sharingRecommendation.title} · {sharingRecommendation.company}</span>
+                    </div>
+                  </div>
+                  <div className="share-ratings">
+                    <div className="share-rating-item">
+                      <span>技能匹配</span>
+                      <span className="share-rating-stars">{'⭐'.repeat(sharingRecommendation.skillMatch)}</span>
+                    </div>
+                    <div className="share-rating-item">
+                      <span>经验匹配</span>
+                      <span className="share-rating-stars">{'⭐'.repeat(sharingRecommendation.experienceMatch)}</span>
+                    </div>
+                    <div className="share-rating-item">
+                      <span>发展潜力</span>
+                      <span className="share-rating-stars">{'⭐'.repeat(sharingRecommendation.potential)}</span>
+                    </div>
+                  </div>
+                  {sharingRecommendation.recommendation && (
+                    <div className="share-reason">
+                      <span className="share-reason-label">推荐理由：</span>
+                      <p>{sharingRecommendation.recommendation}</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+              <div className="share-actions">
+                <button className="btn-wechat" onClick={() => {
+                  if (navigator.share) {
+                    navigator.share({
+                      title: `推荐 ${sharingRecommendation.name} - 职位推荐`,
+                      text: `${sharingRecommendation.name} | ${sharingRecommendation.title} · ${sharingRecommendation.company}\n推荐理由：${sharingRecommendation.recommendation || '暂无'}`,
+                    });
+                  } else {
+                    alert('请长按上方卡片保存图片，分享给微信好友');
+                  }
+                }}>
+                  <span>💬</span> 微信分享
+                </button>
+                <button className="btn-copy-link" onClick={() => {
+                  const text = `${sharingRecommendation.name} | ${sharingRecommendation.title} · ${sharingRecommendation.company}\n推荐理由：${sharingRecommendation.recommendation || '暂无'}`;
+                  navigator.clipboard.writeText(text);
+                  alert('已复制到剪贴板');
+                }}>
+                  <span>📋</span> 复制内容
+                </button>
+              </div>
+              <button className="btn-done" onClick={() => setShowShareModal(false)}>
+                完成
               </button>
             </div>
           </div>
@@ -1732,6 +1816,182 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
             align-items: flex-start;
             gap: 8px;
           }
+        }
+
+        .recommend-error {
+          color: #ef4444;
+          font-size: 0.85rem;
+          margin-top: 8px;
+          text-align: center;
+          padding: 8px;
+          background: rgba(239, 68, 68, 0.1);
+          border-radius: var(--radius-sm);
+        }
+
+        .share-card-preview {
+          background: rgba(0, 0, 0, 0.3);
+          border: 1px solid var(--glass-border);
+          border-radius: var(--radius-lg);
+          padding: 20px;
+          margin-bottom: 20px;
+        }
+
+        .share-card-header {
+          font-weight: 600;
+          font-size: 1rem;
+          color: var(--accent-primary);
+          margin-bottom: 16px;
+          padding-bottom: 12px;
+          border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .share-candidate-info {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          margin-bottom: 16px;
+        }
+
+        .share-avatar {
+          width: 48px;
+          height: 48px;
+          background: var(--accent-gradient);
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #0a0a0f;
+          font-weight: 600;
+          font-size: 1.1rem;
+        }
+
+        .share-candidate-details {
+          display: flex;
+          flex-direction: column;
+        }
+
+        .share-candidate-name {
+          font-weight: 600;
+          color: var(--text-primary);
+          font-size: 1rem;
+        }
+
+        .share-candidate-title {
+          font-size: 0.85rem;
+          color: var(--text-secondary);
+        }
+
+        .share-ratings {
+          display: flex;
+          gap: 16px;
+          margin-bottom: 12px;
+          padding: 12px;
+          background: rgba(0, 0, 0, 0.2);
+          border-radius: var(--radius-md);
+        }
+
+        .share-rating-item {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 4px;
+          flex: 1;
+        }
+
+        .share-rating-item span:first-child {
+          font-size: 0.75rem;
+          color: var(--text-tertiary);
+        }
+
+        .share-rating-stars {
+          font-size: 0.85rem;
+        }
+
+        .share-reason {
+          padding: 12px;
+          background: rgba(16, 185, 129, 0.1);
+          border-radius: var(--radius-md);
+          border-left: 3px solid var(--accent-primary);
+        }
+
+        .share-reason-label {
+          font-size: 0.8rem;
+          color: var(--text-tertiary);
+          display: block;
+          margin-bottom: 4px;
+        }
+
+        .share-reason p {
+          font-size: 0.9rem;
+          color: var(--text-primary);
+          margin: 0;
+        }
+
+        .share-actions {
+          display: flex;
+          gap: 12px;
+          margin-bottom: 16px;
+        }
+
+        .btn-wechat {
+          flex: 1;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          padding: 14px;
+          background: #07c160;
+          color: white;
+          border-radius: var(--radius-md);
+          font-weight: 600;
+          font-size: 0.95rem;
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
+
+        .btn-wechat:hover {
+          background: #06ad56;
+          transform: translateY(-1px);
+        }
+
+        .btn-copy-link {
+          flex: 1;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          padding: 14px;
+          background: var(--bg-tertiary);
+          color: var(--text-primary);
+          border: 1px solid var(--border-default);
+          border-radius: var(--radius-md);
+          font-weight: 500;
+          font-size: 0.95rem;
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
+
+        .btn-copy-link:hover {
+          background: var(--bg-card-hover);
+          border-color: var(--border-accent);
+        }
+
+        .btn-done {
+          width: 100%;
+          padding: 14px;
+          background: transparent;
+          color: var(--text-secondary);
+          border: 1px solid var(--border-default);
+          border-radius: var(--radius-md);
+          font-weight: 500;
+          font-size: 0.95rem;
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
+
+        .btn-done:hover {
+          background: var(--bg-card-hover);
+          color: var(--text-primary);
         }
 
         @media (prefers-reduced-motion: reduce) {
