@@ -15,7 +15,7 @@ export default function Layout({ children, activeTab, onTabChange }) {
     <div className="layout">
       <aside className={`sidebar ${mobileMenuOpen ? 'open' : ''}`}>
         <div className="logo">
-          <div className="logo-icon">RH</div>
+          <img src="/logo.png" alt="人人猎" className="logo-img" />
           <span className="logo-text">人人猎</span>
         </div>
         
@@ -83,6 +83,13 @@ export default function Layout({ children, activeTab, onTabChange }) {
           gap: 12px;
           padding: 0 12px;
           margin-bottom: 40px;
+        }
+
+        .logo-img {
+          width: 40px;
+          height: 40px;
+          border-radius: var(--radius-md);
+          object-fit: cover;
         }
 
         .logo-icon {
