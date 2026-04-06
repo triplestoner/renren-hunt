@@ -184,7 +184,101 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
           抢单专区
           <span className="tab-badge secondary">{publishedJobs.filter(j => j.match < 85).length}</span>
         </button>
+        <button 
+          className={`tab ${activeSection === 'privilege' ? 'active' : ''}`}
+          onClick={() => {
+            setActiveSection('privilege');
+            setSelectedJob(null);
+          }}
+        >
+          <span className="tab-icon">💎</span>
+          特权中心
+        </button>
       </div>
+
+      {activeSection === 'privilege' && (
+        <div className="privilege-section">
+          <div className="privilege-header">
+            <h2>💎 推手特权</h2>
+            <p>解锁高级功能，提升抢单成功率</p>
+          </div>
+          <div className="privilege-grid">
+            <div className="privilege-card featured">
+              <div className="card-badge hot">🔥 爆款</div>
+              <div className="card-icon">⚡</div>
+              <h3>抢单加速卡</h3>
+              <p className="card-desc">优质职位优先推送，抢先一步联系候选人</p>
+              <div className="card-features">
+                <span>✓ 提前5分钟推送</span>
+                <span>✓ 专属消息提示</span>
+                <span>✓ 优先派单权重</span>
+              </div>
+              <div className="card-price">
+                <span className="price">¥9.9</span>
+                <span className="period">/ 次</span>
+              </div>
+              <button className="btn-buy" onClick={() => alert('✅ 购买成功！\n\n抢单加速卡已添加到您的账户\n有效期限：24小时')}>立即购买</button>
+            </div>
+            <div className="privilege-card">
+              <div className="card-badge">👁️ 热销</div>
+              <div className="card-icon">🔍</div>
+              <h3>线索透视镜</h3>
+              <p className="card-desc">查看候选人详细联系方式和求职意向</p>
+              <div className="card-features">
+                <span>✓ 查看完整联系方式</span>
+                <span>✓ 求职状态实时追踪</span>
+                <span>✓ 竞争力分析报告</span>
+                <span>✓ 批量导出功能</span>
+              </div>
+              <div className="card-price">
+                <span className="price">¥49</span>
+                <span className="period">/ 月</span>
+              </div>
+              <button className="btn-buy" onClick={() => alert('✅ 购买成功！\n\n线索透视镜已开通\n到期时间：2026-05-06')}>立即购买</button>
+            </div>
+            <div className="privilege-card locked">
+              <div className="card-icon">🔒</div>
+              <h3>严选模式</h3>
+              <p className="card-desc">仅对S级推手开放，按年薪15%-20%收费</p>
+              <div className="card-features">
+                <span>✓ 高端职位推送</span>
+                <span>✓ 专属客服通道</span>
+                <span>✓ 优先面试安排</span>
+              </div>
+              <div className="card-price">
+                <span className="price locked">暂无权限</span>
+              </div>
+              <button className="btn-buy locked" disabled>提升等级解锁</button>
+            </div>
+          </div>
+          <div className="privilege-level">
+            <h3>📊 我的特权等级</h3>
+            <div className="level-progress">
+              <div className="level-info">
+                <span className="level-name">A级推手</span>
+                <span className="level-score">78分 (距S级还差22分)</span>
+              </div>
+              <div className="progress-bar">
+                <div className="progress-fill" style={{ width: '78%' }}></div>
+              </div>
+            </div>
+            <div className="level-benefits">
+              <div className="benefit-item">
+                <span className="benefit-icon">✓</span>
+                <span>每日抢单上限 10 单</span>
+              </div>
+              <div className="benefit-item">
+                <span className="benefit-icon">✓</span>
+                <span>优先查看新职位</span>
+              </div>
+              <div className="benefit-item locked">
+                <span className="benefit-icon">🔒</span>
+                <span>严选模式（需S级）</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {aiScanning && (
         <div className="ai-scan-overlay">
@@ -757,6 +851,220 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
         .tab-badge.secondary {
           background: var(--bg-tertiary);
           color: var(--text-secondary);
+        }
+
+        .privilege-section {
+          padding: 24px 0;
+        }
+
+        .privilege-header {
+          margin-bottom: 32px;
+        }
+
+        .privilege-header h2 {
+          font-size: 1.5rem;
+          margin-bottom: 8px;
+        }
+
+        .privilege-header p {
+          color: var(--text-secondary);
+        }
+
+        .privilege-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 24px;
+          margin-bottom: 40px;
+        }
+
+        .privilege-card {
+          background: var(--glass-bg);
+          border: 1px solid var(--glass-border);
+          border-radius: var(--radius-xl);
+          padding: 28px;
+          position: relative;
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .privilege-card:hover:not(.locked) {
+          border-color: var(--accent-primary);
+          transform: translateY(-4px);
+          box-shadow: var(--shadow-glass);
+        }
+
+        .privilege-card.featured {
+          border-color: var(--accent-primary);
+          background: var(--accent-glow);
+        }
+
+        .privilege-card.locked {
+          opacity: 0.7;
+          border-style: dashed;
+        }
+
+        .privilege-card .card-badge {
+          position: absolute;
+          top: 16px;
+          right: 16px;
+          font-size: 0.75rem;
+          padding: 4px 12px;
+          border-radius: 12px;
+          background: var(--bg-tertiary);
+          color: var(--text-secondary);
+        }
+
+        .privilege-card .card-badge.hot {
+          background: linear-gradient(135deg, #f97316, #ef4444);
+          color: white;
+        }
+
+        .privilege-card .card-icon {
+          font-size: 2.5rem;
+          margin-bottom: 16px;
+        }
+
+        .privilege-card h3 {
+          font-size: 1.1rem;
+          margin-bottom: 8px;
+        }
+
+        .privilege-card .card-desc {
+          font-size: 0.9rem;
+          color: var(--text-secondary);
+          margin-bottom: 16px;
+        }
+
+        .privilege-card .card-features {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+          margin-bottom: 20px;
+          font-size: 0.85rem;
+          color: var(--text-secondary);
+        }
+
+        .privilege-card .card-price {
+          margin-bottom: 20px;
+        }
+
+        .privilege-card .card-price .price {
+          font-size: 1.75rem;
+          font-weight: 700;
+          color: var(--accent-primary);
+        }
+
+        .privilege-card .card-price .period {
+          font-size: 0.9rem;
+          color: var(--text-tertiary);
+        }
+
+        .privilege-card .card-price .price.locked {
+          font-size: 1rem;
+          color: var(--text-tertiary);
+        }
+
+        .privilege-card .btn-buy {
+          width: 100%;
+          padding: 12px;
+          background: var(--accent-gradient);
+          color: #0a0a0f;
+          border-radius: var(--radius-md);
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .privilege-card .btn-buy:hover {
+          transform: translateY(-2px);
+          box-shadow: var(--shadow-glow);
+        }
+
+        .privilege-card .btn-buy.locked {
+          background: var(--bg-tertiary);
+          color: var(--text-tertiary);
+          cursor: not-allowed;
+        }
+
+        .privilege-card .btn-buy.locked:hover {
+          transform: none;
+          box-shadow: none;
+        }
+
+        .privilege-level {
+          background: var(--glass-bg);
+          border: 1px solid var(--glass-border);
+          border-radius: var(--radius-lg);
+          padding: 24px;
+        }
+
+        .privilege-level h3 {
+          font-size: 1rem;
+          margin-bottom: 20px;
+        }
+
+        .level-progress {
+          margin-bottom: 20px;
+        }
+
+        .level-info {
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 8px;
+        }
+
+        .level-name {
+          font-weight: 600;
+          color: var(--accent-primary);
+        }
+
+        .level-score {
+          font-size: 0.85rem;
+          color: var(--text-secondary);
+        }
+
+        .level-progress .progress-bar {
+          height: 8px;
+          background: var(--bg-tertiary);
+          border-radius: 4px;
+          overflow: hidden;
+        }
+
+        .level-progress .progress-fill {
+          height: 100%;
+          background: var(--accent-gradient);
+          border-radius: 4px;
+        }
+
+        .level-benefits {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+        }
+
+        .benefit-item {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          font-size: 0.9rem;
+          color: var(--text-secondary);
+        }
+
+        .benefit-item .benefit-icon {
+          color: var(--success);
+        }
+
+        .benefit-item.locked {
+          color: var(--text-tertiary);
+        }
+
+        .benefit-item.locked .benefit-icon {
+          color: var(--text-tertiary);
+        }
+
+        @media (max-width: 900px) {
+          .privilege-grid {
+            grid-template-columns: 1fr;
+          }
         }
 
         .job-list {

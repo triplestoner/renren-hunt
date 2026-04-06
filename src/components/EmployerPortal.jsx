@@ -299,6 +299,20 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
     }, 2000);
   };
 
+  const handleBuyProduct = (productId) => {
+    const prices = {
+      'topcard': 300,
+      'topcard-pro': 800,
+      'ai-bgcheck': 1999,
+    };
+    const names = {
+      'topcard': '急聘置顶卡',
+      'topcard-pro': '急聘置顶卡（强化版）',
+      'ai-bgcheck': 'AI背调包',
+    };
+    alert(`✅ 购买成功！\n\n服务: ${names[productId]}\n金额: ¥${prices[productId].toLocaleString()}\n\n该服务已添加到您的账户`);
+  };
+
   const moveToNextStage = (currentStage) => {
     const stageOrder = ['新推荐', '简历初筛', '面试安排', 'Offer发放', '入职'];
     const currentIndex = stageOrder.indexOf(currentStage);
@@ -464,7 +478,83 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
         >
           <span>📊</span> 数据分析
         </button>
+        <button 
+          className={`tab ${activeTab === 'store' ? 'active' : ''}`}
+          onClick={() => setActiveTab('store')}
+        >
+          <span>🛒</span> 增值商城
+        </button>
       </div>
+
+      {activeTab === 'store' && (
+        <div className="store-section">
+          <div className="store-header">
+            <h2>🎁 增值服务</h2>
+            <p>提升招聘效率，助力快速获取人才</p>
+          </div>
+          <div className="store-grid">
+            <div className="store-card featured">
+              <div className="card-badge hot">🔥 爆款</div>
+              <div className="card-icon">🚀</div>
+              <h3>急聘置顶卡</h3>
+              <p className="card-desc">职位置顶展示，大幅提升曝光量</p>
+              <div className="card-features">
+                <span>✓ 置顶72小时</span>
+                <span>✓ 优先推荐给S级推手</span>
+                <span>✓ 专属标识</span>
+              </div>
+              <div className="card-price">
+                <span className="price">¥300</span>
+                <span className="period">/ 3天</span>
+              </div>
+              <button className="btn-buy" onClick={() => handleBuyProduct('topcard')}>立即购买</button>
+            </div>
+            <div className="store-card">
+              <div className="card-badge">⭐ 热门</div>
+              <div className="card-icon">⚡</div>
+              <h3>急聘置顶卡（强化版）</h3>
+              <p className="card-desc">全站强推，触达更多优质推手</p>
+              <div className="card-features">
+                <span>✓ 置顶7天</span>
+                <span>✓ 推送给全部推手</span>
+                <span>✓ 黄金位置展示</span>
+              </div>
+              <div className="card-price">
+                <span className="price">¥800</span>
+                <span className="period">/ 7天</span>
+              </div>
+              <button className="btn-buy" onClick={() => handleBuyProduct('topcard-pro')}>立即购买</button>
+            </div>
+            <div className="store-card">
+              <div className="card-badge ai">🤖 AI</div>
+              <div className="card-icon">🔍</div>
+              <h3>AI背调包</h3>
+              <p className="card-desc">AI智能背景调查，降低用人风险</p>
+              <div className="card-features">
+                <span>✓ 学历验证</span>
+                <span>✓ 离职原因分析</span>
+                <span>✓ 薪资背调</span>
+                <span>✓ 风险预警</span>
+              </div>
+              <div className="card-price">
+                <span className="price">¥1,999</span>
+                <span className="period">/ 月</span>
+              </div>
+              <button className="btn-buy" onClick={() => handleBuyProduct('ai-bgcheck')}>立即购买</button>
+            </div>
+          </div>
+          <div className="store-history">
+            <h3>📦 已购服务</h3>
+            <div className="history-list">
+              <div className="history-item">
+                <span className="history-name">AI背调包</span>
+                <span className="history-date">到期: 2026-04-15</span>
+                <span className="history-status active">使用中</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {activeTab === 'candidates' && (
         <div className="candidates-section">
@@ -3268,6 +3358,181 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
             margin-left: 0;
             width: 100%;
             justify-content: center;
+          }
+        }
+
+        .store-section {
+          padding: 24px 0;
+        }
+
+        .store-header {
+          margin-bottom: 32px;
+        }
+
+        .store-header h2 {
+          font-size: 1.5rem;
+          margin-bottom: 8px;
+        }
+
+        .store-header p {
+          color: var(--text-secondary);
+        }
+
+        .store-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 24px;
+          margin-bottom: 40px;
+        }
+
+        .store-card {
+          background: var(--glass-bg);
+          border: 1px solid var(--glass-border);
+          border-radius: var(--radius-xl);
+          padding: 28px;
+          position: relative;
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .store-card:hover {
+          border-color: var(--accent-primary);
+          transform: translateY(-4px);
+          box-shadow: var(--shadow-glass);
+        }
+
+        .store-card.featured {
+          border-color: var(--accent-primary);
+          background: var(--accent-glow);
+        }
+
+        .card-badge {
+          position: absolute;
+          top: 16px;
+          right: 16px;
+          font-size: 0.75rem;
+          padding: 4px 12px;
+          border-radius: 12px;
+          background: var(--bg-tertiary);
+          color: var(--text-secondary);
+        }
+
+        .card-badge.hot {
+          background: linear-gradient(135deg, #f97316, #ef4444);
+          color: white;
+        }
+
+        .card-badge.ai {
+          background: linear-gradient(135deg, #8b5cf6, #6366f1);
+          color: white;
+        }
+
+        .card-icon {
+          font-size: 2.5rem;
+          margin-bottom: 16px;
+        }
+
+        .store-card h3 {
+          font-size: 1.1rem;
+          margin-bottom: 8px;
+        }
+
+        .card-desc {
+          font-size: 0.9rem;
+          color: var(--text-secondary);
+          margin-bottom: 16px;
+        }
+
+        .card-features {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+          margin-bottom: 20px;
+          font-size: 0.85rem;
+          color: var(--text-secondary);
+        }
+
+        .card-price {
+          margin-bottom: 20px;
+        }
+
+        .card-price .price {
+          font-size: 1.75rem;
+          font-weight: 700;
+          color: var(--accent-primary);
+        }
+
+        .card-price .period {
+          font-size: 0.9rem;
+          color: var(--text-tertiary);
+        }
+
+        .btn-buy {
+          width: 100%;
+          padding: 12px;
+          background: var(--accent-gradient);
+          color: #0a0a0f;
+          border-radius: var(--radius-md);
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn-buy:hover {
+          transform: translateY(-2px);
+          box-shadow: var(--shadow-glow);
+        }
+
+        .store-history {
+          background: var(--glass-bg);
+          border: 1px solid var(--glass-border);
+          border-radius: var(--radius-lg);
+          padding: 24px;
+        }
+
+        .store-history h3 {
+          font-size: 1rem;
+          margin-bottom: 16px;
+        }
+
+        .history-list {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+        }
+
+        .history-item {
+          display: flex;
+          align-items: center;
+          gap: 16px;
+          padding: 12px;
+          background: var(--bg-tertiary);
+          border-radius: var(--radius-md);
+        }
+
+        .history-name {
+          font-weight: 500;
+        }
+
+        .history-date {
+          font-size: 0.85rem;
+          color: var(--text-tertiary);
+          flex: 1;
+        }
+
+        .history-status {
+          font-size: 0.75rem;
+          padding: 2px 10px;
+          border-radius: 10px;
+        }
+
+        .history-status.active {
+          background: rgba(74, 222, 128, 0.1);
+          color: var(--success);
+        }
+
+        @media (max-width: 900px) {
+          .store-grid {
+            grid-template-columns: 1fr;
           }
         }
       `}</style>

@@ -6,40 +6,68 @@ const mockEarnings = [
     candidate: '张同学',
     position: '资深前端架构师',
     company: '字节跳动',
-    bonus: '¥25,000',
+    bonus: 25000,
     status: '已到账',
     date: '2026-03-20',
     stage: '已入职',
+    breakdown: {
+      platformFee: 5000,
+      candidateBonus: 5000,
+      recommenderTotal: 15000,
+      released: 5000,
+      frozen: 10000,
+    },
   },
   {
     id: 2,
     candidate: '王同学',
     position: 'AI算法工程师',
     company: 'MiniMax',
-    bonus: '¥18,000',
+    bonus: 18000,
     status: '冻结中',
     date: '2026-03-15',
     stage: '过保中',
+    breakdown: {
+      platformFee: 3600,
+      candidateBonus: 3600,
+      recommenderTotal: 10800,
+      released: 3600,
+      frozen: 7200,
+    },
   },
   {
     id: 3,
     candidate: '李同学',
     position: '产品总监',
     company: '美团',
-    bonus: '¥35,000',
+    bonus: 35000,
     status: '待发放',
     date: '2026-03-10',
     stage: '面试中',
+    breakdown: {
+      platformFee: 7000,
+      candidateBonus: 7000,
+      recommenderTotal: 21000,
+      released: 0,
+      frozen: 21000,
+    },
   },
   {
     id: 4,
     candidate: '赵同学',
     position: '后端资深工程师',
     company: '蚂蚁集团',
-    bonus: '¥20,000',
+    bonus: 20000,
     status: '已到账',
     date: '2026-02-28',
     stage: '已入职',
+    breakdown: {
+      platformFee: 4000,
+      candidateBonus: 4000,
+      recommenderTotal: 12000,
+      released: 12000,
+      frozen: 0,
+    },
   },
 ];
 
@@ -55,6 +83,11 @@ export default function EarningsCenter() {
   const [walletAddress] = useState('0x7f9a...a3b2');
   const [withdrawProgress, setWithdrawProgress] = useState(0);
   const [withdrawStatus, setWithdrawStatus] = useState('idle');
+  const [expandedCard, setExpandedCard] = useState(null);
+
+  const totalAvailable = 83000;
+  const totalFrozen = mockEarnings.reduce((sum, item) => sum + (item.breakdown?.frozen || 0), 0);
+  const frozenInGuarantee = mockEarnings.filter(item => item.stage === '过保中').reduce((sum, item) => sum + (item.breakdown?.frozen || 0), 0);
 
   const handleWithdraw = () => {
     setWithdrawStatus('processing');
@@ -89,8 +122,8 @@ export default function EarningsCenter() {
         <div className="summary-main">
           <div className="available-balance">
             <span className="balance-label">可提现余额</span>
-            <span className="balance-value">¥83,000</span>
-            <span className="balance-sub">+ ¥18,000 冻结中</span>
+            <span className="balance-value">¥{totalAvailable.toLocaleString()}</span>
+            <span className="balance-sub">+ ¥{totalFrozen.toLocaleString()} 冻结中 (含过保冻结 ¥{frozenInGuarantee.toLocaleString()})</span>
           </div>
           <button 
             className="btn-withdraw"
@@ -141,25 +174,60 @@ export default function EarningsCenter() {
             (activeTab === 'records' && item.status === '已到账') ||
             (activeTab === 'pending' && item.status !== '已到账'))
           .map((item, index) => (
-            <div key={item.id} className={`earnings-card animate-fade-in animate-delay-${index + 1}`}>
-              <div className="card-left">
-                <div className="candidate-avatar">
-                  {item.candidate[0]}
-                </div>
-                <div className="card-info">
-                  <div className="card-header">
-                    <span className="candidate-name">{item.candidate}</span>
-                    <span className={`status-badge ${item.status}`}>{item.status}</span>
+            <div key={item.id} className={`earnings-card animate-fade-in animate-delay-${index + 1} ${expandedCard === item.id ? 'expanded' : ''}`}>
+              <div className="card-main" onClick={() => setExpandedCard(expandedCard === item.id ? null : item.id)}>
+                <div className="card-left">
+                  <div className="candidate-avatar">
+                    {item.candidate[0]}
                   </div>
-                  <span className="position">{item.position}</span>
-                  <span className="company">{item.company}</span>
+                  <div className="card-info">
+                    <div className="card-header">
+                      <span className="candidate-name">{item.candidate}</span>
+                      <span className={`status-badge ${item.status}`}>{item.status}</span>
+                    </div>
+                    <span className="position">{item.position}</span>
+                    <span className="company">{item.company}</span>
+                  </div>
+                </div>
+                <div className="card-right">
+                  <span className="bonus">¥{item.bonus.toLocaleString()}</span>
+                  <span className="stage">{item.stage}</span>
+                  <span className="date">{item.date}</span>
+                  <span className="expand-hint">{expandedCard === item.id ? '▲ 收起' : '▼ 展开分账'}</span>
                 </div>
               </div>
-              <div className="card-right">
-                <span className="bonus">{item.bonus}</span>
-                <span className="stage">{item.stage}</span>
-                <span className="date">{item.date}</span>
-              </div>
+              {expandedCard === item.id && item.breakdown && (
+                <div className="card-breakdown">
+                  <div className="breakdown-title">💰 2/6/2 分账明细</div>
+                  <div className="breakdown-grid">
+                    <div className="breakdown-item">
+                      <span className="breakdown-label">平台服务费 (20%)</span>
+                      <span className="breakdown-value platform">¥{item.breakdown.platformFee.toLocaleString()}</span>
+                      <span className="breakdown-desc">平台收入，不退还</span>
+                    </div>
+                    <div className="breakdown-item">
+                      <span className="breakdown-label">候选人入职奖金 (20%)</span>
+                      <span className="breakdown-value candidate">¥{item.breakdown.candidateBonus.toLocaleString()}</span>
+                      <span className="breakdown-desc">立即发放给候选人</span>
+                    </div>
+                    <div className="breakdown-item">
+                      <span className="breakdown-label">推手赏金 (60%)</span>
+                      <span className="breakdown-value recommender">¥{item.breakdown.recommenderTotal.toLocaleString()}</span>
+                      <span className="breakdown-desc">首笔+冻结尾款</span>
+                    </div>
+                  </div>
+                  <div className="breakdown-detail">
+                    <div className="detail-row">
+                      <span>→ 首笔已发放</span>
+                      <span className="released">¥{item.breakdown.released.toLocaleString()}</span>
+                    </div>
+                    <div className="detail-row">
+                      <span>→ 过保冻结区</span>
+                      <span className="frozen">¥{item.breakdown.frozen.toLocaleString()}</span>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           ))}
       </div>
@@ -219,7 +287,20 @@ export default function EarningsCenter() {
                   {withdrawStatus === 'processing' ? (
                     <button className="btn-confirm-withdraw" disabled>处理中...</button>
                   ) : (
-                    <button className="btn-confirm-withdraw" onClick={handleWithdraw}>确认提现</button>
+                    <>
+                      <div className="compliance-notice">
+                        <div className="notice-icon">⚠️</div>
+                        <div className="notice-content">
+                          <span className="notice-title">提现合规提示</span>
+                          <p>根据国家税法规定，平台将依法代扣代缴个人所得税（税率以当地税务部门实际计算为准）</p>
+                          <div className="notice-items">
+                            <span>✓ 实名认证：已完成 ✓</span>
+                            <span>✓ 税务代扣：平台自动代扣 ✓</span>
+                          </div>
+                        </div>
+                      </div>
+                      <button className="btn-confirm-withdraw" onClick={handleWithdraw}>确认提现</button>
+                    </>
                   )}
                 </>
               ) : (
@@ -516,6 +597,103 @@ export default function EarningsCenter() {
           color: var(--text-tertiary);
         }
 
+        .expand-hint {
+          font-size: 0.75rem;
+          color: var(--accent-primary);
+          margin-top: 4px;
+          cursor: pointer;
+        }
+
+        .earnings-card.expanded {
+          border-color: var(--accent-primary);
+        }
+
+        .card-main {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          width: 100%;
+        }
+
+        .card-breakdown {
+          margin-top: 16px;
+          padding-top: 16px;
+          border-top: 1px dashed var(--border-subtle);
+          animation: fadeIn 0.3s ease;
+        }
+
+        .breakdown-title {
+          font-weight: 600;
+          color: var(--text-primary);
+          margin-bottom: 12px;
+          font-size: 0.95rem;
+        }
+
+        .breakdown-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 12px;
+          margin-bottom: 12px;
+        }
+
+        .breakdown-item {
+          background: var(--bg-tertiary);
+          padding: 12px;
+          border-radius: var(--radius-md);
+          text-align: center;
+        }
+
+        .breakdown-label {
+          display: block;
+          font-size: 0.75rem;
+          color: var(--text-tertiary);
+          margin-bottom: 4px;
+        }
+
+        .breakdown-value {
+          display: block;
+          font-size: 1rem;
+          font-weight: 600;
+          margin-bottom: 4px;
+        }
+
+        .breakdown-value.platform { color: var(--text-secondary); }
+        .breakdown-value.candidate { color: var(--info); }
+        .breakdown-value.recommender { color: var(--success); }
+
+        .breakdown-desc {
+          font-size: 0.7rem;
+          color: var(--text-tertiary);
+        }
+
+        .breakdown-detail {
+          background: rgba(16, 185, 129, 0.1);
+          border-radius: var(--radius-md);
+          padding: 12px;
+        }
+
+        .detail-row {
+          display: flex;
+          justify-content: space-between;
+          font-size: 0.85rem;
+          color: var(--text-secondary);
+          margin-bottom: 4px;
+        }
+
+        .detail-row:last-child {
+          margin-bottom: 0;
+        }
+
+        .detail-row .released {
+          color: var(--success);
+          font-weight: 600;
+        }
+
+        .detail-row .frozen {
+          color: var(--warning);
+          font-weight: 600;
+        }
+
         .withdraw-tips {
           background: var(--glass-bg);
           backdrop-filter: var(--glass-blur);
@@ -682,6 +860,45 @@ export default function EarningsCenter() {
         .btn-confirm-withdraw:hover {
           transform: translateY(-2px);
           box-shadow: var(--shadow-glow);
+        }
+
+        .compliance-notice {
+          display: flex;
+          gap: 12px;
+          background: rgba(251, 191, 36, 0.1);
+          border: 1px solid rgba(251, 191, 36, 0.3);
+          border-radius: var(--radius-md);
+          padding: 16px;
+          margin-bottom: 20px;
+        }
+
+        .notice-icon {
+          font-size: 1.5rem;
+        }
+
+        .notice-content {
+          flex: 1;
+        }
+
+        .notice-title {
+          display: block;
+          font-weight: 600;
+          color: var(--warning);
+          margin-bottom: 4px;
+          font-size: 0.9rem;
+        }
+
+        .compliance-notice p {
+          font-size: 0.8rem;
+          color: var(--text-secondary);
+          margin-bottom: 8px;
+        }
+
+        .notice-items {
+          display: flex;
+          gap: 16px;
+          font-size: 0.75rem;
+          color: var(--success);
         }
 
         @media (max-width: 768px) {
