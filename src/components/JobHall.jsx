@@ -223,12 +223,10 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
               <div className="card-badge">👁️ 热销</div>
               <div className="card-icon">🔍</div>
               <h3>线索透视镜</h3>
-              <p className="card-desc">查看候选人详细联系方式和求职意向</p>
+              <p className="card-desc">候选人求职状态及竞争力分析</p>
               <div className="card-features">
-                <span>✓ 查看完整联系方式</span>
                 <span>✓ 求职状态实时追踪</span>
                 <span>✓ 竞争力分析报告</span>
-                <span>✓ 批量导出功能</span>
               </div>
               <div className="card-price">
                 <span className="price">¥49</span>

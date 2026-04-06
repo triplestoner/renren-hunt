@@ -105,22 +105,6 @@ export default function TrustScore() {
         </div>
       </div>
 
-      <div className="circles-section">
-        <h2>我的圈层</h2>
-        <div className="circles-list">
-          {circles.map((circle, i) => (
-            <div key={i} className="circle-item animate-fade-in" style={{ animationDelay: `${i * 0.1}s` }}>
-              <div className="circle-info">
-                <span className="circle-name">{circle.name}</span>
-                <span className={`circle-level ${circle.level}`}>{circle.level}</span>
-                {circle.verified && <span className="verified-badge">✓ 已认证</span>}
-              </div>
-              <button className="btn-manage">管理</button>
-            </div>
-          ))}
-        </div>
-      </div>
-
       <div className="score-history">
         <h2>分数趋势</h2>
         <div className="chart-placeholder">
