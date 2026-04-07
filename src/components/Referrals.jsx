@@ -4,50 +4,54 @@ const mockReferrals = [
   {
     id: 1,
     candidate: '张同学',
+    avatar: 'https://i.pravatar.cc/48?u=zhang',
     position: '资深前端架构师',
     company: '字节跳动',
+    companyLogo: 'https://logo.clearbit.com/bytedance.com',
     status: '已入职',
     date: '2026-03-20',
     trustScore: 92,
     stage: '已入职',
     bonus: '¥25,000',
-    avatar: '张',
   },
   {
     id: 2,
     candidate: '王同学',
+    avatar: 'https://i.pravatar.cc/48?u=wang',
     position: 'AI算法工程师',
     company: 'MiniMax',
+    companyLogo: 'https://logo.clearbit.com/minimaxi.cn',
     status: '面试中',
     date: '2026-03-15',
     trustScore: 88,
     stage: '三面',
     bonus: '¥18,000',
-    avatar: '王',
   },
   {
     id: 3,
     candidate: '李同学',
+    avatar: 'https://i.pravatar.cc/48?u=li',
     position: '产品总监',
     company: '美团',
+    companyLogo: 'https://logo.clearbit.com/meituan.com',
     status: '待授权',
     date: '2026-03-10',
     trustScore: 0,
     stage: '待授权',
     bonus: '¥35,000',
-    avatar: '李',
   },
   {
     id: 4,
     candidate: '赵同学',
+    avatar: 'https://i.pravatar.cc/48?u=zhao',
     position: '后端资深工程师',
     company: '蚂蚁集团',
+    companyLogo: 'https://logo.clearbit.com/antgroup.com',
     status: '已推荐',
     date: '2026-03-08',
     trustScore: 75,
     stage: 'HR评估中',
     bonus: '¥20,000',
-    avatar: '赵',
   },
 ];
 
@@ -55,7 +59,7 @@ const statusConfig = {
   '已入职': { color: '#4ade80', bg: 'rgba(74, 222, 128, 0.1)', label: '已入职' },
   '面试中': { color: '#60a5fa', bg: 'rgba(96, 165, 250, 0.1)', label: '面试中' },
   '待授权': { color: '#fbbf24', bg: 'rgba(251, 191, 36, 0.1)', label: '待授权' },
-  '已推荐': { color: '#10b981', bg: 'rgba(16, 185, 129, 0.1)', label: '已推荐' },
+  '已推荐': { color: '#007AFF', bg: 'rgba(0, 122, 255, 0.1)', label: '已推荐' },
 };
 
 export default function Referrals() {
@@ -115,7 +119,11 @@ export default function Referrals() {
             >
               <div className="card-main">
                 <div className="candidate-section">
-                  <div className="avatar">{referral.avatar}</div>
+                  {referral.avatar && referral.avatar.startsWith('http') ? (
+                    <img src={referral.avatar} alt={referral.candidate} className="avatar" />
+                  ) : (
+                    <div className="avatar">{referral.candidate[0]}</div>
+                  )}
                   <div className="candidate-info">
                     <div className="candidate-header">
                       <span className="candidate-name">{referral.candidate}</span>
@@ -126,7 +134,10 @@ export default function Referrals() {
                       )}
                     </div>
                     <span className="position">{referral.position}</span>
-                    <span className="company">{referral.company}</span>
+                    <span className="company">
+                      {referral.companyLogo && <img src={referral.companyLogo} alt="" className="company-logo" />}
+                      {referral.company}
+                    </span>
                   </div>
                 </div>
 
@@ -253,7 +264,6 @@ export default function Referrals() {
         .avatar {
           width: 56px;
           height: 56px;
-          background: var(--accent-gradient);
           border-radius: 50%;
           display: flex;
           align-items: center;
@@ -261,6 +271,16 @@ export default function Referrals() {
           font-weight: 600;
           font-size: 1.25rem;
           color: #0a0a0f;
+          object-fit: cover;
+          background: var(--accent-gradient);
+        }
+
+        .company-logo {
+          width: 16px;
+          height: 16px;
+          border-radius: 3px;
+          object-fit: cover;
+          margin-right: 6px;
         }
 
         .candidate-info {
@@ -365,13 +385,13 @@ export default function Referrals() {
         }
 
         .btn-follow {
-          background: rgba(16, 185, 129, 0.1);
-          color: #10b981;
-          border: 1px solid rgba(16, 185, 129, 0.3);
+          background: rgba(0, 122, 255, 0.1);
+          color: #007AFF;
+          border: 1px solid rgba(0, 122, 255, 0.3);
         }
 
         .btn-follow:hover {
-          background: rgba(16, 185, 129, 0.2);
+          background: rgba(0, 122, 255, 0.2);
           transform: translateY(-1px);
         }
 

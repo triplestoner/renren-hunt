@@ -36,10 +36,13 @@ export default function Layout({ children, activeTab, onTabChange }) {
         </nav>
 
         <div className="user-card">
-          <div className="avatar">李</div>
+          <img src="https://i.pravatar.cc/80?u=lixiaoniu" alt="李小牛" className="avatar" />
           <div className="user-info">
-            <div className="user-name">李明</div>
-            <div className="user-badge">超级Recommender</div>
+            <div className="user-name">李小牛</div>
+            <div className="user-badges">
+              <span className="trust-score">信任分 92</span>
+              <span className="level-badge">🏆 S级</span>
+            </div>
           </div>
         </div>
       </aside>
@@ -95,7 +98,7 @@ export default function Layout({ children, activeTab, onTabChange }) {
         .logo-icon {
           width: 40px;
           height: 40px;
-          background: var(--accent-gradient);
+          background: var(--cyber-gradient);
           border-radius: var(--radius-md);
           display: flex;
           align-items: center;
@@ -103,7 +106,7 @@ export default function Layout({ children, activeTab, onTabChange }) {
           font-weight: 700;
           font-size: 14px;
           color: #0a0a0f;
-          box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+          box-shadow: 0 4px 12px var(--cyber-glow);
         }
 
         .logo-text {
@@ -167,14 +170,15 @@ export default function Layout({ children, activeTab, onTabChange }) {
         .avatar {
           width: 40px;
           height: 40px;
-          background: var(--accent-gradient);
           border-radius: 50%;
           display: flex;
           align-items: center;
           justify-content: center;
           font-weight: 600;
           color: #0a0a0f;
-          box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+          box-shadow: 0 4px 12px var(--cyber-glow);
+          object-fit: cover;
+          background: var(--cyber-gradient);
         }
 
         .user-info {
@@ -195,6 +199,31 @@ export default function Layout({ children, activeTab, onTabChange }) {
           border-radius: 4px;
           display: inline-block;
           margin-top: 4px;
+        }
+
+        .user-badges {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          margin-top: 4px;
+        }
+
+        .trust-score {
+          font-size: 0.75rem;
+          color: #007AFF;
+          background: rgba(0, 122, 255, 0.15);
+          padding: 2px 8px;
+          border-radius: 4px;
+          font-weight: 600;
+        }
+
+        .level-badge {
+          font-size: 0.75rem;
+          color: #FFD700;
+          background: rgba(255, 215, 0, 0.15);
+          padding: 2px 8px;
+          border-radius: 4px;
+          font-weight: 600;
         }
 
         .main-content {

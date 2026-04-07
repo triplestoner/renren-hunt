@@ -3,17 +3,17 @@ import { useState } from 'react';
 const initialCircles = [
   { id: 1, name: '清华校友圈', type: 'school', count: 156, color: '#3b82f6', desc: '清华大学校友网络', verified: true },
   { id: 2, name: '阿里同事圈', type: 'company', count: 89, color: '#f97316', desc: '阿里巴巴前同事', verified: true },
-  { id: 3, name: 'AI技术圈', type: 'tech', count: 234, color: '#10b981', desc: '人工智能领域从业者', verified: true },
+  { id: 3, name: 'AI技术圈', type: 'tech', count: 234, color: '#007AFF', desc: '人工智能领域从业者', verified: true },
   { id: 4, name: '字节好友圈', type: 'company', count: 67, color: '#06b6d4', desc: '字节跳动朋友', verified: true },
 ];
 
 const availableCircles = [
   { id: 101, name: '北大校友圈', type: 'school', count: 234, color: '#8b5cf6', desc: '北京大学校友网络', requiresVerification: true, verificationType: 'diploma', verificationLabel: '学历证明', verificationHint: '上传毕业证书或学信网截图' },
-  { id: 102, name: '腾讯同事圈', type: 'company', count: 178, color: '#0ea5e9', desc: '腾讯在职/离职员工', requiresVerification: true, verificationType: 'email', verificationLabel: '工牌或邮箱', verificationHint: '提供 @tencent.com 邮箱或工牌照片' },
+  { id: 102, name: '腾讯同事圈', type: 'company', count: 178, color: '#007AFF', desc: '腾讯在职/离职员工', requiresVerification: true, verificationType: 'email', verificationLabel: '工牌或邮箱', verificationHint: '提供 @tencent.com 邮箱或工牌照片' },
   { id: 103, name: '斯坦福校友圈', type: 'school', count: 89, color: '#f43f5e', desc: '斯坦福大学校友', requiresVerification: true, verificationType: 'diploma', verificationLabel: '学位证书', verificationHint: '上传学位证书或成绩单' },
   { id: 104, name: '字节跳动圈', type: 'company', count: 312, color: '#f97316', desc: '字节跳动员工网络', requiresVerification: true, verificationType: 'email', verificationLabel: '工牌或邮箱', verificationHint: '提供 @bytedance.com 邮箱' },
   { id: 105, name: 'Meta员工圈', type: 'company', count: 156, color: '#3b82f6', desc: 'Meta/Facebook员工', requiresVerification: true, verificationType: 'email', verificationLabel: '工牌或邮箱', verificationHint: '提供 @meta.com 邮箱' },
-  { id: 106, name: '自动驾驶圈', type: 'tech', count: 445, color: '#10b981', desc: '自动驾驶领域从业者', requiresVerification: true, verificationType: 'id', verificationLabel: '身份证明', verificationHint: '提供名片或工牌' },
+  { id: 106, name: '自动驾驶圈', type: 'tech', count: 445, color: '#007AFF', desc: '自动驾驶领域从业者', requiresVerification: true, verificationType: 'id', verificationLabel: '身份证明', verificationHint: '提供名片或工牌' },
   { id: 107, name: '大模型技术圈', type: 'tech', count: 567, color: '#ec4899', desc: 'LLM/AIGC领域工程师', requiresVerification: true, verificationType: 'id', verificationLabel: '身份证明', verificationHint: '提供名片或项目经历' },
   { id: 108, name: '硅谷猎头圈', type: 'hunter', count: 78, color: '#6366f1', desc: '北美科技猎头', requiresVerification: true, verificationType: 'license', verificationLabel: '营业执照', verificationHint: '提供猎头营业执照' },
   { id: 109, name: '产品经理圈', type: 'tech', count: 892, color: '#14b8a6', desc: '产品经理交流圈', requiresVerification: false, verificationType: 'none', verificationLabel: '', verificationHint: '' },
@@ -127,7 +127,7 @@ export default function Circles() {
     setShowCreateModal(false);
   };
 
-  const colors = ['#3b82f6', '#f97316', '#10b981', '#06b6d4', '#10b981', '#ef4444', '#ec4899', '#6366f1'];
+  const colors = ['#3b82f6', '#f97316', '#007AFF', '#06b6d4', '#007AFF', '#ef4444', '#ec4899', '#6366f1'];
 
   return (
     <div className="circles-page">
@@ -455,25 +455,25 @@ export default function Circles() {
         }
 
         .btn-join-circle {
-          background: var(--glass-bg);
-          backdrop-filter: var(--glass-blur);
-          border: 1px solid var(--glass-border);
-          color: var(--text-primary);
+          background: rgba(0, 122, 255, 0.15);
+          border: 1px solid rgba(0, 122, 255, 0.3);
+          color: #007AFF;
         }
 
         .btn-join-circle:hover {
-          border-color: var(--accent-primary);
+          background: rgba(0, 122, 255, 0.25);
           transform: translateY(-2px);
         }
 
         .btn-add-circle {
-          background: var(--accent-gradient);
-          color: #0a0a0f;
+          background: rgba(0, 122, 255, 0.15);
+          border: 1px solid rgba(0, 122, 255, 0.3);
+          color: #007AFF;
         }
 
         .btn-add-circle:hover {
+          background: rgba(0, 122, 255, 0.25);
           transform: translateY(-2px);
-          box-shadow: var(--shadow-glow);
         }
 
         .circles-stats {
@@ -829,19 +829,20 @@ export default function Circles() {
         .btn-submit {
           width: 100%;
           padding: 14px;
-          background: var(--accent-gradient);
-          color: #0a0a0f;
+          background: rgba(0, 122, 255, 0.15);
+          color: #007AFF;
           border-radius: var(--radius-md);
           font-weight: 600;
           font-size: 1rem;
           margin-top: 8px;
           cursor: pointer;
           transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+          border: 1px solid rgba(0, 122, 255, 0.3);
         }
 
         .btn-submit:hover:not(:disabled) {
+          background: rgba(0, 122, 255, 0.25);
           transform: translateY(-2px);
-          box-shadow: var(--shadow-glow);
         }
 
         .btn-submit:disabled {
@@ -938,17 +939,19 @@ export default function Circles() {
 
         .join-status {
           padding: 6px 16px;
-          background: var(--accent-gradient);
-          color: #0a0a0f;
+          background: rgba(0, 122, 255, 0.15);
+          color: #007AFF;
           border-radius: 20px;
           font-size: 0.85rem;
           font-weight: 600;
           flex-shrink: 0;
+          border: 1px solid rgba(0, 122, 255, 0.3);
         }
 
         .join-status.joined {
           background: var(--success);
           color: white;
+          border: none;
         }
 
         .verify-modal {

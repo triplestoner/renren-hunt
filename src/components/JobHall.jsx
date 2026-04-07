@@ -5,6 +5,7 @@ const mockJobs = [
     id: 1,
     title: '资深前端架构师',
     company: '字节跳动',
+    companyLogo: 'https://logo.clearbit.com/bytedance.com',
     salary: '80-120K·16薪',
     tags: ['React', 'TypeScript', '架构设计'],
     deadline: '剩余12小时',
@@ -12,11 +13,14 @@ const mockJobs = [
     bonus: '¥25,000',
     circle: '#大厂圈',
     match: 95,
+    industry: '互联网',
+    location: '北京',
   },
   {
     id: 2,
     title: 'AI算法工程师',
     company: 'MiniMax',
+    companyLogo: 'https://logo.clearbit.com/minimaxi.chat',
     salary: '60-90K·15薪',
     tags: ['Python', 'LLM', '深度学习'],
     deadline: '剩余2天',
@@ -24,11 +28,14 @@ const mockJobs = [
     bonus: '¥18,000',
     circle: '#AI圈',
     match: 88,
+    industry: '人工智能',
+    location: '北京',
   },
   {
     id: 3,
     title: '产品总监',
     company: '美团',
+    companyLogo: 'https://logo.clearbit.com/meituan.com',
     salary: '100-150K·14薪',
     tags: ['B端产品', 'SaaS', '团队管理'],
     deadline: '剩余3天',
@@ -36,11 +43,14 @@ const mockJobs = [
     bonus: '¥35,000',
     circle: '#大厂圈',
     match: 82,
+    industry: '互联网',
+    location: '上海',
   },
   {
     id: 4,
     title: '后端资深工程师',
     company: '蚂蚁集团',
+    companyLogo: 'https://logo.clearbit.com/antgroup.com',
     salary: '50-80K·15薪',
     tags: ['Java', '微服务', '分布式'],
     deadline: '剩余1天',
@@ -48,16 +58,18 @@ const mockJobs = [
     bonus: '¥20,000',
     circle: '#金融科技圈',
     match: 91,
+    industry: '金融',
+    location: '杭州',
   },
 ];
 
 const mockNetworkContacts = [
-  { id: 1, name: '张同学', company: '阿里', title: '前端工程师', relation: '前同事', circle: '大厂圈', skills: ['React', 'TypeScript'] },
-  { id: 2, name: '李同学', company: '腾讯', title: '技术专家', relation: '校友', circle: '校友圈', skills: ['架构设计', 'Go'] },
-  { id: 3, name: '王同学', company: '字节', title: 'AI算法', relation: '前同事', circle: 'AI圈', skills: ['Python', 'LLM'] },
-  { id: 4, name: '赵同学', company: '阿里', title: '产品经理', relation: '朋友', circle: '大厂圈', skills: ['B端产品', 'SaaS'] },
-  { id: 5, name: '刘同学', company: '百度', title: '后端工程师', relation: '校友', circle: '技术圈', skills: ['Java', '分布式'] },
-  { id: 6, name: '陈同学', company: '美团', title: '前端工程师', relation: '前同事', circle: '大厂圈', skills: ['React', 'TypeScript'] },
+  { id: 1, name: '张同学', avatar: 'https://i.pravatar.cc/150?u=zhang', company: '阿里', title: '前端工程师', relation: '前同事', circle: '大厂圈', skills: ['React', 'TypeScript'] },
+  { id: 2, name: '李同学', avatar: 'https://i.pravatar.cc/150?u=li', company: '腾讯', title: '技术专家', relation: '校友', circle: '校友圈', skills: ['架构设计', 'Go'] },
+  { id: 3, name: '王同学', avatar: 'https://i.pravatar.cc/150?u=wang', company: '字节', title: 'AI算法', relation: '前同事', circle: 'AI圈', skills: ['Python', 'LLM'] },
+  { id: 4, name: '赵同学', avatar: 'https://i.pravatar.cc/150?u=zhao', company: '阿里', title: '产品经理', relation: '朋友', circle: '大厂圈', skills: ['B端产品', 'SaaS'] },
+  { id: 5, name: '刘同学', avatar: 'https://i.pravatar.cc/150?u=liu', company: '百度', title: '后端工程师', relation: '校友', circle: '技术圈', skills: ['Java', '分布式'] },
+  { id: 6, name: '陈同学', avatar: 'https://i.pravatar.cc/150?u=chen', company: '美团', title: '前端工程师', relation: '前同事', circle: '大厂圈', skills: ['React', 'TypeScript'] },
 ];
 
 const aiMatchStages = [
@@ -68,6 +80,9 @@ const aiMatchStages = [
   { stage: '意向评估', count: 128, icon: '🎯', desc: '评估候选人求职意向和活跃度' },
   { stage: '⭐ 智能推荐', count: 45, icon: '🌟', desc: '输出最优候选人推荐列表' },
 ];
+
+const industries = ['互联网', '人工智能', '金融', '电商', '教育', '医疗', '硬件', '游戏'];
+const locations = ['北京', '上海', '杭州', '深圳', '广州', '成都', '南京', '苏州'];
 
 export default function JobHall({ publishedJobs = mockJobs, onRecommend, recommendedCandidates = [] }) {
   const [activeSection, setActiveSection] = useState('dispatch');
@@ -90,6 +105,9 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
   const [recommendError, setRecommendError] = useState('');
   const [showShareModal, setShowShareModal] = useState(false);
   const [sharingRecommendation, setSharingRecommendation] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [industryFilter, setIndustryFilter] = useState('');
+  const [locationFilter, setLocationFilter] = useState('');
   const funnelTimersRef = useRef([]);
 
   const runAIScan = () => {
@@ -365,7 +383,11 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
                 className="ai-contact-card"
                 style={{ animationDelay: `${index * 0.05}s` }}
               >
-                <div className="ai-contact-avatar">{contact.name[0]}</div>
+                {contact.avatar ? (
+                  <img src={contact.avatar} alt={contact.name} className="ai-contact-avatar-img" />
+                ) : (
+                  <div className="ai-contact-avatar">{contact.name[0]}</div>
+                )}
                 <div className="ai-contact-info">
                   <div className="ai-contact-name-row">
                     <span className="ai-contact-name">{contact.name}</span>
@@ -410,7 +432,11 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
             
             <div className="recommend-body">
               <div className="candidate-preview">
-                <div className="preview-avatar">{selectedContact.name[0]}</div>
+                {selectedContact.avatar ? (
+                  <img src={selectedContact.avatar} alt={selectedContact.name} className="preview-avatar-img" />
+                ) : (
+                  <div className="preview-avatar">{selectedContact.name[0]}</div>
+                )}
                 <div className="preview-info">
                   <span className="preview-name">{selectedContact.name}</span>
                   <span className="preview-title">{selectedContact.title} · {selectedContact.company}</span>
@@ -544,7 +570,11 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
                 <div className="share-card-header">🎯 职位推荐</div>
                 <div className="share-card-content">
                   <div className="share-candidate-info">
-                    <div className="share-avatar">{sharingRecommendation.name[0]}</div>
+                    {sharingRecommendation.avatar ? (
+                      <img src={sharingRecommendation.avatar} alt={sharingRecommendation.name} className="share-avatar-img" />
+                    ) : (
+                      <div className="share-avatar">{sharingRecommendation.name[0]}</div>
+                    )}
                     <div className="share-candidate-details">
                       <span className="share-candidate-name">{sharingRecommendation.name}</span>
                       <span className="share-candidate-title">{sharingRecommendation.title} · {sharingRecommendation.company}</span>
@@ -612,6 +642,42 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
         </div>
       </div>
 
+      <div className="filter-bar">
+        <div className="search-input-wrapper">
+          <span className="search-icon">🔍</span>
+          <input 
+            type="text" 
+            className="search-input"
+            placeholder="搜索职位或公司..."
+            value={searchQuery}
+            onChange={e => setSearchQuery(e.target.value)}
+          />
+          {searchQuery && (
+            <button className="search-clear" onClick={() => setSearchQuery('')}>✕</button>
+          )}
+        </div>
+        <select 
+          className="filter-select"
+          value={industryFilter}
+          onChange={e => setIndustryFilter(e.target.value)}
+        >
+          <option value="">全行业</option>
+          {industries.map(ind => (
+            <option key={ind} value={ind}>{ind}</option>
+          ))}
+        </select>
+        <select 
+          className="filter-select"
+          value={locationFilter}
+          onChange={e => setLocationFilter(e.target.value)}
+        >
+          <option value="">全城市</option>
+          {locations.map(loc => (
+            <option key={loc} value={loc}>{loc}</option>
+          ))}
+        </select>
+      </div>
+
       <div className="job-list">
         {publishedJobs
           .filter(job => {
@@ -620,6 +686,19 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
             } else {
               return job.match < 85;
             }
+          })
+          .filter(job => {
+            if (!searchQuery) return true;
+            const query = searchQuery.toLowerCase();
+            return job.title.toLowerCase().includes(query) || job.company.toLowerCase().includes(query);
+          })
+          .filter(job => {
+            if (!industryFilter) return true;
+            return job.industry === industryFilter;
+          })
+          .filter(job => {
+            if (!locationFilter) return true;
+            return job.location === locationFilter;
           })
           .map((job, index) => (
             <div 
@@ -635,6 +714,14 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
                   {activeSection === 'grab' && <span className="grab-badge">抢单</span>}
                 </div>
                 <div className="company-info">
+                  {job.companyLogo && (
+                    <img 
+                      src={job.companyLogo} 
+                      alt={job.company}
+                      className="company-logo"
+                      onError={(e) => { e.target.style.display = 'none'; }}
+                    />
+                  )}
                   <span className="company-name">{job.company}</span>
                   <span className="salary">{job.salary}</span>
                 </div>
@@ -645,6 +732,8 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
                   <span key={i} className="tag">{tag}</span>
                 ))}
                 <span className="tag circle-tag">{job.circle}</span>
+                {job.industry && <span className="tag industry-tag">🏭 {job.industry}</span>}
+                {job.location && <span className="tag location-tag">📍 {job.location}</span>}
               </div>
 
               <div className="job-meta">
@@ -810,6 +899,86 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
           margin-bottom: 24px;
         }
 
+        .filter-bar {
+          display: flex;
+          gap: 12px;
+          margin-bottom: 20px;
+          flex-wrap: wrap;
+        }
+
+        .search-input-wrapper {
+          flex: 1;
+          min-width: 200px;
+          position: relative;
+          display: flex;
+          align-items: center;
+        }
+
+        .search-icon {
+          position: absolute;
+          left: 14px;
+          font-size: 0.9rem;
+          color: var(--text-tertiary);
+        }
+
+        .search-input {
+          width: 100%;
+          padding: 12px 36px;
+          background: var(--glass-bg);
+          border: 1px solid var(--glass-border);
+          border-radius: var(--radius-md);
+          color: var(--text-primary);
+          font-size: 0.95rem;
+          outline: none;
+          transition: all 0.2s ease;
+        }
+
+        .search-input:focus {
+          border-color: var(--accent-primary);
+          box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.15);
+        }
+
+        .search-input::placeholder {
+          color: var(--text-tertiary);
+        }
+
+        .search-clear {
+          position: absolute;
+          right: 12px;
+          background: none;
+          border: none;
+          color: var(--text-tertiary);
+          cursor: pointer;
+          font-size: 0.9rem;
+          padding: 4px;
+        }
+
+        .search-clear:hover {
+          color: var(--text-primary);
+        }
+
+        .filter-select {
+          padding: 12px 16px;
+          background: var(--glass-bg);
+          border: 1px solid var(--glass-border);
+          border-radius: var(--radius-md);
+          color: var(--text-primary);
+          font-size: 0.95rem;
+          cursor: pointer;
+          outline: none;
+          min-width: 110px;
+          transition: all 0.2s ease;
+        }
+
+        .filter-select:focus {
+          border-color: var(--accent-primary);
+        }
+
+        .filter-select option {
+          background: var(--bg-primary);
+          color: var(--text-primary);
+        }
+
         .tab {
           display: flex;
           align-items: center;
@@ -964,23 +1133,25 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
         .privilege-card .btn-buy {
           width: 100%;
           padding: 12px;
-          background: var(--accent-gradient);
-          color: #0a0a0f;
+          background: rgba(0, 122, 255, 0.15);
+          color: #007AFF;
           border-radius: var(--radius-md);
           font-weight: 600;
           cursor: pointer;
           transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+          border: 1px solid rgba(0, 122, 255, 0.3);
         }
 
         .privilege-card .btn-buy:hover {
+          background: rgba(0, 122, 255, 0.25);
           transform: translateY(-2px);
-          box-shadow: var(--shadow-glow);
         }
 
         .privilege-card .btn-buy.locked {
           background: var(--bg-tertiary);
           color: var(--text-tertiary);
           cursor: not-allowed;
+          border: 1px solid transparent;
         }
 
         .privilege-card .btn-buy.locked:hover {
@@ -1141,6 +1312,15 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
           align-items: center;
         }
 
+        .company-logo {
+          width: 28px;
+          height: 28px;
+          border-radius: 6px;
+          object-fit: contain;
+          background: white;
+          padding: 2px;
+        }
+
         .company-name {
           color: var(--text-secondary);
           font-size: 0.95rem;
@@ -1172,6 +1352,18 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
           background: var(--accent-glow);
           color: var(--accent-primary);
           border: 1px solid var(--border-accent);
+        }
+
+        .industry-tag {
+          background: rgba(168, 85, 247, 0.15);
+          color: #a855f7;
+          border-color: rgba(168, 85, 247, 0.3);
+        }
+
+        .location-tag {
+          background: rgba(34, 197, 94, 0.15);
+          color: #22c55e;
+          border-color: rgba(34, 197, 94, 0.3);
         }
 
         .job-meta {
@@ -1219,7 +1411,7 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
         }
 
         .bonus-value {
-          color: var(--success);
+          color: var(--bonus-gold);
           font-weight: 600;
           font-size: 1rem;
         }
@@ -1246,55 +1438,57 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
           display: flex;
           align-items: center;
           gap: 6px;
-          background: var(--accent-gradient);
-          color: #0a0a0f;
+          background: rgba(0, 122, 255, 0.15);
+          color: #007AFF;
           padding: 10px 14px;
           border-radius: var(--radius-md);
           font-weight: 600;
           font-size: 0.85rem;
           cursor: pointer;
           transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+          border: 1px solid rgba(0, 122, 255, 0.3);
         }
 
         .btn-ai-match:hover {
+          background: rgba(0, 122, 255, 0.25);
           transform: translateY(-1px);
-          box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
         }
 
         .btn-share {
           display: flex;
           align-items: center;
           gap: 6px;
-          background: transparent;
-          border: 1px solid var(--border-default);
-          color: var(--text-primary);
+          background: rgba(0, 122, 255, 0.15);
+          color: #007AFF;
           padding: 10px 16px;
           border-radius: var(--radius-md);
-          font-weight: 500;
+          font-weight: 600;
+          font-size: 0.85rem;
+          cursor: pointer;
+          transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+          border: 1px solid rgba(0, 122, 255, 0.3);
+        }
+
+        .btn-share:hover {
+          background: rgba(0, 122, 255, 0.25);
+          transform: translateY(-1px);
+        }
+
+        .btn-detail {
+          background: rgba(0, 122, 255, 0.15);
+          color: #007AFF;
+          padding: 10px 16px;
+          border-radius: var(--radius-md);
           font-size: 0.9rem;
+          font-weight: 600;
+          border: 1px solid rgba(0, 122, 255, 0.3);
           cursor: pointer;
           transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .btn-share:hover {
-          background: var(--bg-card-hover);
-          border-color: var(--border-accent);
-          color: var(--accent-primary);
-        }
-
-        .btn-detail {
-          background: var(--bg-tertiary);
-          color: var(--text-primary);
-          padding: 10px 16px;
-          border-radius: var(--radius-md);
-          font-size: 0.9rem;
-          border: 1px solid var(--border-subtle);
-          cursor: pointer;
-        }
-
         .btn-detail:hover {
-          background: var(--bg-card-hover);
-          border-color: var(--border-accent);
+          background: rgba(0, 122, 255, 0.25);
+          transform: translateY(-1px);
         }
 
         .job-detail-info {
@@ -1455,12 +1649,12 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
         }
 
         .ai-scan-tab {
-          background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.2)) !important;
-          border-color: rgba(16, 185, 129, 0.4) !important;
+          background: linear-gradient(135deg, rgba(0, 122, 255, 0.2), rgba(5, 150, 105, 0.2)) !important;
+          border-color: rgba(0, 122, 255, 0.4) !important;
         }
 
         .ai-scan-tab:hover {
-          background: linear-gradient(135deg, rgba(16, 185, 129, 0.3), rgba(5, 150, 105, 0.3)) !important;
+          background: linear-gradient(135deg, rgba(0, 122, 255, 0.3), rgba(5, 150, 105, 0.3)) !important;
         }
 
         .ai-scan-tab.scanning {
@@ -1542,7 +1736,7 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
         }
 
         .progress-percent {
-          color: #10b981;
+          color: #007AFF;
           font-weight: 600;
         }
 
@@ -1567,9 +1761,9 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
         }
 
         .scan-stage.complete {
-          background: rgba(16, 185, 129, 0.2);
-          color: #10b981;
-          border-color: rgba(16, 185, 129, 0.3);
+          background: rgba(0, 122, 255, 0.2);
+          color: #007AFF;
+          border-color: rgba(0, 122, 255, 0.3);
         }
 
         .scan-stage .stage-icon {
@@ -1630,13 +1824,13 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
           padding: 16px 20px;
           background: rgba(0, 0, 0, 0.2);
           border-radius: var(--radius-md);
-          border-left: 4px solid #10b981;
+          border-left: 4px solid #007AFF;
           border: 1px solid var(--glass-border);
         }
 
         .funnel-stage.final .funnel-bar {
-          background: rgba(16, 185, 129, 0.15);
-          border-left-color: #10b981;
+          background: rgba(0, 122, 255, 0.15);
+          border-left-color: #007AFF;
         }
 
         .funnel-info {
@@ -1666,7 +1860,7 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
 
         .funnel-count {
           font-weight: 700;
-          color: #10b981;
+          color: #007AFF;
           font-size: 1.1rem;
         }
 
@@ -1749,7 +1943,7 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
         }
 
         .ai-contact-card:hover {
-          border-color: rgba(16, 185, 129, 0.4);
+          border-color: rgba(0, 122, 255, 0.4);
           background: rgba(255, 255, 255, 0.03);
           transform: translateY(-2px);
           box-shadow: var(--shadow-glass);
@@ -1767,7 +1961,16 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
           color: #0a0a0f;
           font-weight: 600;
           font-size: 1.1rem;
-          box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+          box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+        }
+
+        .ai-contact-avatar-img {
+          width: 48px;
+          height: 48px;
+          min-width: 48px;
+          border-radius: 50%;
+          object-fit: cover;
+          box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
         }
 
         .ai-contact-info {
@@ -1795,8 +1998,8 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
           color: var(--accent-primary);
         }
 
-        .ai-circle-大厂圈 { background: rgba(30, 138, 240, 0.15); color: #1e8af0; }
-        .ai-circle-校友圈 { background: rgba(16, 185, 129, 0.15); color: #10b981; }
+        .ai-circle-大厂圈 { background: rgba(30, 138, 240, 0.15); color: #007AFF; }
+        .ai-circle-校友圈 { background: rgba(0, 122, 255, 0.15); color: #007AFF; }
         .ai-circle-AI圈 { background: rgba(74, 222, 128, 0.15); color: #4ade80; }
         .ai-circle-技术圈 { background: rgba(251, 191, 36, 0.15); color: #fbbf24; }
 
@@ -1836,19 +2039,20 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
 
         .ai-btn-invite {
           padding: 10px 20px;
-          background: var(--accent-gradient);
-          color: #0a0a0f;
+          background: rgba(0, 122, 255, 0.15);
+          color: #007AFF;
           border-radius: var(--radius-md);
           font-weight: 600;
           font-size: 0.9rem;
           white-space: nowrap;
           cursor: pointer;
           transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+          border: 1px solid rgba(0, 122, 255, 0.3);
         }
 
         .ai-btn-invite:hover {
+          background: rgba(0, 122, 255, 0.25);
           transform: translateY(-2px);
-          box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
         }
 
         .ai-contact-summary {
@@ -1952,7 +2156,15 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
           color: #0a0a0f;
           font-weight: 600;
           font-size: 1.25rem;
-          box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+          box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+        }
+
+        .preview-avatar-img {
+          width: 56px;
+          height: 56px;
+          border-radius: 50%;
+          object-fit: cover;
+          box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
         }
 
         .preview-info {
@@ -2058,24 +2270,25 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
         }
 
         .c2-reason-section h4 {
-          color: #10b981;
+          color: #007AFF;
         }
 
         .btn-submit-recommend {
           width: 100%;
           padding: 14px;
-          background: var(--accent-gradient);
-          color: #0a0a0f;
+          background: rgba(0, 122, 255, 0.15);
+          color: #007AFF;
           border-radius: var(--radius-md);
           font-weight: 600;
           font-size: 1rem;
           cursor: pointer;
           transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+          border: 1px solid rgba(0, 122, 255, 0.3);
         }
 
         .btn-submit-recommend:hover {
+          background: rgba(0, 122, 255, 0.25);
           transform: translateY(-2px);
-          box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4);
         }
 
         @media (max-width: 768px) {
@@ -2171,6 +2384,13 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
           font-size: 1.1rem;
         }
 
+        .share-avatar-img {
+          width: 48px;
+          height: 48px;
+          border-radius: 50%;
+          object-fit: cover;
+        }
+
         .share-candidate-details {
           display: flex;
           flex-direction: column;
@@ -2215,7 +2435,7 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
 
         .share-reason {
           padding: 12px;
-          background: rgba(16, 185, 129, 0.1);
+          background: rgba(0, 122, 255, 0.1);
           border-radius: var(--radius-md);
           border-left: 3px solid var(--accent-primary);
         }

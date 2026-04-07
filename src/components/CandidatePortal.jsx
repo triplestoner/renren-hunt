@@ -3,7 +3,8 @@ import { useState } from 'react';
 const mockOffers = [
   {
     id: 1,
-    referrer: '李明',
+    referrer: '李小牛',
+    referrerAvatar: 'https://i.pravatar.cc/40?u=lixiaoniu',
     referrerRelation: '前同事',
     position: '资深前端架构师',
     company: '字节跳动',
@@ -17,6 +18,7 @@ const mockOffers = [
   {
     id: 2,
     referrer: '王老师',
+    referrerAvatar: 'https://i.pravatar.cc/40?u=wang',
     referrerRelation: '同行',
     position: 'AI算法工程师',
     company: 'MiniMax',
@@ -34,13 +36,15 @@ const mockProfile = {
   title: '资深前端工程师',
   experience: '8年',
   education: '清华大学·硕士',
+  avatar: 'https://i.pravatar.cc/80?u=zhang',
+  schoolLogo: 'https://ui-avatars.com/api/?name=清华&background=CB3333&color=fff&size=32&font-size=0.4&bold=true',
   skills: ['React', 'TypeScript', 'Node.js', '架构设计', '团队管理'],
   circles: ['#大厂圈', '#前端技术圈'],
 };
 
 const reviewHistory = [
-  { from: '李明', relation: '前同事', company: '字节跳动', comment: '技术能力强，架构思维优秀，有带领20人团队的经验', date: '2026-03-20', type: 'positive' },
-  { from: '王老师', relation: '同行', company: 'MiniMax', comment: 'AI领域有深入研究潜力，学术背景强', date: '2026-02-15', type: 'positive' },
+  { from: '李小牛', fromAvatar: 'https://i.pravatar.cc/40?u=lixiaoniu', relation: '前同事', company: '字节跳动', comment: '技术能力强，架构思维优秀，有带领20人团队的经验', date: '2026-03-20', type: 'positive' },
+  { from: '王老师', fromAvatar: 'https://i.pravatar.cc/40?u=wang', relation: '同行', company: 'MiniMax', comment: 'AI领域有深入研究潜力，学术背景强', date: '2026-02-15', type: 'positive' },
 ];
 
 const mockJobProgress = {
@@ -48,7 +52,7 @@ const mockJobProgress = {
   position: '资深前端架构师',
   company: '字节跳动',
   steps: [
-    { id: 1, label: '背调完成', status: 'completed', date: '2026-03-20', desc: '李明已完成背调' },
+    { id: 1, label: '背调完成', status: 'completed', date: '2026-03-20', desc: '李小牛已完成背调' },
     { id: 2, label: 'HR已查看', status: 'completed', date: '2026-03-21', desc: '简历已被HR查看' },
     { id: 3, label: '一面', status: 'in_progress', date: '2026-03-25', desc: '待面试' },
     { id: 4, label: '二面', status: 'pending', date: '', desc: '' },
@@ -107,11 +111,14 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
       <header className="page-header">
         <div className="header-main">
           <div className="user-section">
-            <div className="avatar">张</div>
+            <img src={mockProfile.avatar} alt={mockProfile.name} className="avatar" />
             <div className="user-info">
               <h1>{mockProfile.name}</h1>
               <p className="title">{mockProfile.title}</p>
-              <p className="edu">{mockProfile.education} · {mockProfile.experience}</p>
+              <p className="edu">
+                <img src={mockProfile.schoolLogo} alt="" className="school-logo" />
+                {mockProfile.education} · {mockProfile.experience}
+              </p>
             </div>
           </div>
           <button className="btn-switch-role" onClick={() => setShowC2ToC1Modal(true)}>
@@ -201,7 +208,11 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
                     <span className="company">{offer.company}</span>
                   </div>
                   <div className="referrer-info">
-                    <span className="referrer-avatar">{offer.referrer[0]}</span>
+                    {offer.referrerAvatar ? (
+                      <img src={offer.referrerAvatar} alt={offer.referrer} className="referrer-avatar" />
+                    ) : (
+                      <span className="referrer-avatar">{offer.referrer[0]}</span>
+                    )}
                     <span className="referrer-name">由 {offer.referrer} 推荐</span>
                   </div>
                 </div>
@@ -490,7 +501,11 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
               >
                 <div className="review-header">
                   <div className="reviewer-info">
-                    <span className="reviewer-avatar">{review.from[0]}</span>
+                    {review.fromAvatar ? (
+                      <img src={review.fromAvatar} alt={review.from} className="reviewer-avatar" />
+                    ) : (
+                      <span className="reviewer-avatar">{review.from[0]}</span>
+                    )}
                     <div className="reviewer-detail">
                       <span className="reviewer-name">{review.from}</span>
                       <span className="reviewer-relation">{review.relation} · {review.company}</span>
@@ -521,13 +536,13 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
               <>
                 <div className="auth-modal-icon">🔐</div>
                 <h3>DID 授权确认</h3>
-                <p>您的好友【李明】推荐您应聘【字节跳动-架构师】岗位</p>
+                <p>您的好友【李小牛】推荐您应聘【字节跳动-架构师】岗位</p>
                 
                 <div className="referral-review">
                   <div className="review-label">Recommender 背调评价</div>
                   <div className="review-content">
                     <p>"技术能力强，架构思维优秀，有带领20人前端团队的经验，是非常优秀的候选人。"</p>
-                    <span className="reviewer">— 李明（前同事，共事3年）</span>
+                    <span className="reviewer">— 李小牛（前同事，共事3年）</span>
                   </div>
                 </div>
 
@@ -641,7 +656,6 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
         .avatar {
           width: 72px;
           height: 72px;
-          background: linear-gradient(135deg, #10b981 0%, #059669 100%);
           border-radius: 50%;
           display: flex;
           align-items: center;
@@ -649,6 +663,8 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
           font-weight: 600;
           font-size: 1.5rem;
           color: white;
+          object-fit: cover;
+          background: linear-gradient(135deg, #007AFF 0%, #0062CC 100%);
         }
 
         .user-info h1 {
@@ -665,6 +681,16 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
         .edu {
           color: var(--text-tertiary);
           font-size: 0.85rem;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+
+        .school-logo {
+          width: 18px;
+          height: 18px;
+          border-radius: 4px;
+          object-fit: cover;
         }
 
         .btn-switch-role {
@@ -728,13 +754,14 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
         }
 
         .toggle-btn:hover {
-          color: var(--text-primary);
+          color: #007AFF;
         }
 
         .toggle-btn.active {
-          background: var(--accent-gradient);
-          color: #0a0a0f;
+          background: rgba(0, 122, 255, 0.15);
+          color: #007AFF;
           font-weight: 600;
+          border: 1px solid rgba(0, 122, 255, 0.3);
         }
 
         .privacy-tip {
@@ -772,11 +799,11 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
         .tab.active {
           background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
           border-color: rgba(102, 126, 234, 0.4);
-          color: #10b981;
+          color: #007AFF;
         }
 
         .tab-badge {
-          background: #10b981;
+          background: #007AFF;
           color: white;
           font-size: 0.7rem;
           font-weight: 600;
@@ -819,7 +846,7 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
           position: absolute;
           top: -8px;
           right: 16px;
-          background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+          background: linear-gradient(135deg, #007AFF 0%, #0062CC 100%);
           color: white;
           font-size: 0.7rem;
           font-weight: 600;
@@ -828,13 +855,13 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
         }
 
         .recommend-badge {
-          background: linear-gradient(135deg, #10b981 0%, #6366f1 100%);
+          background: linear-gradient(135deg, #007AFF 0%, #6366f1 100%);
         }
 
         .c2-recommendation-card {
           background: var(--glass-bg);
           backdrop-filter: var(--glass-blur);
-          border: 1px solid rgba(16, 185, 129, 0.3);
+          border: 1px solid rgba(0, 122, 255, 0.3);
           border-radius: var(--radius-md);
           padding: 20px;
           box-shadow: var(--shadow-glass);
@@ -845,7 +872,7 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
           align-items: center;
           gap: 8px;
           font-weight: 600;
-          color: #10b981;
+          color: #007AFF;
           margin-bottom: 12px;
         }
 
@@ -920,7 +947,6 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
         .referrer-avatar {
           width: 24px;
           height: 24px;
-          background: var(--accent-gradient);
           border-radius: 50%;
           display: flex;
           align-items: center;
@@ -928,6 +954,8 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
           font-size: 0.7rem;
           font-weight: 600;
           color: #0a0a0f;
+          object-fit: cover;
+          background: var(--accent-gradient);
         }
 
         .referrer-name {
@@ -959,13 +987,13 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
         }
 
         .salary {
-          color: #10b981;
+          color: #007AFF;
           font-weight: 600;
         }
 
         .bonus {
-          color: var(--success);
-          font-weight: 500;
+          color: var(--bonus-gold);
+          font-weight: 600;
         }
 
         .offer-expanded {
@@ -989,7 +1017,7 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
           align-items: center;
           gap: 8px;
           font-weight: 600;
-          color: #10b981;
+          color: #007AFF;
           margin-bottom: 12px;
         }
 
@@ -1016,7 +1044,7 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
           align-items: center;
           justify-content: center;
           gap: 8px;
-          background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+          background: linear-gradient(135deg, #007AFF 0%, #0062CC 100%);
           color: white;
           padding: 14px;
           border-radius: var(--radius-md);
@@ -1108,7 +1136,7 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
 
         .skill-tag {
           background: rgba(102, 126, 234, 0.1);
-          color: #10b981;
+          color: #007AFF;
           padding: 4px 12px;
           border-radius: 20px;
           font-size: 0.8rem;
@@ -1236,13 +1264,15 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
         .reviewer-avatar {
           width: 40px;
           height: 40px;
-          background: linear-gradient(135deg, #10b981 0%, #059669 100%);
           border-radius: 50%;
           display: flex;
           align-items: center;
           justify-content: center;
           font-weight: 600;
           color: white;
+          object-fit: cover;
+          background: linear-gradient(135deg, #007AFF 0%, #0062CC 100%);
+        }
         }
 
         .reviewer-name {
@@ -1480,7 +1510,7 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
         .referral-review {
           background: var(--glass-bg);
           backdrop-filter: var(--glass-blur);
-          border: 1px solid rgba(16, 185, 129, 0.3);
+          border: 1px solid rgba(0, 122, 255, 0.3);
           border-radius: var(--radius-md);
           padding: 16px;
           margin-bottom: 16px;
@@ -1489,7 +1519,7 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
 
         .review-label {
           font-size: 0.8rem;
-          color: #10b981;
+          color: #007AFF;
           margin-bottom: 8px;
         }
 
@@ -1576,7 +1606,7 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
         }
 
         .bonus-item.highlight .bonus-value {
-          color: var(--success);
+          color: var(--bonus-gold);
         }
 
         .bonus-percent {

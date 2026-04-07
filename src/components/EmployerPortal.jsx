@@ -37,36 +37,42 @@ const mockCandidates = [
   {
     id: 1,
     name: '张同学',
+    avatar: 'https://i.pravatar.cc/80?u=zhang',
     title: '资深前端工程师',
     experience: '8年',
     education: '清华大学·硕士',
+    schoolLogo: 'https://ui-avatars.com/api/?name=清华&background=CB3333&color=fff&size=32&font-size=0.4&bold=true',
     skills: ['React', 'TypeScript', '架构设计', '团队管理'],
     matchScore: 95,
-    referrer: { name: '李明', score: 92, level: 'S级' },
+    referrer: { name: '李小牛', avatar: 'https://i.pravatar.cc/40?u=lixiaoniu', score: 92, level: 'S级' },
     status: '待查看',
     review: null,
   },
   {
     id: 2,
     name: '王同学',
+    avatar: 'https://i.pravatar.cc/80?u=wang',
     title: 'AI算法专家',
     experience: '5年',
     education: '北大·博士',
+    schoolLogo: 'https://ui-avatars.com/api/?name=北大&background=003087&color=fff&size=32&font-size=0.4&bold=true',
     skills: ['Python', 'LLM', '深度学习', '推荐系统'],
     matchScore: 88,
-    referrer: { name: '王老师', score: 88, level: 'A级' },
+    referrer: { name: '王老师', avatar: 'https://i.pravatar.cc/40?u=wang2', score: 88, level: 'A级' },
     status: '已查看',
     review: { stage: '一面', date: '2026-03-18' },
   },
   {
     id: 3,
     name: '赵同学',
+    avatar: 'https://i.pravatar.cc/80?u=zhao',
     title: '后端技术专家',
     experience: '6年',
     education: '浙大·本科',
+    schoolLogo: 'https://ui-avatars.com/api/?name=浙大&background=003087&color=fff&size=32&font-size=0.4&bold=true',
     skills: ['Java', 'Go', '微服务', '分布式系统'],
     matchScore: 82,
-    referrer: { name: '李明', score: 92, level: 'S级' },
+    referrer: { name: '李小牛', avatar: 'https://i.pravatar.cc/40?u=lixiaoniu', score: 92, level: 'S级' },
     status: '已推荐',
     review: null,
   },
@@ -78,14 +84,40 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
   const [selectedCandidate, setSelectedCandidate] = useState(null);
   const [viewedCandidate, setViewedCandidate] = useState(null);
   const [candidates, setCandidates] = useState(mockCandidates);
+  const [activeFilter, setActiveFilter] = useState('全部');
   const [showNewJobModal, setShowNewJobModal] = useState(false);
   const [showCloseConfirm, setShowCloseConfirm] = useState(false);
   const [pendingClose, setPendingClose] = useState(false);
   const [internalJobs, setInternalJobs] = useState(mockJobs);
   const [showPublishSuccess, setShowPublishSuccess] = useState(false);
+  const [showPostPublishModal, setShowPostPublishModal] = useState(false);
+  const [lastPublishedJob, setLastPublishedJob] = useState(null);
   const [showJDPreview, setShowJDPreview] = useState(false);
   const [showEvaluateModal, setShowEvaluateModal] = useState(false);
   const [showRejectModal, setShowRejectModal] = useState(false);
+  const [activeDetailView, setActiveDetailView] = useState(null);
+  const [activeDetailData, setActiveDetailData] = useState(null);
+
+  const detailJobs = [
+    { id: 1, title: '资深前端架构师', status: '进行中', candidates: 12, views: 45, bonus: '¥25,000', posted: '2026-03-15', urgent: true, industry: '互联网', location: '北京' },
+    { id: 2, title: 'AI算法工程师', status: '进行中', candidates: 8, views: 32, bonus: '¥18,000', posted: '2026-03-10', urgent: false, industry: '人工智能', location: '北京' },
+  ];
+
+  const detailResumes = [
+    { id: 1, name: '张同学', avatar: 'https://i.pravatar.cc/80?u=zhang', title: '资深前端工程师', experience: '8年', education: '清华大学·硕士', skills: ['React', 'TypeScript', '架构设计'], matchScore: 95, referrer: { name: '李小牛', score: 92, level: 'S级' }, status: '待查看', jobTitle: '资深前端架构师' },
+    { id: 2, name: '王同学', avatar: 'https://i.pravatar.cc/80?u=wang', title: 'AI算法专家', experience: '5年', education: '北大·博士', skills: ['Python', 'LLM', '深度学习'], matchScore: 88, referrer: { name: '王老师', score: 88, level: 'A级' }, status: '已查看', jobTitle: 'AI算法工程师' },
+    { id: 3, name: '赵同学', avatar: 'https://i.pravatar.cc/80?u=zhao', title: '后端技术专家', experience: '6年', education: '浙大·本科', skills: ['Java', 'Go', '微服务'], matchScore: 82, referrer: { name: '李小牛', score: 92, level: 'S级' }, status: '已推荐', jobTitle: '资深前端架构师' },
+  ];
+
+  const detailInterviews = [
+    { id: 1, name: '王同学', avatar: 'https://i.pravatar.cc/80?u=wang', title: 'AI算法专家', experience: '5年', education: '北大·博士', stage: '二面', interviewDate: '2026-03-20', interviewer: '技术总监张老师', jobTitle: 'AI算法工程师' },
+    { id: 2, name: '孙同学', avatar: 'https://i.pravatar.cc/80?u=sun', title: '前端工程师', experience: '4年', education: '上交·硕士', stage: '初试', interviewDate: '2026-03-19', interviewer: '前端负责人李老师', jobTitle: '资深前端架构师' },
+    { id: 3, name: '周同学', avatar: 'https://i.pravatar.cc/80?u=zhou', title: '产品经理', experience: '6年', education: '复旦·本科', stage: '终面', interviewDate: '2026-03-21', interviewer: 'CEO', jobTitle: '产品总监' },
+  ];
+
+  const detailJoined = [
+    { id: 1, name: '吴同学', avatar: 'https://i.pravatar.cc/80?u=wu', title: '后端工程师', experience: '3年', education: '北邮·硕士', joinDate: '2026-03-01', position: '后端开发工程师', department: '基础架构部', bonus: '¥15,000' },
+  ];
 
   const allJobs = jobsFromParent || internalJobs;
   const updateJobs = setPublishedJobs || setInternalJobs;
@@ -103,7 +135,7 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
 
   const [pipelineData, setPipelineData] = useState([
     { stage: '新推荐', count: 5, color: '#60a5fa' },
-    { stage: '简历初筛', count: 3, color: '#10b981' },
+    { stage: '简历初筛', count: 3, color: '#007AFF' },
     { stage: '面试安排', count: 2, color: '#fbbf24' },
     { stage: 'Offer发放', count: 1, color: '#4ade80' },
     { stage: '入职', count: 0, color: '#22c55e' },
@@ -118,6 +150,9 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
   const [jobForm, setJobForm] = useState({
     title: '',
     salary: '',
+    salaryMin: '',
+    salaryMax: '',
+    salaryMonths: '12',
     bonus: '',
     education: '',
     experience: '',
@@ -126,7 +161,10 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
     circleDetail: '',
     description: '',
     urgent: false,
+    industry: '互联网',
+    location: '北京',
   });
+  const [bonusMode, setBonusMode] = useState('auto');
 
   const skillRecommendations = {
     '前端': ['React', 'Vue', 'TypeScript', 'Webpack', 'Node.js', '前端架构'],
@@ -234,6 +272,8 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
       circleDetail: '',
       description: '',
       urgent: false,
+      industry: '互联网',
+      location: '北京',
     });
     setJdText('');
     setJdAnalysis(null);
@@ -271,6 +311,7 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
       id: Date.now(),
       title: jobForm.title,
       company: '字节跳动',
+      companyLogo: 'https://logo.clearbit.com/bytedance.com',
       salary: jobForm.salary || '面议',
       tags: jobForm.skills.length > 0 ? jobForm.skills : ['技术岗'],
       deadline: jobForm.urgent ? '剩余12小时' : '剩余3天',
@@ -288,15 +329,17 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
       experience: jobForm.experience,
       circles: jobForm.circles,
       description: jobForm.description,
+      industry: jobForm.industry || '互联网',
+      location: jobForm.location || '北京',
     };
 
     updateJobs([newJob, ...allJobs]);
+    setLastPublishedJob(newJob);
     setShowPublishSuccess(true);
     setTimeout(() => {
       setShowPublishSuccess(false);
-      resetForm();
-      setShowNewJobModal(false);
-    }, 2000);
+    }, 1500);
+    setShowPostPublishModal(true);
   };
 
   const handleBuyProduct = (productId) => {
@@ -404,20 +447,47 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
       <header className="page-header">
         <div className="header-top">
           <div className="company-info">
-            <div className="company-logo">字</div>
+            <div className="company-logo-wrapper">
+              <img 
+                src="https://ui-avatars.com/api/?name=字节跳动&background=007AFF&color=fff&size=56&font-size=0.4&bold=true" 
+                alt="字节跳动" 
+                className="company-logo-img" 
+                onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'flex'; }}
+              />
+              <div className="company-logo-fallback">字</div>
+            </div>
             <div>
               <h1>字节跳动</h1>
               <p className="company-badge">企业认证 ✓</p>
             </div>
           </div>
-          <button className="btn-new-job" onClick={() => setShowNewJobModal(true)}>
-            <span>+</span> 发布新职位
-          </button>
+          <div className="header-actions">
+            <button className="btn-lock-funds" onClick={handleLockFunds}>
+              <span>🔐</span> 锁定悬赏金
+            </button>
+            <button className="btn-new-job" onClick={() => setShowNewJobModal(true)}>
+              <span>+</span> 发布新职位
+            </button>
+          </div>
         </div>
 
         <div className="stats-row">
           {stats.map((stat, i) => (
-            <div key={i} className="stat-card">
+            <div 
+              key={i} 
+              className={`stat-card ${activeDetailView === stat.label ? 'active' : ''}`}
+              onClick={() => {
+                if (activeDetailView === stat.label) {
+                  setActiveDetailView(null);
+                } else {
+                  if (stat.label === '进行中职位') setActiveDetailData({ jobs: detailJobs });
+                  else if (stat.label === '收到简历') setActiveDetailData({ resumes: detailResumes });
+                  else if (stat.label === '面试中') setActiveDetailData({ interviews: detailInterviews });
+                  else if (stat.label === '本月入职') setActiveDetailData({ joined: detailJoined });
+                  setActiveDetailView(stat.label);
+                }
+              }}
+            >
               <span className="stat-icon">{stat.icon}</span>
               <div className="stat-content">
                 <span className="stat-value">{stat.value}</span>
@@ -426,6 +496,126 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
             </div>
           ))}
         </div>
+
+        {activeDetailView && activeDetailData && (
+          <div className="detail-view-section">
+            <div className="detail-view-header">
+              <h3>{activeDetailView}</h3>
+              <button className="close-detail-view" onClick={() => setActiveDetailView(null)}>✕ 关闭</button>
+            </div>
+            
+            {activeDetailView === '进行中职位' && (
+              <div className="detail-jobs-list">
+                {activeDetailData.jobs.map(job => (
+                  <div key={job.id} className="detail-job-card">
+                    <div className="detail-job-main">
+                      <h4>{job.title}</h4>
+                      <div className="detail-job-tags">
+                        <span className="job-tag">{job.industry}</span>
+                        <span className="job-tag">{job.location}</span>
+                        {job.urgent && <span className="urgent-tag">急招</span>}
+                      </div>
+                    </div>
+                    <div className="detail-job-stats">
+                      <span>📄 {job.candidates} 候选人</span>
+                      <span>👁️ {job.views} 浏览</span>
+                      <span className="bonus-tag">{job.bonus}</span>
+                    </div>
+                    <div className="detail-job-footer">
+                      <span className="posted-date">发布于 {job.posted}</span>
+                      <button className="btn-manage">管理职位</button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {activeDetailView === '收到简历' && (
+              <div className="detail-resumes-list">
+                {activeDetailData.resumes.map(resume => (
+                  <div key={resume.id} className="detail-resume-card">
+                    <div className="resume-main">
+                      <img src={resume.avatar} alt={resume.name} className="resume-avatar" />
+                      <div className="resume-info">
+                        <div className="resume-header">
+                          <span className="resume-name">{resume.name}</span>
+                          <span className={`resume-status ${resume.status}`}>{resume.status}</span>
+                        </div>
+                        <span className="resume-title">{resume.title}</span>
+                        <span className="resume-meta">{resume.education} · {resume.experience}</span>
+                      </div>
+                      <div className="resume-match">
+                        <span className="match-score">{resume.matchScore}%</span>
+                        <span className="match-label">匹配度</span>
+                      </div>
+                    </div>
+                    <div className="resume-footer">
+                      <span className="apply-position">应聘职位: {resume.jobTitle}</span>
+                      <div className="resume-skills">
+                        {resume.skills.map((skill, i) => (
+                          <span key={i} className="skill-tag">{skill}</span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {activeDetailView === '面试中' && (
+              <div className="detail-interviews-list">
+                {activeDetailData.interviews.map(interview => (
+                  <div key={interview.id} className="detail-interview-card">
+                    <div className="interview-main">
+                      <img src={interview.avatar} alt={interview.name} className="interview-avatar" />
+                      <div className="interview-info">
+                        <span className="interview-name">{interview.name}</span>
+                        <span className="interview-title">{interview.title}</span>
+                        <span className="interview-meta">{interview.education} · {interview.experience}</span>
+                      </div>
+                      <div className="interview-stage">
+                        <span className={`stage-badge ${interview.stage}`}>{interview.stage}</span>
+                        <span className="interview-date">📅 {interview.interviewDate}</span>
+                      </div>
+                    </div>
+                    <div className="interview-footer">
+                      <span className="interview-position">应聘职位: {interview.jobTitle}</span>
+                      <span className="interview-interviewer">面试官: {interview.interviewer}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {activeDetailView === '本月入职' && (
+              <div className="detail-joined-list">
+                {activeDetailData.joined.map(person => (
+                  <div key={person.id} className="detail-joined-card">
+                    <div className="joined-main">
+                      <img src={person.avatar} alt={person.name} className="joined-avatar" />
+                      <div className="joined-info">
+                        <span className="joined-name">{person.name}</span>
+                        <span className="joined-title">{person.title}</span>
+                        <span className="joined-meta">{person.education} · {person.experience}</span>
+                      </div>
+                      <div className="joined-date">
+                        <span className="join-label">入职日期</span>
+                        <span className="join-value">{person.joinDate}</span>
+                      </div>
+                    </div>
+                    <div className="joined-footer">
+                      <div className="joined-detail">
+                        <span>入职岗位: {person.position}</span>
+                        <span>部门: {person.department}</span>
+                        <span className="joined-bonus">悬赏金: {person.bonus}</span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
 
         <div className="contract-bar">
           <div className="contract-item">
@@ -440,9 +630,6 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
             <span className="contract-label">✅ 已发放</span>
             <span className="contract-value success">{contractStatus.claimed}</span>
           </div>
-          <button className="btn-lock-funds" onClick={handleLockFunds}>
-            <span>🔐</span> 锁定悬赏金
-          </button>
           <span className="contract-hash">Tx: {contractStatus.txHash}</span>
         </div>
       </header>
@@ -559,35 +746,47 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
       {activeTab === 'candidates' && (
         <div className="candidates-section">
           <div className="filter-bar">
+            <div className="filter-tags">
+              {['全部', '待查看', '已查看', '已推荐'].map(filter => (
+                <button 
+                  key={filter}
+                  className={`filter-tag ${activeFilter === filter ? 'active' : ''}`}
+                  onClick={() => setActiveFilter(filter)}
+                >
+                  {filter}
+                </button>
+              ))}
+            </div>
             <div className="search-box">
               <span>🔍</span>
               <input type="text" placeholder="搜索候选人..." />
-            </div>
-            <div className="filter-tags">
-              <button className="filter-tag active">全部</button>
-              <button className="filter-tag">待查看</button>
-              <button className="filter-tag">面试中</button>
-              <button className="filter-tag">已淘汰</button>
             </div>
           </div>
 
           <div className="candidates-layout">
             <div className="candidates-list">
-              {candidates.map((candidate, index) => (
+              {(activeFilter === '全部' ? candidates : candidates.filter(c => c.status === activeFilter)).map((candidate, index) => (
                 <div 
                   key={candidate.id}
                   className={`candidate-card ${selectedCandidate === candidate.id ? 'selected' : ''} animate-fade-in animate-delay-${index + 1}`}
                   onClick={() => setSelectedCandidate(selectedCandidate === candidate.id ? null : candidate.id)}
                 >
                   <div className="candidate-main">
-                    <div className="candidate-avatar">{candidate.name[0]}</div>
+                    {candidate.avatar ? (
+                      <img src={candidate.avatar} alt={candidate.name} className="candidate-avatar" />
+                    ) : (
+                      <div className="candidate-avatar">{candidate.name[0]}</div>
+                    )}
                     <div className="candidate-info">
                       <div className="candidate-header">
                         <span className="candidate-name">{candidate.name}</span>
                         <span className={`status-badge ${candidate.status}`}>{candidate.status}</span>
                       </div>
                       <span className="candidate-title">{candidate.title}</span>
-                      <span className="candidate-exp">{candidate.education} · {candidate.experience}</span>
+                      <span className="candidate-exp">
+                        {candidate.schoolLogo && <img src={candidate.schoolLogo} alt="" className="school-logo" />}
+                        {candidate.education} · {candidate.experience}
+                      </span>
                     </div>
                     <div className="match-score">
                       <span className="score-value">{candidate.matchScore}%</span>
@@ -604,11 +803,23 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
                   <div className="referrer-section">
                     <span className="referrer-label">推荐人</span>
                     <div className="referrer-info">
+                      {candidate.referrer.avatar && (
+                        <img src={candidate.referrer.avatar} alt={candidate.referrer.name} className="referrer-avatar" />
+                      )}
                       <span className="referrer-name">{candidate.referrer.name}</span>
                       <span className="referrer-badge diamond">
                         💎 {candidate.referrer.score}分 · {candidate.referrer.level}
                       </span>
                     </div>
+                    <button 
+                      className="btn-view-detail"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setViewedCandidate(candidate.id);
+                      }}
+                    >
+                      查看详情
+                    </button>
                   </div>
 
                   {selectedCandidate === candidate.id && (
@@ -1021,69 +1232,6 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
                     onChange={e => handleTitleChange(e.target.value)}
                   />
                 </div>
-                <div className="form-row">
-                  <div className="form-group salary-group">
-                    <label>薪资范围 <span className="auto-tag">自动试算悬赏</span></label>
-                    <div className="salary-inputs">
-                      <div className="salary-monthly">
-                        <select 
-                          value={jobForm.salaryMin || ''}
-                          onChange={e => {
-                            const min = e.target.value;
-                            setJobForm({ ...jobForm, salaryMin: min, salary: formatSalary(min, jobForm.salaryMax, jobForm.salaryMonths) });
-                          }}
-                        >
-                          <option value="">月薪下限</option>
-                          {[5, 8, 10, 12, 15, 18, 20, 25, 30, 35, 40, 45, 50, 60, 70, 80, 100, 120, 150].map(v => (
-                            <option key={v} value={v}>{v}K</option>
-                          ))}
-                        </select>
-                        <span className="salary-separator">-</span>
-                        <select 
-                          value={jobForm.salaryMax || ''}
-                          onChange={e => {
-                            const max = e.target.value;
-                            setJobForm({ ...jobForm, salaryMax: max, salary: formatSalary(jobForm.salaryMin, max, jobForm.salaryMonths) });
-                          }}
-                        >
-                          <option value="">月薪上限</option>
-                          {[8, 10, 12, 15, 18, 20, 25, 30, 35, 40, 45, 50, 60, 70, 80, 100, 120, 150, 200].map(v => (
-                            <option key={v} value={v}>{v}K</option>
-                          ))}
-                        </select>
-                      </div>
-                      <div className="salary-months">
-                        <select 
-                          value={jobForm.salaryMonths || '12'}
-                          onChange={e => {
-                            const months = e.target.value;
-                            setJobForm({ ...jobForm, salaryMonths: months, salary: formatSalary(jobForm.salaryMin, jobForm.salaryMax, months) });
-                          }}
-                        >
-                          {[12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24].map(v => (
-                            <option key={v} value={v}>{v}薪</option>
-                          ))}
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="form-group">
-                    <label>悬赏金额 <span className="required">*</span></label>
-                    <input 
-                      type="text" 
-                      placeholder="如：¥20,000"
-                      value={jobForm.bonus}
-                      onChange={e => setJobForm({ ...jobForm, bonus: e.target.value })}
-                    />
-                  </div>
-                </div>
-                {jobForm.salary && (
-                  <div className="bonus-calculation">
-                    <span>📊 基于年薪10%标准悬赏：</span>
-                    <span className="calc-value">¥{calculateBonus(jobForm.salary).toLocaleString()}</span>
-                    {jobForm.urgent && <span className="urgent-hint">（急招岗位可手动加价）</span>}
-                  </div>
-                )}
               </div>
 
               <div className="form-section">
@@ -1113,6 +1261,40 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
                       <option value="3-5">3-5年</option>
                       <option value="5-10">5-10年</option>
                       <option value="10+">10年以上</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="form-row">
+                  <div className="form-group">
+                    <label>行业</label>
+                    <select 
+                      value={jobForm.industry}
+                      onChange={e => setJobForm({ ...jobForm, industry: e.target.value })}
+                    >
+                      <option value="互联网">互联网</option>
+                      <option value="人工智能">人工智能</option>
+                      <option value="金融">金融</option>
+                      <option value="电商">电商</option>
+                      <option value="教育">教育</option>
+                      <option value="医疗">医疗</option>
+                      <option value="硬件">硬件</option>
+                      <option value="游戏">游戏</option>
+                    </select>
+                  </div>
+                  <div className="form-group">
+                    <label>工作城市</label>
+                    <select
+                      value={jobForm.location}
+                      onChange={e => setJobForm({ ...jobForm, location: e.target.value })}
+                    >
+                      <option value="北京">北京</option>
+                      <option value="上海">上海</option>
+                      <option value="杭州">杭州</option>
+                      <option value="深圳">深圳</option>
+                      <option value="广州">广州</option>
+                      <option value="成都">成都</option>
+                      <option value="南京">南京</option>
+                      <option value="苏州">苏州</option>
                     </select>
                   </div>
                 </div>
@@ -1207,6 +1389,142 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
                 </div>
               </div>
 
+              <div className="form-section">
+                <h4 className="section-title">💵 薪资范围</h4>
+                <div className="salary-group">
+                  <div className="salary-inputs">
+                    <div className="salary-monthly">
+                      <select 
+                        value={jobForm.salaryMin}
+                        onChange={e => {
+                          setJobForm({ ...jobForm, salaryMin: e.target.value });
+                          if (e.target.value && jobForm.salaryMax) {
+                            setJobForm(prev => ({ ...prev, salary: `${e.target.value}-${prev.salaryMax}K·${prev.salaryMonths || 12}薪` }));
+                          }
+                        }}
+                      >
+                        <option value="">最低</option>
+                        {[...Array(30)].map((_, i) => {
+                          const val = (i + 1) * 5;
+                          return <option key={val} value={val}>{val}K</option>;
+                        })}
+                      </select>
+                      <span className="salary-separator">-</span>
+                      <select 
+                        value={jobForm.salaryMax}
+                        onChange={e => {
+                          setJobForm({ ...jobForm, salaryMax: e.target.value });
+                          if (jobForm.salaryMin && e.target.value) {
+                            setJobForm(prev => ({ ...prev, salary: `${prev.salaryMin}-${e.target.value}K·${prev.salaryMonths || 12}薪` }));
+                          }
+                        }}
+                      >
+                        <option value="">最高</option>
+                        {[...Array(30)].map((_, i) => {
+                          const val = (i + 1) * 5;
+                          return <option key={val} value={val}>{val}K</option>;
+                        })}
+                      </select>
+                    </div>
+                    <div className="salary-months">
+                      <select 
+                        value={jobForm.salaryMonths}
+                        onChange={e => {
+                          setJobForm({ ...jobForm, salaryMonths: e.target.value });
+                          if (jobForm.salaryMin && jobForm.salaryMax) {
+                            setJobForm(prev => ({ ...prev, salary: `${prev.salaryMin}-${prev.salaryMax}K·${e.target.value}薪` }));
+                          }
+                        }}
+                      >
+                        {[12,13,14,15,16,17,18,19,20].map(m => (
+                          <option key={m} value={m}>{m}薪</option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="form-section">
+                <h4 className="section-title">💰 悬赏金额</h4>
+                <div className="bonus-mode-tabs">
+                  <button 
+                    className={`bonus-mode-tab ${bonusMode === 'auto' ? 'active' : ''}`}
+                    onClick={() => {
+                      setBonusMode('auto');
+                      if (jobForm.salary) {
+                        setJobForm({ ...jobForm, bonus: `¥${calculateBonus(jobForm.salary).toLocaleString()}` });
+                      }
+                    }}
+                  >
+                    <span className="mode-icon">🧮</span>
+                    <span className="mode-label">按年薪比例</span>
+                    <span className="mode-desc">系统自动计算10%年薪</span>
+                  </button>
+                  <button 
+                    className={`bonus-mode-tab ${bonusMode === 'fixed' ? 'active' : ''}`}
+                    onClick={() => {
+                      setBonusMode('fixed');
+                    }}
+                  >
+                    <span className="mode-icon">💵</span>
+                    <span className="mode-label">一口价</span>
+                    <span className="mode-desc">自定义悬赏金额</span>
+                  </button>
+                </div>
+
+                {bonusMode === 'auto' && (
+                  <div className="bonus-auto-section">
+                    {jobForm.salary ? (
+                      <div className="bonus-preview">
+                        <div className="bonus-preview-row">
+                          <span className="preview-label">年薪</span>
+                          <span className="preview-value">{jobForm.salary}</span>
+                        </div>
+                        <div className="bonus-preview-row">
+                          <span className="preview-label">悬赏比例</span>
+                          <span className="preview-value">10%</span>
+                        </div>
+                        <div className="bonus-preview-row highlight">
+                          <span className="preview-label">悬赏金额</span>
+                          <span className="preview-value">¥{calculateBonus(jobForm.salary).toLocaleString()}</span>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="bonus-empty">
+                        <span>💡 请先在上方填写年薪，系统将自动计算悬赏金额</span>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {bonusMode === 'fixed' && (
+                  <div className="bonus-fixed-section">
+                    <input 
+                      type="text" 
+                      placeholder="输入金额，如：20,000"
+                      value={jobForm.bonus.replace(/[^0-9]/g, '')}
+                      onChange={e => {
+                        const value = e.target.value.replace(/[^0-9]/g, '');
+                        setJobForm({ ...jobForm, bonus: value ? `¥${parseInt(value).toLocaleString()}` : '' });
+                      }}
+                      className="bonus-input"
+                    />
+                    <div className="bonus-presets">
+                      {[10000, 15000, 20000, 25000, 30000, 50000].map(amount => (
+                        <button 
+                          key={amount}
+                          className="bonus-preset-btn"
+                          onClick={() => setJobForm({ ...jobForm, bonus: `¥${amount.toLocaleString()}` })}
+                        >
+                          ¥{amount.toLocaleString()}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+
               <div className="form-section urgent-section">
                 <label className="checkbox-label">
                   <input 
@@ -1239,6 +1557,47 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
         <div className="publish-success-toast">
           <div className="success-icon">✅</div>
           <span>职位发布成功！</span>
+        </div>
+      )}
+
+      {showPostPublishModal && lastPublishedJob && (
+        <div className="post-publish-modal-overlay" onClick={() => setShowPostPublishModal(false)}>
+          <div className="post-publish-modal" onClick={e => e.stopPropagation()}>
+            <div className="post-publish-icon">🎉</div>
+            <h3>职位发布成功！</h3>
+            <p className="post-publish-job-title">{lastPublishedJob.title}</p>
+            <div className="post-publish-details">
+              <div className="post-publish-detail">
+                <span className="detail-label">悬赏金额</span>
+                <span className="detail-value">{lastPublishedJob.bonus}</span>
+              </div>
+              <div className="post-publish-detail">
+                <span className="detail-label">发布时间</span>
+                <span className="detail-value">{lastPublishedJob.posted}</span>
+              </div>
+            </div>
+            <div className="post-publish-actions">
+              <button 
+                className="btn-view-job"
+                onClick={() => {
+                  setShowPostPublishModal(false);
+                  resetForm();
+                  setShowNewJobModal(false);
+                }}
+              >
+                👁️ 查看职位
+              </button>
+              <button 
+                className="btn-continue-post"
+                onClick={() => {
+                  resetForm();
+                  setShowPostPublishModal(false);
+                }}
+              >
+                ➕ 继续发布
+              </button>
+            </div>
+          </div>
         </div>
       )}
 
@@ -1309,6 +1668,11 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
           margin-bottom: 24px;
         }
 
+        .header-actions {
+          display: flex;
+          gap: 12px;
+        }
+
         .company-info {
           display: flex;
           align-items: center;
@@ -1318,9 +1682,35 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
         .company-logo {
           width: 56px;
           height: 56px;
-          background: linear-gradient(135deg, #1e8af0 0%, #0d5cbd 100%);
+          background: linear-gradient(135deg, #007AFF 0%, #0062CC 100%);
           border-radius: var(--radius-md);
           display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: 700;
+          font-size: 1.5rem;
+          color: white;
+        }
+
+        .company-logo-img {
+          width: 56px;
+          height: 56px;
+          border-radius: var(--radius-md);
+          object-fit: cover;
+        }
+
+        .company-logo-wrapper {
+          position: relative;
+          width: 56px;
+          height: 56px;
+        }
+
+        .company-logo-fallback {
+          display: none;
+          width: 56px;
+          height: 56px;
+          background: linear-gradient(135deg, #007AFF 0%, #0062CC 100%);
+          border-radius: var(--radius-md);
           align-items: center;
           justify-content: center;
           font-weight: 700;
@@ -1335,14 +1725,15 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
 
         .company-badge {
           font-size: 0.8rem;
-          color: var(--success);
+          color: #007AFF;
+          font-weight: 600;
         }
 
         .btn-new-job {
           display: flex;
           align-items: center;
           gap: 8px;
-          background: linear-gradient(135deg, #1e8af0 0%, #0d5cbd 100%);
+          background: linear-gradient(135deg, #007AFF 0%, #0062CC 100%);
           color: white;
           padding: 12px 24px;
           border-radius: var(--radius-md);
@@ -1373,6 +1764,292 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
           border-radius: var(--radius-lg);
           box-shadow: var(--shadow-glass);
           transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+          cursor: pointer;
+        }
+
+        .stat-card:hover {
+          border-color: rgba(30, 138, 240, 0.5);
+          transform: translateY(-2px);
+        }
+
+        .stat-card.active {
+          border-color: var(--accent-primary);
+          background: var(--accent-glow);
+        }
+
+        .detail-view-section {
+          margin-top: 24px;
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          border: var(--glass-border);
+          border-radius: var(--radius-xl);
+          padding: 24px;
+          box-shadow: var(--shadow-glass);
+          animation: fadeIn 0.3s ease;
+        }
+
+        .detail-view-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 20px;
+          padding-bottom: 16px;
+          border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .detail-view-header h3 {
+          font-size: 1.1rem;
+          color: var(--text-primary);
+        }
+
+        .close-detail-view {
+          padding: 8px 16px;
+          background: var(--glass-bg);
+          border: var(--glass-border);
+          border-radius: var(--radius-md);
+          color: var(--text-secondary);
+          font-size: 0.85rem;
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
+
+        .close-detail-view:hover {
+          border-color: rgba(30, 138, 240, 0.5);
+          color: var(--text-primary);
+        }
+
+        .detail-jobs-list,
+        .detail-resumes-list,
+        .detail-interviews-list,
+        .detail-joined-list {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+        }
+
+        .detail-job-card,
+        .detail-resume-card,
+        .detail-interview-card,
+        .detail-joined-card {
+          padding: 16px;
+          background: var(--bg-tertiary);
+          border-radius: var(--radius-md);
+          transition: all 0.2s ease;
+        }
+
+        .detail-job-card:hover,
+        .detail-resume-card:hover,
+        .detail-interview-card:hover,
+        .detail-joined-card:hover {
+          background: var(--bg-secondary);
+        }
+
+        .detail-job-main,
+        .resume-main,
+        .interview-main,
+        .joined-main {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+          margin-bottom: 12px;
+        }
+
+        .detail-job-main h4 {
+          font-size: 1rem;
+          color: var(--text-primary);
+          margin-bottom: 8px;
+        }
+
+        .detail-job-tags,
+        .resume-skills {
+          display: flex;
+          gap: 8px;
+          flex-wrap: wrap;
+        }
+
+        .job-tag,
+        .skill-tag {
+          padding: 4px 10px;
+          background: var(--glass-bg);
+          border: var(--glass-border);
+          border-radius: 15px;
+          font-size: 0.75rem;
+          color: var(--text-secondary);
+        }
+
+        .urgent-tag {
+          background: rgba(255, 107, 107, 0.15);
+          color: #ff6b6b;
+          border-color: rgba(255, 107, 107, 0.3);
+        }
+
+        .bonus-tag {
+          font-weight: 600;
+          color: var(--bonus-gold);
+        }
+
+        .detail-job-stats {
+          display: flex;
+          gap: 16px;
+          font-size: 0.85rem;
+          color: var(--text-secondary);
+          margin-bottom: 12px;
+        }
+
+        .detail-job-footer {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding-top: 12px;
+          border-top: 1px solid var(--border-subtle);
+        }
+
+        .posted-date {
+          font-size: 0.8rem;
+          color: var(--text-tertiary);
+        }
+
+        .resume-info,
+        .interview-info,
+        .joined-info {
+          flex: 1;
+          margin-left: 12px;
+        }
+
+        .resume-header,
+        .interview-stage {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          margin-bottom: 4px;
+        }
+
+        .resume-name,
+        .interview-name,
+        .joined-name {
+          font-weight: 600;
+          color: var(--text-primary);
+          font-size: 0.95rem;
+        }
+
+        .resume-status {
+          font-size: 0.7rem;
+          padding: 2px 8px;
+          border-radius: 4px;
+        }
+
+        .resume-status.待查看 {
+          background: rgba(251, 191, 36, 0.1);
+          color: var(--warning);
+        }
+
+        .resume-status.已查看 {
+          background: rgba(96, 165, 250, 0.1);
+          color: var(--info);
+        }
+
+        .resume-status.已推荐 {
+          background: rgba(0, 122, 255, 0.1);
+          color: #007AFF;
+        }
+
+        .resume-title,
+        .interview-title,
+        .joined-title {
+          display: block;
+          font-size: 0.85rem;
+          color: var(--text-secondary);
+          margin-bottom: 2px;
+        }
+
+        .resume-meta,
+        .interview-meta,
+        .joined-meta {
+          font-size: 0.8rem;
+          color: var(--text-tertiary);
+        }
+
+        .resume-match,
+        .interview-stage,
+        .joined-date {
+          text-align: right;
+        }
+
+        .match-score {
+          display: block;
+          font-size: 1.1rem;
+          font-weight: 700;
+          color: #007AFF;
+        }
+
+        .match-label,
+        .join-label {
+          font-size: 0.7rem;
+          color: var(--text-tertiary);
+        }
+
+        .stage-badge {
+          display: inline-block;
+          padding: 4px 12px;
+          border-radius: 15px;
+          font-size: 0.8rem;
+          font-weight: 500;
+          margin-bottom: 4px;
+        }
+
+        .stage-badge.初试 {
+          background: rgba(96, 165, 250, 0.15);
+          color: #60a5fa;
+        }
+
+        .stage-badge.二面 {
+          background: rgba(251, 191, 36, 0.15);
+          color: #fbbf24;
+        }
+
+        .stage-badge.终面 {
+          background: rgba(34, 197, 94, 0.15);
+          color: #22c55e;
+        }
+
+        .interview-date,
+        .join-value {
+          display: block;
+          font-size: 0.85rem;
+          color: var(--text-primary);
+          font-weight: 500;
+        }
+
+        .resume-footer,
+        .interview-footer,
+        .joined-footer {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding-top: 12px;
+          border-top: 1px solid var(--border-subtle);
+          font-size: 0.85rem;
+        }
+
+        .apply-position,
+        .interview-position {
+          color: var(--text-tertiary);
+        }
+
+        .interview-interviewer {
+          color: var(--text-secondary);
+        }
+
+        .joined-detail {
+          display: flex;
+          gap: 20px;
+          font-size: 0.85rem;
+          color: var(--text-secondary);
+        }
+
+        .joined-bonus {
+          font-weight: 600;
+          color: var(--bonus-gold);
         }
 
         .stat-icon {
@@ -1420,7 +2097,7 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
         .tab.active {
           background: rgba(30, 138, 240, 0.15);
           border-color: rgba(30, 138, 240, 0.5);
-          color: #1e8af0;
+          color: #007AFF;
         }
 
         .filter-bar {
@@ -1487,7 +2164,7 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
         .filter-tag.active {
           background: rgba(30, 138, 240, 0.15);
           border-color: rgba(30, 138, 240, 0.5);
-          color: #1e8af0;
+          color: #007AFF;
         }
 
         .candidates-layout {
@@ -1530,7 +2207,6 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
         .candidate-avatar {
           width: 48px;
           height: 48px;
-          background: linear-gradient(135deg, #1e8af0 0%, #0d5cbd 100%);
           border-radius: 50%;
           display: flex;
           align-items: center;
@@ -1538,6 +2214,24 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
           font-weight: 600;
           color: white;
           font-size: 1.1rem;
+          object-fit: cover;
+          background: linear-gradient(135deg, #007AFF 0%, #0062CC 100%);
+        }
+
+        .school-logo {
+          width: 16px;
+          height: 16px;
+          border-radius: 3px;
+          object-fit: cover;
+          margin-right: 4px;
+        }
+
+        .referrer-avatar {
+          width: 24px;
+          height: 24px;
+          border-radius: 50%;
+          object-fit: cover;
+          margin-right: 6px;
         }
 
         .candidate-info {
@@ -1573,8 +2267,8 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
         }
 
         .status-badge.已推荐 {
-          background: rgba(16, 185, 129, 0.1);
-          color: #10b981;
+          background: rgba(0, 122, 255, 0.1);
+          color: #007AFF;
         }
 
         .candidate-title {
@@ -1597,7 +2291,7 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
           display: block;
           font-size: 1.25rem;
           font-weight: 700;
-          color: #1e8af0;
+          color: #007AFF;
         }
 
         .score-label {
@@ -1658,6 +2352,23 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
           border: 1px solid rgba(212, 168, 83, 0.3);
         }
 
+        .btn-view-detail {
+          margin-left: auto;
+          padding: 8px 16px;
+          background: rgba(30, 138, 240, 0.15);
+          border: 1px solid rgba(30, 138, 240, 0.4);
+          border-radius: var(--radius-md);
+          color: #007AFF;
+          font-size: 0.85rem;
+          cursor: pointer;
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn-view-detail:hover {
+          background: rgba(30, 138, 240, 0.25);
+          border-color: rgba(30, 138, 240, 0.6);
+        }
+
         .candidate-expanded {
           margin-top: 16px;
           padding-top: 16px;
@@ -1673,7 +2384,7 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
         .btn-primary {
           flex: 1;
           padding: 12px;
-          background: linear-gradient(135deg, #1e8af0 0%, #0d5cbd 100%);
+          background: linear-gradient(135deg, #007AFF 0%, #0062CC 100%);
           color: white;
           border-radius: var(--radius-md);
           font-weight: 600;
@@ -1885,7 +2596,7 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
 
         .btn-unlock {
           padding: 12px 20px;
-          background: linear-gradient(135deg, #1e8af0 0%, #0d5cbd 100%);
+          background: linear-gradient(135deg, #007AFF 0%, #0062CC 100%);
           color: white;
           border-radius: var(--radius-md);
           font-weight: 600;
@@ -2057,7 +2768,7 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
 
         .btn-manage {
           background: rgba(30, 138, 240, 0.15);
-          color: #1e8af0;
+          color: #007AFF;
           border: 1px solid rgba(30, 138, 240, 0.4);
         }
 
@@ -2144,7 +2855,7 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
 
         .source-fill {
           height: 100%;
-          background: linear-gradient(90deg, #1e8af0, #0d5cbd);
+          background: linear-gradient(90deg, #007AFF, #0062CC);
           border-radius: 4px;
         }
 
@@ -2268,7 +2979,7 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
         .btn-move {
           padding: 4px 12px;
           background: rgba(30, 138, 240, 0.15);
-          color: #1e8af0;
+          color: #007AFF;
           border-radius: var(--radius-sm);
           font-size: 0.85rem;
           cursor: pointer;
@@ -2354,7 +3065,7 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
         }
 
         .finance-card.locked .finance-value { color: #fbbf24; }
-        .finance-card.pending .finance-value { color: #10b981; }
+        .finance-card.pending .finance-value { color: #007AFF; }
         .finance-card.released .finance-value { color: #4ade80; }
 
         .finance-actions {
@@ -2434,7 +3145,7 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
         .btn-invoice {
           width: 100%;
           padding: 14px;
-          background: linear-gradient(135deg, #1e8af0 0%, #0d5cbd 100%);
+          background: linear-gradient(135deg, #007AFF 0%, #0062CC 100%);
           color: white;
           border-radius: var(--radius-md);
           font-weight: 600;
@@ -2639,6 +3350,7 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
           display: flex;
           gap: 12px;
           align-items: center;
+          flex-wrap: wrap;
         }
 
         .salary-monthly {
@@ -2646,20 +3358,75 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
           align-items: center;
           gap: 8px;
           flex: 1;
+          min-width: 200px;
         }
 
         .salary-monthly select {
           flex: 1;
           min-width: 80px;
+          padding: 10px 12px;
+          background: var(--bg-primary);
+          border: 1px solid var(--border-color);
+          border-radius: var(--radius-sm);
+          font-size: 0.95rem;
+          color: var(--text-primary);
+          cursor: pointer;
+          appearance: none;
+          -webkit-appearance: none;
+          -moz-appearance: none;
+          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+          background-repeat: no-repeat;
+          background-position: right 12px center;
+          padding-right: 32px;
+        }
+
+        .salary-monthly select:hover {
+          border-color: var(--accent-primary);
+        }
+
+        .salary-monthly select:focus {
+          outline: none;
+          border-color: var(--accent-primary);
+          box-shadow: 0 0 0 3px rgba(30, 138, 240, 0.1);
         }
 
         .salary-separator {
           color: var(--text-tertiary);
           font-size: 0.9rem;
+          flex-shrink: 0;
+        }
+
+        .salary-months {
+          display: flex;
+          align-items: center;
         }
 
         .salary-months select {
-          width: 80px;
+          min-width: 70px;
+          padding: 10px 12px;
+          padding-right: 32px;
+          background: var(--bg-primary);
+          border: 1px solid var(--border-color);
+          border-radius: var(--radius-sm);
+          font-size: 0.95rem;
+          color: var(--text-primary);
+          cursor: pointer;
+          appearance: none;
+          -webkit-appearance: none;
+          -moz-appearance: none;
+          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+          background-repeat: no-repeat;
+          background-position: right 12px center;
+        }
+
+        .salary-months select:hover {
+          border-color: var(--accent-primary);
+        }
+
+        .salary-months select:focus {
+          outline: none;
+          border-color: var(--accent-primary);
+          box-shadow: 0 0 0 3px rgba(30, 138, 240, 0.1);
         }
 
         .bonus-calculation {
@@ -2684,6 +3451,146 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
         .bonus-calculation .urgent-hint {
           color: var(--warning);
           font-size: 0.8rem;
+        }
+
+        .bonus-mode-tabs {
+          display: flex;
+          gap: 12px;
+          margin-bottom: 16px;
+        }
+
+        .bonus-mode-tab {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 4px;
+          padding: 16px;
+          background: var(--glass-bg);
+          border: 1px solid var(--glass-border);
+          border-radius: var(--radius-md);
+          cursor: pointer;
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .bonus-mode-tab:hover {
+          border-color: var(--border-accent);
+        }
+
+        .bonus-mode-tab.active {
+          background: var(--accent-glow);
+          border-color: var(--accent-primary);
+        }
+
+        .bonus-mode-tab .mode-icon {
+          font-size: 1.5rem;
+        }
+
+        .bonus-mode-tab .mode-label {
+          font-weight: 600;
+          color: var(--text-primary);
+        }
+
+        .bonus-mode-tab .mode-desc {
+          font-size: 0.75rem;
+          color: var(--text-tertiary);
+        }
+
+        .bonus-auto-section {
+          padding: 16px;
+          background: rgba(0, 0, 0, 0.2);
+          border: 1px solid var(--glass-border);
+          border-radius: var(--radius-md);
+        }
+
+        .bonus-preview {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+        }
+
+        .bonus-preview-row {
+          display: flex;
+          justify-content: space-between;
+          font-size: 0.9rem;
+        }
+
+        .bonus-preview-row .preview-label {
+          color: var(--text-tertiary);
+        }
+
+        .bonus-preview-row .preview-value {
+          color: var(--text-primary);
+        }
+
+        .bonus-preview-row.highlight {
+          padding-top: 12px;
+          margin-top: 8px;
+          border-top: 1px dashed var(--glass-border);
+        }
+
+        .bonus-preview-row.highlight .preview-value {
+          font-size: 1.25rem;
+          font-weight: 700;
+          color: var(--accent-primary);
+        }
+
+        .bonus-empty {
+          padding: 20px;
+          text-align: center;
+          color: var(--text-tertiary);
+          font-size: 0.9rem;
+        }
+
+        .bonus-fixed-section {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+        }
+
+        .bonus-input {
+          width: 100%;
+          padding: 14px 16px;
+          background: var(--glass-bg);
+          border: 1px solid var(--glass-border);
+          border-radius: var(--radius-md);
+          color: var(--text-primary);
+          font-size: 1.1rem;
+          font-weight: 600;
+          outline: none;
+          transition: all 0.2s ease;
+        }
+
+        .bonus-input:focus {
+          border-color: var(--accent-primary);
+          box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.15);
+        }
+
+        .bonus-input::placeholder {
+          color: var(--text-tertiary);
+          font-weight: 400;
+        }
+
+        .bonus-presets {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+        }
+
+        .bonus-preset-btn {
+          padding: 8px 16px;
+          background: var(--glass-bg);
+          border: 1px solid var(--glass-border);
+          border-radius: var(--radius-md);
+          color: var(--text-secondary);
+          font-size: 0.85rem;
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
+
+        .bonus-preset-btn:hover {
+          border-color: var(--border-accent);
+          color: var(--accent-primary);
         }
 
         .required {
@@ -2753,7 +3660,7 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
           align-items: center;
           gap: 4px;
           background: rgba(30, 138, 240, 0.15);
-          color: #1e8af0;
+          color: #007AFF;
           padding: 4px 10px;
           border-radius: 15px;
           font-size: 0.8rem;
@@ -2820,12 +3727,12 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
 
         .multi-tag {
           background: rgba(30, 138, 240, 0.15);
-          color: #1e8af0;
+          color: #007AFF;
         }
 
         .jd-analysis-result {
-          background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(5, 150, 105, 0.1) 100%);
-          border: 1px solid rgba(16, 185, 129, 0.3);
+          background: linear-gradient(135deg, rgba(0, 122, 255, 0.1) 0%, rgba(5, 150, 105, 0.1) 100%);
+          border: 1px solid rgba(0, 122, 255, 0.3);
           border-radius: var(--radius-md);
           padding: 16px;
           margin-top: 12px;
@@ -2839,7 +3746,7 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
         }
 
         .analysis-item:not(:last-child) {
-          border-bottom: 1px solid rgba(16, 185, 129, 0.2);
+          border-bottom: 1px solid rgba(0, 122, 255, 0.2);
         }
 
         .analysis-label {
@@ -2855,8 +3762,8 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
         }
 
         .analysis-tag {
-          background: rgba(16, 185, 129, 0.2);
-          color: #10b981;
+          background: rgba(0, 122, 255, 0.2);
+          color: #007AFF;
           padding: 4px 10px;
           border-radius: 15px;
           font-size: 0.8rem;
@@ -2923,7 +3830,7 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
         }
 
         .circle-option.checked .circle-card {
-          border-color: #1e8af0;
+          border-color: #007AFF;
           background: rgba(30, 138, 240, 0.1);
         }
 
@@ -3053,7 +3960,7 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
         .btn-publish {
           width: 100%;
           padding: 14px;
-          background: linear-gradient(135deg, #1e8af0 0%, #0d5cbd 100%);
+          background: linear-gradient(135deg, #007AFF 0%, #0062CC 100%);
           color: white;
           border-radius: var(--radius-md);
           font-weight: 600;
@@ -3161,12 +4068,11 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
           align-items: center;
           gap: 8px;
           padding: 10px 16px;
-          background: linear-gradient(135deg, #10b981, #059669);
+          background: linear-gradient(135deg, #007AFF, #0062CC);
           color: white;
           border-radius: var(--radius-md);
           font-weight: 600;
           font-size: 0.9rem;
-          margin-left: auto;
           cursor: pointer;
           transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
           border: none;
@@ -3174,7 +4080,7 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
 
         .btn-lock-funds:hover {
           transform: translateY(-2px);
-          box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4);
+          box-shadow: 0 4px 20px rgba(0, 122, 255, 0.4);
         }
 
         .contract-hash {
@@ -3264,6 +4170,133 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
           box-shadow: 0 4px 20px rgba(74, 222, 128, 0.4);
         }
 
+        .post-publish-modal-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: rgba(0, 0, 0, 0.85);
+          backdrop-filter: blur(8px);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 2000;
+          animation: fadeIn 0.25s ease;
+        }
+
+        .post-publish-modal {
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          -webkit-backdrop-filter: var(--glass-blur);
+          border: 1px solid var(--border-accent);
+          border-radius: var(--radius-xl);
+          padding: 40px;
+          max-width: 420px;
+          width: 90%;
+          text-align: center;
+          box-shadow: var(--shadow-elevated);
+          animation: scaleIn 0.3s ease;
+        }
+
+        @keyframes scaleIn {
+          from {
+            opacity: 0;
+            transform: scale(0.9);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+
+        .post-publish-icon {
+          font-size: 3rem;
+          margin-bottom: 16px;
+        }
+
+        .post-publish-modal h3 {
+          font-size: 1.5rem;
+          margin-bottom: 8px;
+          color: var(--text-primary);
+        }
+
+        .post-publish-job-title {
+          font-size: 1.1rem;
+          color: var(--accent-primary);
+          font-weight: 600;
+          margin-bottom: 24px;
+        }
+
+        .post-publish-details {
+          display: flex;
+          justify-content: center;
+          gap: 32px;
+          margin-bottom: 32px;
+          padding: 16px;
+          background: rgba(0, 0, 0, 0.2);
+          border-radius: var(--radius-md);
+          border: 1px solid var(--glass-border);
+        }
+
+        .post-publish-detail {
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+        }
+
+        .post-publish-detail .detail-label {
+          font-size: 0.8rem;
+          color: var(--text-tertiary);
+        }
+
+        .post-publish-detail .detail-value {
+          font-size: 1rem;
+          font-weight: 600;
+          color: var(--text-primary);
+        }
+
+        .post-publish-actions {
+          display: flex;
+          gap: 12px;
+        }
+
+        .btn-view-job {
+          flex: 1;
+          padding: 14px 20px;
+          background: var(--accent-gradient);
+          color: #0a0a0f;
+          border: none;
+          border-radius: var(--radius-md);
+          font-weight: 600;
+          font-size: 0.95rem;
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
+
+        .btn-view-job:hover {
+          transform: translateY(-2px);
+          box-shadow: var(--shadow-glow);
+        }
+
+        .btn-continue-post {
+          flex: 1;
+          padding: 14px 20px;
+          background: transparent;
+          color: var(--text-primary);
+          border: 1px solid var(--border-default);
+          border-radius: var(--radius-md);
+          font-weight: 600;
+          font-size: 0.95rem;
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
+
+        .btn-continue-post:hover {
+          background: var(--bg-card-hover);
+          border-color: var(--border-accent);
+        }
+
         @keyframes slideDown {
           from {
             opacity: 0;
@@ -3293,7 +4326,7 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
         .contract-modal {
           background: var(--glass-bg);
           backdrop-filter: var(--glass-blur);
-          border: 1px solid rgba(16, 185, 129, 0.3);
+          border: 1px solid rgba(0, 122, 255, 0.3);
           border-radius: var(--radius-xl);
           padding: 32px;
           max-width: 480px;
@@ -3327,7 +4360,7 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
 
         .lock-progress-fill {
           height: 100%;
-          background: linear-gradient(90deg, #10b981, #10b981);
+          background: linear-gradient(90deg, #007AFF, #007AFF);
           transition: width 0.2s ease;
         }
 
@@ -3469,17 +4502,18 @@ export default function EmployerPortal({ publishedJobs: jobsFromParent, setPubli
         .btn-buy {
           width: 100%;
           padding: 12px;
-          background: var(--accent-gradient);
-          color: #0a0a0f;
+          background: rgba(0, 122, 255, 0.15);
+          color: #007AFF;
           border-radius: var(--radius-md);
           font-weight: 600;
           cursor: pointer;
           transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+          border: 1px solid rgba(0, 122, 255, 0.3);
         }
 
         .btn-buy:hover {
+          background: rgba(0, 122, 255, 0.25);
           transform: translateY(-2px);
-          box-shadow: var(--shadow-glow);
         }
 
         .store-history {

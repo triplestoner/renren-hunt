@@ -13,6 +13,7 @@ const initialJobs = [
     id: 1,
     title: '资深前端架构师',
     company: '字节跳动',
+    companyLogo: 'https://logo.clearbit.com/bytedance.com',
     salary: '80-120K·16薪',
     tags: ['React', 'TypeScript', '架构设计'],
     deadline: '剩余12小时',
@@ -25,6 +26,7 @@ const initialJobs = [
     id: 2,
     title: 'AI算法工程师',
     company: 'MiniMax',
+    companyLogo: 'https://logo.clearbit.com/minimaxi.chat',
     salary: '60-90K·15薪',
     tags: ['Python', 'LLM', '深度学习'],
     deadline: '剩余2天',
@@ -37,6 +39,7 @@ const initialJobs = [
     id: 3,
     title: '产品总监',
     company: '美团',
+    companyLogo: 'https://logo.clearbit.com/meituan.com',
     salary: '100-150K·14薪',
     tags: ['B端产品', 'SaaS', '团队管理'],
     deadline: '剩余3天',
@@ -49,6 +52,7 @@ const initialJobs = [
     id: 4,
     title: '后端资深工程师',
     company: '蚂蚁集团',
+    companyLogo: 'https://logo.clearbit.com/antgroup.com',
     salary: '50-80K·15薪',
     tags: ['Java', '微服务', '分布式'],
     deadline: '剩余1天',
@@ -89,7 +93,7 @@ function App() {
         education: recommendation.education || '本科',
         skills: recommendation.skills,
         matchScore: Math.floor((recommendation.skillMatch + recommendation.experienceMatch + recommendation.potential) / 3 * 20),
-        referrer: { name: '李明', score: 92, level: 'S级' },
+        referrer: { name: '李小牛', score: 92, level: 'S级' },
         status: '待查看',
         review: null,
       }
@@ -248,11 +252,11 @@ function App() {
         }
 
         .role-tab.active[onclick*="c2"] {
-          color: #10b981;
+          color: #007AFF;
         }
 
         .role-tab.active[onclick*="b"] {
-          color: #1e8af0;
+          color: #007AFF;
         }
 
         .tab-icon {
@@ -275,14 +279,14 @@ function App() {
         }
 
         .role-badge.c2 {
-          background: rgba(16, 185, 129, 0.15);
-          color: #10b981;
-          border: 1px solid rgba(16, 185, 129, 0.2);
+          background: rgba(0, 122, 255, 0.15);
+          color: #007AFF;
+          border: 1px solid rgba(0, 122, 255, 0.2);
         }
 
         .role-badge.b {
           background: rgba(30, 138, 240, 0.15);
-          color: #1e8af0;
+          color: #007AFF;
           border: 1px solid rgba(30, 138, 240, 0.2);
         }
 

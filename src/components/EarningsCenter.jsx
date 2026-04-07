@@ -4,8 +4,10 @@ const mockEarnings = [
   {
     id: 1,
     candidate: '张同学',
+    avatar: 'https://i.pravatar.cc/48?u=zhang',
     position: '资深前端架构师',
     company: '字节跳动',
+    companyLogo: 'https://logo.clearbit.com/bytedance.com',
     bonus: 25000,
     status: '已到账',
     date: '2026-03-20',
@@ -21,8 +23,10 @@ const mockEarnings = [
   {
     id: 2,
     candidate: '王同学',
+    avatar: 'https://i.pravatar.cc/48?u=wang',
     position: 'AI算法工程师',
     company: 'MiniMax',
+    companyLogo: 'https://logo.clearbit.com/minimaxi.chat',
     bonus: 18000,
     status: '冻结中',
     date: '2026-03-15',
@@ -38,8 +42,10 @@ const mockEarnings = [
   {
     id: 3,
     candidate: '李同学',
+    avatar: 'https://i.pravatar.cc/48?u=li',
     position: '产品总监',
     company: '美团',
+    companyLogo: 'https://logo.clearbit.com/meituan.com',
     bonus: 35000,
     status: '待发放',
     date: '2026-03-10',
@@ -55,8 +61,10 @@ const mockEarnings = [
   {
     id: 4,
     candidate: '赵同学',
+    avatar: 'https://i.pravatar.cc/48?u=zhao',
     position: '后端资深工程师',
     company: '蚂蚁集团',
+    companyLogo: 'https://logo.clearbit.com/antgroup.com',
     bonus: 20000,
     status: '已到账',
     date: '2026-02-28',
@@ -177,16 +185,21 @@ export default function EarningsCenter() {
             <div key={item.id} className={`earnings-card animate-fade-in animate-delay-${index + 1} ${expandedCard === item.id ? 'expanded' : ''}`}>
               <div className="card-main" onClick={() => setExpandedCard(expandedCard === item.id ? null : item.id)}>
                 <div className="card-left">
-                  <div className="candidate-avatar">
-                    {item.candidate[0]}
-                  </div>
+                  {item.avatar ? (
+                    <img src={item.avatar} alt={item.candidate} className="candidate-avatar" />
+                  ) : (
+                    <div className="candidate-avatar">{item.candidate[0]}</div>
+                  )}
                   <div className="card-info">
                     <div className="card-header">
                       <span className="candidate-name">{item.candidate}</span>
                       <span className={`status-badge ${item.status}`}>{item.status}</span>
                     </div>
                     <span className="position">{item.position}</span>
-                    <span className="company">{item.company}</span>
+                    <span className="company">
+                      {item.companyLogo && <img src={item.companyLogo} alt="" className="company-logo" />}
+                      {item.company}
+                    </span>
                   </div>
                 </div>
                 <div className="card-right">
@@ -513,7 +526,6 @@ export default function EarningsCenter() {
         .candidate-avatar {
           width: 48px;
           height: 48px;
-          background: var(--accent-gradient);
           border-radius: 50%;
           display: flex;
           align-items: center;
@@ -521,6 +533,16 @@ export default function EarningsCenter() {
           font-weight: 600;
           color: #0a0a0f;
           font-size: 1.1rem;
+          object-fit: cover;
+          background: var(--accent-gradient);
+        }
+
+        .company-logo {
+          width: 16px;
+          height: 16px;
+          border-radius: 3px;
+          object-fit: cover;
+          margin-right: 6px;
         }
 
         .card-info {
@@ -667,7 +689,7 @@ export default function EarningsCenter() {
         }
 
         .breakdown-detail {
-          background: rgba(16, 185, 129, 0.1);
+          background: rgba(0, 122, 255, 0.1);
           border-radius: var(--radius-md);
           padding: 12px;
         }
