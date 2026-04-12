@@ -189,7 +189,7 @@ function App() {
       {activeRole === 'b' && <EmployerPortal publishedJobs={publishedJobs} setPublishedJobs={setPublishedJobs} />}
 
       <footer className="app-footer">
-        <span>最后更新：{new Date().toLocaleString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })}</span>
+        <span>最后更新：2026-04-12 20:12:57</span>
         <span className="footer-separator">|</span>
         <span>by lql</span>
       </footer>

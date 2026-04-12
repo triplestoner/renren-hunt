@@ -389,19 +389,20 @@ export default function EarningsCenter() {
           display: flex;
           align-items: center;
           gap: 8px;
-          background: var(--accent-gradient);
-          color: #0a0a0f;
+          background: rgba(30, 138, 240, 0.1);
+          color: #1e8af0;
           padding: 14px 28px;
           border-radius: var(--radius-md);
           font-weight: 600;
           font-size: 1rem;
           cursor: pointer;
           transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+          border: 1px solid rgba(30, 138, 240, 0.3);
         }
 
         .btn-withdraw:hover {
+          background: rgba(30, 138, 240, 0.2);
           transform: translateY(-2px);
-          box-shadow: var(--shadow-glow);
         }
 
         .summary-stats {
@@ -870,18 +871,19 @@ export default function EarningsCenter() {
         .btn-confirm-withdraw {
           width: 100%;
           padding: 14px;
-          background: var(--accent-gradient);
-          color: #0a0a0f;
+          background: rgba(30, 138, 240, 0.1);
+          color: #1e8af0;
           border-radius: var(--radius-md);
           font-weight: 600;
           font-size: 1rem;
           cursor: pointer;
           transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+          border: 1px solid rgba(30, 138, 240, 0.3);
         }
 
         .btn-confirm-withdraw:hover {
+          background: rgba(30, 138, 240, 0.2);
           transform: translateY(-2px);
-          box-shadow: var(--shadow-glow);
         }
 
         .compliance-notice {
