@@ -7,6 +7,7 @@ import Referrals from './components/Referrals'
 import Circles from './components/Circles'
 import CandidatePortal from './components/CandidatePortal'
 import EmployerPortal from './components/EmployerPortal'
+import RecommenderOnboarding from './components/RecommenderOnboarding'
 
 const initialJobs = [
   {
@@ -64,6 +65,7 @@ const initialJobs = [
 ];
 
 function App() {
+  const [isRecommenderOnboarded, setIsRecommenderOnboarded] = useState(false)
   const [activeRole, setActiveRole] = useState('c1')
   const [activeTab, setActiveTab] = useState('hall')
   const [publishedJobs, setPublishedJobs] = useState(initialJobs)
@@ -146,6 +148,12 @@ function App() {
 
   const renderLayout = (children) => {
     if (activeRole === 'c1') {
+      if (!isRecommenderOnboarded) {
+        return <RecommenderOnboarding onComplete={() => {
+          setIsRecommenderOnboarded(true)
+          setActiveTab('trust')
+        }} />
+      }
       return (
         <Layout activeTab={activeTab} onTabChange={setActiveTab}>
           {children}
