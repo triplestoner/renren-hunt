@@ -1,4 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
+import JDAnalyzerModal from './JDAnalyzerModal';
+import CandidateReportGenerator from './CandidateReportGenerator';
 
 const mockJobs = [
   {
@@ -108,6 +110,8 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
   const [searchQuery, setSearchQuery] = useState('');
   const [industryFilter, setIndustryFilter] = useState('');
   const [locationFilter, setLocationFilter] = useState('');
+  const [analyzingJob, setAnalyzingJob] = useState(null);
+  const [generatingReportJob, setGeneratingReportJob] = useState(null);
   const funnelTimersRef = useRef([]);
 
   const runAIScan = () => {
@@ -753,16 +757,22 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
                 <span className="deadline">⏰ {job.deadline}</span>
                 <div className="job-actions">
                   <button 
+                    className="btn-ai-parse"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setAnalyzingJob(job);
+                    }}
+                  >
+                    <span>🤖</span> AI解析
+                  </button>
+                  <button 
                     className="btn-ai-match"
                     onClick={(e) => {
                       e.stopPropagation();
                       runAIScan();
                     }}
                   >
-                    <span>🤖</span> AI匹配
-                  </button>
-                  <button className="btn-share">
-                    <span>📤</span> 分享
+                    <span>🎯</span> 扫人脉
                   </button>
                 </div>
               </div>
@@ -808,6 +818,28 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
           </div>
         )}
       </div>
+
+      {analyzingJob && (
+        <JDAnalyzerModal 
+          job={analyzingJob} 
+          onClose={() => setAnalyzingJob(null)}
+          onGenerateReport={(job) => {
+            setAnalyzingJob(null);
+            setGeneratingReportJob(job);
+          }}
+        />
+      )}
+
+      {generatingReportJob && (
+        <CandidateReportGenerator 
+          job={generatingReportJob}
+          onClose={() => setGeneratingReportJob(null)}
+          onSend={(candidate) => {
+            alert('报告已成功发送给企业HR！');
+            // 此处可调用原有 onRecommend 逻辑
+          }}
+        />
+      )}
 
       <style>{`
         .job-hall {
@@ -1432,6 +1464,25 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
         .job-actions {
           display: flex;
           gap: 8px;
+        }
+
+        .btn-ai-parse {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          background: rgba(168, 85, 247, 0.15);
+          color: #a855f7;
+          padding: 10px 14px;
+          border-radius: var(--radius-md);
+          font-weight: 600;
+          font-size: 0.85rem;
+          cursor: pointer;
+          transition: all 0.2s;
+          border: 1px solid rgba(168, 85, 247, 0.3);
+        }
+        .btn-ai-parse:hover {
+          background: rgba(168, 85, 247, 0.25);
+          transform: translateY(-1px);
         }
 
         .btn-ai-match {
