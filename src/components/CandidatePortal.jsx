@@ -1,4 +1,8 @@
 import { useState } from 'react';
+import CandidateOnboarding from './CandidateOnboarding';
+import CreditScore from './CreditScore';
+import CreditAssets from './CreditAssets';
+import CareerTimeline from './CareerTimeline';
 
 const mockOffers = [
   {
@@ -74,6 +78,7 @@ const mockWallet = {
 };
 
 export default function CandidatePortal({ onSwitchRole, recommendations = [], onAccept }) {
+  const [isOnboarded, setIsOnboarded] = useState(false);
   const [privacyMode, setPrivacyMode] = useState('stealth');
   const [activeTab, setActiveTab] = useState('offers');
   const [selectedOffer, setSelectedOffer] = useState(null);
@@ -105,6 +110,14 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
       });
     }, 100);
   };
+
+  if (!isOnboarded) {
+    return <CandidateOnboarding onComplete={(data) => {
+      console.log('Onboarding complete', data);
+      setIsOnboarded(true);
+      setActiveTab('journey');
+    }} />;
+  }
 
   return (
     <div className="candidate-portal">
@@ -154,6 +167,12 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
 
       <div className="tabs">
         <button 
+          className={`tab ${activeTab === 'journey' ? 'active' : ''}`}
+          onClick={() => setActiveTab('journey')}
+        >
+          <span>🚀</span> 信用旅程
+        </button>
+        <button 
           className={`tab ${activeTab === 'offers' ? 'active' : ''}`}
           onClick={() => setActiveTab('offers')}
         >
@@ -187,6 +206,14 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
           <span>⭐</span> 背调评价
         </button>
       </div>
+
+      {activeTab === 'journey' && (
+        <div className="journey-section">
+          <CreditScore />
+          <CreditAssets />
+          <CareerTimeline />
+        </div>
+      )}
 
       {activeTab === 'offers' && (
         <div className="offers-section">
@@ -635,6 +662,12 @@ export default function CandidatePortal({ onSwitchRole, recommendations = [], on
       <style>{`
         .candidate-portal {
           max-width: 900px;
+        }
+
+        .journey-section {
+          display: flex;
+          flex-direction: column;
+          gap: 32px;
         }
 
         .page-header {
