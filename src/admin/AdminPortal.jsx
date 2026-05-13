@@ -2,23 +2,57 @@ import { useState } from 'react';
 import AdminApp from './App';
 
 const AdminPortal = ({ onRoleSwitch }) => {
-  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
+  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(true); // 默认直接进入管理后台
 
   if (!isAdminLoggedIn) {
     return (
       <div className="admin-preview">
         <div className="preview-content">
-          <h2>🔐 管理后台入口</h2>
-          <p>管理后台仅供平台运营人员使用</p>
-          <button
-            className="login-btn"
-            onClick={() => setIsAdminLoggedIn(true)}
-          >
-            进入管理后台
-          </button>
-          <p className="security-tip">
-            💡 注意：管理后台需要特殊权限才能访问
-          </p>
+          <h2>🔐 人人猎角色选择</h2>
+          <p>请选择要进入的角色页面</p>
+
+          <div className="role-selector">
+            <button
+              className="role-btn"
+              onClick={() => onRoleSwitch && onRoleSwitch('c1')}
+            >
+              <span className="role-icon">👤</span>
+              <div>
+                <div className="role-name">Recommender</div>
+                <div className="role-sub">推荐人</div>
+              </div>
+            </button>
+            <button
+              className="role-btn"
+              onClick={() => onRoleSwitch && onRoleSwitch('c2')}
+            >
+              <span className="role-icon">🎯</span>
+              <div>
+                <div className="role-name">Candidate</div>
+                <div className="role-sub">候选人</div>
+              </div>
+            </button>
+            <button
+              className="role-btn"
+              onClick={() => onRoleSwitch && onRoleSwitch('b')}
+            >
+              <span className="role-icon">🏢</span>
+              <div>
+                <div className="role-name">B端企业</div>
+                <div className="role-sub">企业HR</div>
+              </div>
+            </button>
+            <button
+              className="role-btn active"
+              onClick={() => setIsAdminLoggedIn(true)}
+            >
+              <span className="role-icon">🔐</span>
+              <div>
+                <div className="role-name">管理后台</div>
+                <div className="role-sub">超级管理员</div>
+              </div>
+            </button>
+          </div>
         </div>
         <style>{`
           .admin-preview {
@@ -36,7 +70,7 @@ const AdminPortal = ({ onRoleSwitch }) => {
             border-radius: 16px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
             text-align: center;
-            max-width: 400px;
+            max-width: 500px;
             width: 100%;
           }
 
@@ -52,28 +86,49 @@ const AdminPortal = ({ onRoleSwitch }) => {
             font-size: 14px;
           }
 
-          .login-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 14px 32px;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 500;
+          .role-selector {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+          }
+
+          .role-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            background: #f9f9f9;
+            border: 2px solid #e9e9e9;
+            padding: 20px 16px;
+            border-radius: 12px;
             cursor: pointer;
             transition: all 0.3s ease;
-            margin-bottom: 20px;
           }
 
-          .login-btn:hover {
+          .role-btn:hover {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
             transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
           }
 
-          .security-tip {
+          .role-btn.active {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+          }
+
+          .role-icon {
+            font-size: 32px;
+          }
+
+          .role-name {
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+          }
+
+          .role-sub {
+            color: #666;
             font-size: 12px;
-            color: #999;
-            margin-top: 20px;
           }
 
           @media (max-width: 768px) {
@@ -83,6 +138,10 @@ const AdminPortal = ({ onRoleSwitch }) => {
 
             .preview-content h2 {
               font-size: 20px;
+            }
+
+            .role-selector {
+              grid-template-columns: 1fr;
             }
           }
         `}</style>
