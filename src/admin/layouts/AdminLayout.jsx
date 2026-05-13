@@ -62,7 +62,8 @@ const AdminLayout = ({ children, userRole = 'admin', currentPage, onPageChange }
   const currentUser = {
     name: '管理员',
     avatar: 'https://i.pravatar.cc/40?u=admin',
-    role: '超级管理员'
+    role: 'admin',
+    roleName: '超级管理员'
   };
 
   const notifications = [
@@ -189,7 +190,7 @@ const AdminLayout = ({ children, userRole = 'admin', currentPage, onPageChange }
               <img src={currentUser.avatar} alt={currentUser.name} className="user-avatar" />
               <div className="user-info">
                 <span className="user-name">{currentUser.name}</span>
-                <span className="user-role">{currentUser.role}</span>
+                <span className="user-role">{currentUser.roleName || currentUser.role}</span>
               </div>
 
               {/* 用户菜单下拉 */}

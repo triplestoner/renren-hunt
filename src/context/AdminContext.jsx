@@ -26,7 +26,8 @@ export const AdminProvider = ({ children }) => {
         id: '1',
         name: '管理员',
         avatar: 'https://i.pravatar.cc/40?u=admin',
-        role: '超级管理员',
+        role: 'admin',
+        roleName: '超级管理员',
         email: 'admin@renrenlie.com'
       });
       setIsLoading(false);
