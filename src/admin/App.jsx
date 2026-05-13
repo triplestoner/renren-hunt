@@ -158,10 +158,10 @@ const AdminAppContent = ({ onRoleSwitch: onOuterRoleSwitch }) => {
   );
 };
 
-const AdminApp = () => {
+const AdminApp = ({ onRoleSwitch }) => {
   return (
     <AdminProvider>
-      <AdminAppContent />
+      <AdminAppContent onRoleSwitch={onRoleSwitch} />
     </AdminProvider>
   );
 };
