@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import LoginPage from './pages/LoginPage';
 import Dashboard from './pages/Dashboard';
 import UserManagement from './pages/UserManagement';
@@ -9,11 +9,14 @@ import DataAnalysis from './pages/DataAnalysis';
 import ContentManagement from './pages/ContentManagement';
 import SystemManagement from './pages/SystemManagement';
 import AdminLayout from './layouts/AdminLayout';
+import { userAPI, financeAPI, systemAPI, dataAnalysisAPI } from '../api/admin';
 
 const AdminApp = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userRole, setUserRole] = useState('admin'); // 默认超级管理员
   const [currentPage, setCurrentPage] = useState('dashboard');
+  const [isLoading, setIsLoading] = useState(false);
+  const [appData, setAppData] = useState(null);
 
   const handleLogin = (role) => {
     setUserRole(role);
@@ -25,6 +28,36 @@ const AdminApp = () => {
     setUserRole('admin');
     setCurrentPage('dashboard');
   };
+
+  const fetchAppData = async () => {
+    try {
+      setIsLoading(true);
+
+      // 并行获取多个API数据
+      const [systemStats, userData, financeData] = await Promise.all([
+        systemAPI.getSystemStats(),
+        userAPI.getAllUsers('recommender'),
+        financeAPI.getTransactions()
+      ]);
+
+      setAppData({
+        systemStats: systemStats.data,
+        userData: userData.data,
+        financeData: financeData.data
+      });
+    } catch (error) {
+      console.error('获取应用数据失败:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // 在用户登录后获取数据
+  useEffect(() => {
+    if (isLoggedIn) {
+      fetchAppData();
+    }
+  }, [isLoggedIn]);
 
   if (!isLoggedIn) {
     return <LoginPage onLogin={handleLogin} />;
