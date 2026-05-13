@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import AdminApp from './App';
 
-const AdminPortal = () => {
+const AdminPortal = ({ onRoleSwitch }) => {
   const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
 
   if (!isAdminLoggedIn) {
@@ -90,7 +90,7 @@ const AdminPortal = () => {
     );
   }
 
-  return <AdminApp />;
+  return <AdminApp onRoleSwitch={onRoleSwitch} />;
 };
 
 export default AdminPortal;

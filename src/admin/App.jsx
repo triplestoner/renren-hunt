@@ -12,11 +12,15 @@ import AdminLayout from './layouts/AdminLayout';
 import { userAPI, financeAPI, systemAPI, dataAnalysisAPI } from '../api/admin';
 import { AdminProvider, useAdminContext } from '../context/AdminContext';
 
-const AdminAppContent = () => {
+const AdminAppContent = ({ onRoleSwitch: onOuterRoleSwitch }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currentPage, setCurrentPage] = useState('dashboard');
   const [isLoading, setIsLoading] = useState(false);
   const { setUserRole, setAppData, currentUser, isLoading: contextLoading } = useAdminContext();
+
+  const handleRoleSwitch = (role) => {
+    onOuterRoleSwitch && onOuterRoleSwitch(role);
+  };
 
   const handleLogin = (role) => {
     setUserRole(role);
@@ -125,6 +129,7 @@ const AdminAppContent = () => {
       userRole={currentUser?.role || 'admin'}
       currentPage={currentPage}
       onPageChange={setCurrentPage}
+      onRoleSwitch={handleRoleSwitch}
     >
       {renderPage()}
       <style>{`

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const AdminLayout = ({ children, userRole = 'admin', currentPage, onPageChange }) => {
+const AdminLayout = ({ children, userRole = 'admin', currentPage, onPageChange, onRoleSwitch }) => {
   const [collapsed, setCollapsed] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [notificationOpen, setNotificationOpen] = useState(false);
@@ -110,6 +110,39 @@ const AdminLayout = ({ children, userRole = 'admin', currentPage, onPageChange }
 
   return (
     <div className="admin-layout" onClick={handleClickOutside}>
+      {/* 4-role switcher - 保持与主App一致的导航 */}
+      <div className="admin-role-switcher">
+        <div className="role-tabs">
+          <button
+            className="role-tab"
+            onClick={() => onRoleSwitch && onRoleSwitch('c1')}
+          >
+            <span className="tab-icon">👤</span>
+            Recommender 推荐人
+          </button>
+          <button
+            className="role-tab"
+            onClick={() => onRoleSwitch && onRoleSwitch('c2')}
+          >
+            <span className="tab-icon">🎯</span>
+            Candidate 候选人
+          </button>
+          <button
+            className="role-tab"
+            onClick={() => onRoleSwitch && onRoleSwitch('b')}
+          >
+            <span className="tab-icon">🏢</span>
+            B端 企业
+          </button>
+          <button
+            className="role-tab active admin-tab"
+          >
+            <span className="tab-icon">🔐</span>
+            管理后台
+          </button>
+        </div>
+      </div>
+
       {/* 移动端菜单切换按钮 */}
       <button
         className="mobile-menu-toggle"
@@ -216,8 +249,75 @@ const AdminLayout = ({ children, userRole = 'admin', currentPage, onPageChange }
       <style>{`
         .admin-layout {
           display: flex;
+          flex-direction: column;
           min-height: 100vh;
           background: #f5f5f5;
+        }
+
+        .admin-role-switcher {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 16px 20px;
+          background: #001529;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .admin-role-switcher .role-tabs {
+          display: flex;
+          background: rgba(255, 255, 255, 0.08);
+          border-radius: 10px;
+          padding: 4px;
+          gap: 4px;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .admin-role-switcher .role-tab {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          padding: 10px 20px;
+          background: transparent;
+          border: none;
+          border-radius: 8px;
+          color: rgba(255, 255, 255, 0.6);
+          font-size: 0.9rem;
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .admin-role-switcher .role-tab:hover {
+          color: rgba(255, 255, 255, 0.9);
+          background: rgba(255, 255, 255, 0.08);
+        }
+
+        .admin-role-switcher .role-tab.active {
+          background: #667eea;
+          color: white;
+          box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .admin-role-switcher .role-tab.admin-tab {
+          background: rgba(102, 126, 234, 0.25);
+          color: #a9b4ff;
+        }
+
+        .admin-role-switcher .role-tab.admin-tab.active {
+          background: #667eea;
+          color: white;
+        }
+
+        .admin-role-switcher .tab-icon {
+          font-size: 1.1rem;
+        }
+
+        .admin-layout .main-content {
+          margin-left: ${collapsed ? '64px' : '240px'};
+          transition: all 0.3s ease;
+          flex: 1;
+          display: flex;
+          flex-direction: column;
         }
 
         .sidebar {

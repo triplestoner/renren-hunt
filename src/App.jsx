@@ -8,6 +8,7 @@ import Circles from './components/Circles'
 import CandidatePortal from './components/CandidatePortal'
 import EmployerPortal from './components/EmployerPortal'
 import RecommenderOnboarding from './components/RecommenderOnboarding'
+import AdminPortal from './admin/AdminPortal'
 
 const initialJobs = [
   {
@@ -72,6 +73,7 @@ function App() {
   const [c2ReceivedRecommendations, setC2ReceivedRecommendations] = useState([])
   const [employerCandidates, setEmployerCandidates] = useState([])
   const [submittedRecommendations, setSubmittedRecommendations] = useState([])
+  const [showAdminPortal, setShowAdminPortal] = useState(false)
 
   const handleRecommend = (recommendation) => {
     const newRecommendation = {
@@ -163,30 +165,51 @@ function App() {
     return children
   }
 
+  if (showAdminPortal) {
+    return <AdminPortal onRoleSwitch={(role) => {
+      setShowAdminPortal(false);
+      setActiveRole(role);
+      if (role === 'c1') {
+        setActiveTab('hall');
+      } else if (role === 'c2') {
+        setActiveTab('offers');
+      } else if (role === 'b') {
+        setActiveTab('candidates');
+      }
+    }} />;
+  }
+
   return (
     <div className="app">
       <header className="role-switcher">
         <div className="role-tabs">
-          <button 
+          <button
             className={`role-tab ${activeRole === 'c1' ? 'active' : ''}`}
             onClick={() => { setActiveRole('c1'); setActiveTab('hall'); }}
           >
             <span className="tab-icon">👤</span>
             Recommender 推荐人
           </button>
-          <button 
+          <button
             className={`role-tab ${activeRole === 'c2' ? 'active' : ''}`}
             onClick={() => { setActiveRole('c2'); setActiveTab('offers'); }}
           >
             <span className="tab-icon">🎯</span>
             Candidate 候选人
           </button>
-          <button 
+          <button
             className={`role-tab ${activeRole === 'b' ? 'active' : ''}`}
             onClick={() => { setActiveRole('b'); setActiveTab('candidates'); }}
           >
             <span className="tab-icon">🏢</span>
             B端 企业
+          </button>
+          <button
+            className="role-tab admin-tab"
+            onClick={() => setShowAdminPortal(true)}
+          >
+            <span className="tab-icon">🔐</span>
+            管理后台
           </button>
         </div>
         {renderRoleBadge()}
@@ -265,6 +288,17 @@ function App() {
 
         .role-tab.active[onclick*="b"] {
           color: #007AFF;
+        }
+
+        .admin-tab {
+          background: rgba(102, 126, 234, 0.15);
+          border: 1px solid rgba(102, 126, 234, 0.3);
+          color: #667eea;
+        }
+
+        .admin-tab:hover {
+          background: rgba(102, 126, 234, 0.25);
+          color: #5568d3;
         }
 
         .tab-icon {
@@ -368,6 +402,20 @@ function App() {
 
         .footer-separator {
           color: var(--glass-border);
+        }
+
+        .admin-link {
+          background: transparent;
+          border: none;
+          color: var(--text-tertiary);
+          cursor: pointer;
+          font-size: 0.8rem;
+          padding: 0;
+          transition: color 0.2s;
+        }
+
+        .admin-link:hover {
+          color: #667eea;
         }
       `}</style>
     </div>
