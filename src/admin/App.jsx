@@ -10,13 +10,13 @@ import ContentManagement from './pages/ContentManagement';
 import SystemManagement from './pages/SystemManagement';
 import AdminLayout from './layouts/AdminLayout';
 import { userAPI, financeAPI, systemAPI, dataAnalysisAPI } from '../api/admin';
+import { AdminProvider, useAdminContext } from '../context/AdminContext';
 
-const AdminApp = () => {
+const AdminAppContent = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userRole, setUserRole] = useState('admin'); // 默认超级管理员
   const [currentPage, setCurrentPage] = useState('dashboard');
   const [isLoading, setIsLoading] = useState(false);
-  const [appData, setAppData] = useState(null);
+  const { setUserRole, setAppData, currentUser, isLoading: contextLoading } = useAdminContext();
 
   const handleLogin = (role) => {
     setUserRole(role);
@@ -25,7 +25,6 @@ const AdminApp = () => {
 
   const handleLogout = () => {
     setIsLoggedIn(false);
-    setUserRole('admin');
     setCurrentPage('dashboard');
   };
 
@@ -59,6 +58,41 @@ const AdminApp = () => {
     }
   }, [isLoggedIn]);
 
+  // 显示加载状态
+  if (contextLoading) {
+    return (
+      <div className="loading-container">
+        <div className="loading-spinner">
+          <span className="spinner-icon">🔄</span>
+          <p>加载中...</p>
+        </div>
+        <style>{`
+          .loading-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-color: #f5f5f5;
+          }
+
+          .loading-spinner {
+            text-align: center;
+          }
+
+          .spinner-icon {
+            font-size: 48px;
+            animation: spin 1s linear infinite;
+          }
+
+          @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+          }
+        `}</style>
+      </div>
+    );
+  }
+
   if (!isLoggedIn) {
     return <LoginPage onLogin={handleLogin} />;
   }
@@ -88,7 +122,7 @@ const AdminApp = () => {
 
   return (
     <AdminLayout
-      userRole={userRole}
+      userRole={currentUser?.role || 'admin'}
       currentPage={currentPage}
       onPageChange={setCurrentPage}
     >
@@ -116,6 +150,14 @@ const AdminApp = () => {
         }
       `}</style>
     </AdminLayout>
+  );
+};
+
+const AdminApp = () => {
+  return (
+    <AdminProvider>
+      <AdminAppContent />
+    </AdminProvider>
   );
 };
 
