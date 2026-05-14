@@ -220,7 +220,7 @@ function App() {
       {activeRole === 'b' && <EmployerPortal publishedJobs={publishedJobs} setPublishedJobs={setPublishedJobs} />}
 
       <footer className="app-footer">
-        <span>最后更新：2026-04-12 20:12:57</span>
+        <span>最后更新：2026-05-13 16:37:04</span>
         <span className="footer-separator">|</span>
         <span>by lql</span>
       </footer>
@@ -291,14 +291,12 @@ function App() {
         }
 
         .admin-tab {
-          background: rgba(102, 126, 234, 0.15);
-          border: 1px solid rgba(102, 126, 234, 0.3);
-          color: #667eea;
+          color: var(--text-secondary);
         }
 
         .admin-tab:hover {
-          background: rgba(102, 126, 234, 0.25);
-          color: #5568d3;
+          color: var(--text-primary);
+          background: rgba(255, 255, 255, 0.05);
         }
 
         .tab-icon {

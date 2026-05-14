@@ -17,6 +17,7 @@ const mockJobs = [
     match: 95,
     industry: '互联网',
     location: '北京',
+    zone: 'all',
   },
   {
     id: 2,
@@ -32,6 +33,8 @@ const mockJobs = [
     match: 88,
     industry: '人工智能',
     location: '北京',
+    zone: 'vertical',
+    verticalField: 'AI',
   },
   {
     id: 3,
@@ -47,6 +50,7 @@ const mockJobs = [
     match: 82,
     industry: '互联网',
     location: '上海',
+    zone: 'all',
   },
   {
     id: 4,
@@ -62,6 +66,94 @@ const mockJobs = [
     match: 91,
     industry: '金融',
     location: '杭州',
+    zone: 'all',
+  },
+  {
+    id: 5,
+    title: 'Senior Software Engineer (US)',
+    company: 'TikTok Global',
+    companyLogo: 'https://logo.clearbit.com/tiktok.com',
+    salary: '$150K-200K·14薪',
+    tags: ['React Native', 'iOS', 'Global'],
+    deadline: '剩余5天',
+    urgent: true,
+    bonus: '¥50,000',
+    circle: '#出海圈',
+    match: 92,
+    industry: '互联网',
+    location: 'Seattle, USA',
+    zone: 'overseas',
+    overseasLocation: '美国西雅图',
+    salaryMultiplier: 3,
+  },
+  {
+    id: 6,
+    title: 'ML Research Scientist (Singapore)',
+    company: 'ByteDance AI Lab',
+    companyLogo: 'https://logo.clearbit.com/bytedance.com',
+    salary: 'SGD 120K-180K·14薪',
+    tags: ['Machine Learning', 'NLP', 'Research'],
+    deadline: '剩余7天',
+    urgent: false,
+    bonus: '¥60,000',
+    circle: '#AI圈',
+    match: 89,
+    industry: '人工智能',
+    location: 'Singapore',
+    zone: 'overseas',
+    overseasLocation: '新加坡',
+    salaryMultiplier: 2.5,
+  },
+  {
+    id: 7,
+    title: '高级产品经理',
+    company: '智慧云科',
+    companyLogo: 'https://logo.clearbit.com/slack.com',
+    salary: '25-40K·14薪',
+    tags: ['SaaS', '企业服务', '增长黑客'],
+    deadline: '剩余3天',
+    urgent: true,
+    bonus: '¥8,000',
+    circle: '#中小企业圈',
+    match: 85,
+    industry: '企业服务',
+    location: '深圳',
+    zone: 'sme',
+    smeBenefit: true,
+  },
+  {
+    id: 8,
+    title: '芯片验证工程师',
+    company: '智芯微',
+    companyLogo: 'https://logo.clearbit.com/intel.com',
+    salary: '40-60K·16薪',
+    tags: ['Verilog', 'ASIC', '芯片设计'],
+    deadline: '剩余4天',
+    urgent: false,
+    bonus: '¥28,000',
+    circle: '#芯片圈',
+    match: 87,
+    industry: '芯片半导体',
+    location: '上海',
+    zone: 'vertical',
+    verticalField: '芯片',
+  },
+  {
+    id: 9,
+    title: '新能源电池研发工程师',
+    company: '动力未来',
+    companyLogo: 'https://logo.clearbit.com/tesla.com',
+    salary: '35-55K·14薪',
+    tags: ['材料科学', '电池技术', '研发'],
+    deadline: '剩余6天',
+    urgent: false,
+    bonus: '¥22,000',
+    circle: '#新能源圈',
+    match: 86,
+    industry: '新能源',
+    location: '合肥',
+    zone: 'vertical',
+    verticalField: '新能源',
   },
 ];
 
@@ -88,6 +180,7 @@ const locations = ['北京', '上海', '杭州', '深圳', '广州', '成都', '
 
 export default function JobHall({ publishedJobs = mockJobs, onRecommend, recommendedCandidates = [] }) {
   const [activeSection, setActiveSection] = useState('dispatch');
+  const [activeZone, setActiveZone] = useState('all'); // all, overseas, sme, vertical
   const [selectedJob, setSelectedJob] = useState(null);
   const [aiScanning, setAiScanning] = useState(false);
   const [scanProgress, setScanProgress] = useState(0);
@@ -183,8 +276,132 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
         </div>
       </header>
 
+      {/* 专区切换 */}
+      <div className="zone-tabs">
+        <button
+          className={`zone-tab ${activeZone === 'all' ? 'active' : ''}`}
+          onClick={() => {
+            setActiveZone('all');
+            setSelectedJob(null);
+          }}
+        >
+          <span className="zone-icon">🌐</span>
+          全部职位
+        </button>
+        <button
+          className={`zone-tab ${activeZone === 'overseas' ? 'active' : ''}`}
+          onClick={() => {
+            setActiveZone('overseas');
+            setSelectedJob(null);
+          }}
+        >
+          <span className="zone-icon">✈️</span>
+          出海专区
+          <span className="zone-badge">🔥 高薪3倍起</span>
+        </button>
+        <button
+          className={`zone-tab ${activeZone === 'sme' ? 'active' : ''}`}
+          onClick={() => {
+            setActiveZone('sme');
+            setSelectedJob(null);
+          }}
+        >
+          <span className="zone-icon">🏢</span>
+          中小企业
+          <span className="zone-badge">📈 费率优惠</span>
+        </button>
+        <button
+          className={`zone-tab ${activeZone === 'vertical' ? 'active' : ''}`}
+          onClick={() => {
+            setActiveZone('vertical');
+            setSelectedJob(null);
+          }}
+        >
+          <span className="zone-icon">🎯</span>
+          垂直领域
+        </button>
+      </div>
+
+      {activeZone === 'overseas' && (
+        <div className="zone-intro">
+          <div className="intro-card">
+            <span className="intro-icon">🌏</span>
+            <div className="intro-content">
+              <h3>出海招聘蓝海</h3>
+              <p>针对75%出海企业海外人才短缺，薪酬溢价3倍起，平台成单率≥25%</p>
+            </div>
+            <div className="intro-stats">
+              <div className="stat">
+                <span className="num">3×</span>
+                <span className="lbl">薪酬溢价</span>
+              </div>
+              <div className="stat">
+                <span className="num">25%+</span>
+                <span className="lbl">成单率</span>
+              </div>
+              <div className="stat">
+                <span className="num">0.3%</span>
+                <span className="lbl">纠纷率</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {activeZone === 'sme' && (
+        <div className="zone-intro">
+          <div className="intro-card">
+            <span className="intro-icon">🏢</span>
+            <div className="intro-content">
+              <h3>中小企业服务专区</h3>
+              <p>灵活用工需求激增58%，15%起透明费率，T+3快速结算</p>
+            </div>
+            <div className="intro-stats">
+              <div className="stat">
+                <span className="num">15%</span>
+                <span className="lbl">起透明费率</span>
+              </div>
+              <div className="stat">
+                <span className="num">T+3</span>
+                <span className="lbl">快速结算</span>
+              </div>
+              <div className="stat">
+                <span className="num">58%</span>
+                <span className="lbl">需求增长</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {activeZone === 'vertical' && (
+        <div className="zone-intro">
+          <div className="intro-card">
+            <span className="intro-icon">🎯</span>
+            <div className="intro-content">
+              <h3>垂直领域深耕</h3>
+              <p>AI、芯片、新能源、生物医药等细分赛道专业化服务，匹配精度98.7%</p>
+            </div>
+            <div className="intro-stats">
+              <div className="stat">
+                <span className="num">98.7%</span>
+                <span className="lbl">匹配精度</span>
+              </div>
+              <div className="stat">
+                <span className="num">4</span>
+                <span className="lbl">核心赛道</span>
+              </div>
+              <div className="stat">
+                <span className="num">专业</span>
+                <span className="lbl">认证加成</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="section-tabs">
-        <button 
+        <button
           className={`tab ${activeSection === 'dispatch' ? 'active' : ''}`}
           onClick={() => {
             setActiveSection('dispatch');
@@ -195,7 +412,7 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
           派单专区
           <span className="tab-badge">{publishedJobs.filter(j => j.match >= 85).length}</span>
         </button>
-        <button 
+        <button
           className={`tab ${activeSection === 'grab' ? 'active' : ''}`}
           onClick={() => {
             setActiveSection('grab');
@@ -206,7 +423,7 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
           抢单专区
           <span className="tab-badge secondary">{publishedJobs.filter(j => j.match < 85).length}</span>
         </button>
-        <button 
+        <button
           className={`tab ${activeSection === 'privilege' ? 'active' : ''}`}
           onClick={() => {
             setActiveSection('privilege');
@@ -685,6 +902,12 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
       <div className="job-list">
         {publishedJobs
           .filter(job => {
+            if (activeZone !== 'all' && job.zone !== activeZone) {
+              return false;
+            }
+            return true;
+          })
+          .filter(job => {
             if (activeSection === 'dispatch') {
               return job.match >= 85;
             } else {
@@ -705,22 +928,27 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
             return job.location === locationFilter;
           })
           .map((job, index) => (
-            <div 
-              key={job.id} 
-              className={`job-card ${selectedJob === job.id ? 'selected' : ''} animate-fade-in animate-delay-${index + 1}`}
+            <div
+              key={job.id}
+              className={`job-card ${selectedJob === job.id ? 'selected' : ''} animate-fade-in animate-delay-${index + 1} ${job.zone === 'overseas' ? 'job-overseas' : ''} ${job.zone === 'sme' ? 'job-sme' : ''} ${job.zone === 'vertical' ? `job-vertical job-${job.verticalField}` : ''}`}
               onClick={() => setSelectedJob(selectedJob === job.id ? null : job.id)}
             >
               <div className="job-header">
                 <div className="job-title-row">
                   <h3 className="job-title">{job.title}</h3>
                   {job.urgent && <span className="urgent-badge">急招</span>}
+                  {job.zone === 'overseas' && <span className="overseas-badge">✈️ 出海</span>}
+                  {job.zone === 'sme' && <span className="sme-badge">🏢 中小企业</span>}
+                  {job.zone === 'vertical' && job.verticalField === 'AI' && <span className="ai-badge">🧠 AI</span>}
+                  {job.zone === 'vertical' && job.verticalField === '芯片' && <span className="chip-badge">💻 芯片</span>}
+                  {job.zone === 'vertical' && job.verticalField === '新能源' && <span className="energy-badge">⚡ 新能源</span>}
                   {activeSection === 'dispatch' && <span className="dispatch-badge">派单</span>}
                   {activeSection === 'grab' && <span className="grab-badge">抢单</span>}
                 </div>
                 <div className="company-info">
                   {job.companyLogo && (
-                    <img 
-                      src={job.companyLogo} 
+                    <img
+                      src={job.companyLogo}
                       alt={job.company}
                       className="company-logo"
                       onError={(e) => { e.target.style.display = 'none'; }}
@@ -728,6 +956,9 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
                   )}
                   <span className="company-name">{job.company}</span>
                   <span className="salary">{job.salary}</span>
+                  {job.salaryMultiplier && (
+                    <span className="salary-premium">×{job.salaryMultiplier} 溢价</span>
+                  )}
                 </div>
               </div>
 
@@ -738,6 +969,7 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
                 <span className="tag circle-tag">{job.circle}</span>
                 {job.industry && <span className="tag industry-tag">🏭 {job.industry}</span>}
                 {job.location && <span className="tag location-tag">📍 {job.location}</span>}
+                {job.smeBenefit && <span className="tag sme-benefit-tag">📈 费率优惠</span>}
               </div>
 
               <div className="job-meta">
@@ -1330,6 +1562,51 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
         }
 
         .grab-badge {
+          background: linear-gradient(135deg, #fbbf24, #f59e0b);
+          color: white;
+          font-size: 0.7rem;
+          font-weight: 600;
+          padding: 4px 10px;
+          border-radius: 4px;
+        }
+
+        .overseas-badge {
+          background: linear-gradient(135deg, #60a5fa, #3b82f6);
+          color: white;
+          font-size: 0.7rem;
+          font-weight: 600;
+          padding: 4px 10px;
+          border-radius: 4px;
+        }
+
+        .sme-badge {
+          background: linear-gradient(135deg, #a7f3d0, #34d399);
+          color: white;
+          font-size: 0.7rem;
+          font-weight: 600;
+          padding: 4px 10px;
+          border-radius: 4px;
+        }
+
+        .ai-badge {
+          background: linear-gradient(135deg, #f472b6, #db2777);
+          color: white;
+          font-size: 0.7rem;
+          font-weight: 600;
+          padding: 4px 10px;
+          border-radius: 4px;
+        }
+
+        .chip-badge {
+          background: linear-gradient(135deg, #cbd5e1, #64748b);
+          color: white;
+          font-size: 0.7rem;
+          font-weight: 600;
+          padding: 4px 10px;
+          border-radius: 4px;
+        }
+
+        .energy-badge {
           background: linear-gradient(135deg, #fbbf24, #f59e0b);
           color: white;
           font-size: 0.7rem;
@@ -2569,6 +2846,163 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
         .btn-done:hover {
           background: var(--bg-card-hover);
           color: var(--text-primary);
+        }
+
+        /* 专区标签样式 */
+        .zone-tabs {
+          display: flex;
+          gap: 12px;
+          margin-bottom: 24px;
+          overflow-x: auto;
+          padding-bottom: 8px;
+        }
+
+        .zone-tab {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          padding: 12px 20px;
+          background: var(--glass-bg);
+          backdrop-filter: var(--glass-blur);
+          border: 1px solid var(--glass-border);
+          border-radius: var(--radius-md);
+          color: var(--text-secondary);
+          font-size: 0.9rem;
+          cursor: pointer;
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+          white-space: nowrap;
+        }
+
+        .zone-tab:hover {
+          background: var(--bg-card-hover);
+          border-color: var(--accent-primary);
+          color: var(--text-primary);
+        }
+
+        .zone-tab.active {
+          background: var(--accent-glow);
+          border-color: var(--border-accent);
+          color: var(--accent-primary);
+          font-weight: 600;
+        }
+
+        .zone-icon {
+          font-size: 1.1rem;
+        }
+
+        .zone-badge {
+          font-size: 0.7rem;
+          padding: 2px 6px;
+          border-radius: 8px;
+          background: rgba(255, 149, 0, 0.15);
+          color: var(--warning);
+          font-weight: 600;
+          margin-left: 4px;
+        }
+
+        /* 专区介绍样式 */
+        .zone-intro {
+          margin-bottom: 24px;
+        }
+
+        .intro-card {
+          background: linear-gradient(135deg, var(--accent-glow), rgba(255, 255, 255, 0.05));
+          border: 1px solid var(--border-accent);
+          border-radius: var(--radius-lg);
+          padding: 24px;
+          display: flex;
+          align-items: center;
+          gap: 20px;
+          box-shadow: var(--shadow-glow);
+        }
+
+        .intro-icon {
+          font-size: 2.5rem;
+          min-width: 60px;
+          text-align: center;
+        }
+
+        .intro-content {
+          flex: 1;
+        }
+
+        .intro-content h3 {
+          font-size: 1.2rem;
+          margin-bottom: 8px;
+        }
+
+        .intro-content p {
+          color: var(--text-secondary);
+          font-size: 0.9rem;
+          line-height: 1.5;
+        }
+
+        .intro-stats {
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+        }
+
+        .intro-stats .stat {
+          text-align: center;
+          padding: 12px;
+          background: rgba(255, 255, 255, 0.05);
+          border-radius: var(--radius-md);
+          border: 1px solid var(--glass-border);
+        }
+
+        .intro-stats .num {
+          display: block;
+          font-size: 1.5rem;
+          font-weight: 700;
+          color: var(--accent-primary);
+          margin-bottom: 4px;
+        }
+
+        .intro-stats .lbl {
+          font-size: 0.8rem;
+          color: var(--text-secondary);
+        }
+
+        /* 工资溢价样式 */
+        .salary-premium {
+          font-size: 0.75rem;
+          padding: 2px 8px;
+          border-radius: 8px;
+          background: rgba(251, 191, 36, 0.15);
+          color: var(--warning);
+          font-weight: 600;
+          margin-left: 8px;
+        }
+
+        /* 中小企业优惠标签 */
+        .sme-benefit-tag {
+          background: rgba(74, 222, 128, 0.15);
+          color: var(--success);
+          border-color: rgba(74, 222, 128, 0.3);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+          .zone-tabs {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+          }
+
+          .intro-card {
+            flex-direction: column;
+            text-align: center;
+          }
+
+          .intro-stats {
+            flex-direction: row;
+            justify-content: space-around;
+            width: 100%;
+          }
+
+          .intro-stats .stat {
+            flex: 1;
+          }
         }
 
         @media (prefers-reduced-motion: reduce) {

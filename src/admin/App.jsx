@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import './admin-theme.css';
 import LoginPage from './pages/LoginPage';
 import Dashboard from './pages/Dashboard';
 import UserManagement from './pages/UserManagement';
@@ -65,10 +66,10 @@ const AdminAppContent = ({ onRoleSwitch: onOuterRoleSwitch }) => {
   // 显示加载状态
   if (contextLoading) {
     return (
-      <div className="loading-container">
+      <div className="admin-theme loading-container">
         <div className="loading-spinner">
           <span className="spinner-icon">🔄</span>
-          <p>加载中...</p>
+          <p style={{ color: 'var(--admin-text-primary)', fontFamily: 'var(--admin-font-sans)', fontSize: '1.2rem' }}>加载中...</p>
         </div>
         <style>{`
           .loading-container {
@@ -76,7 +77,9 @@ const AdminAppContent = ({ onRoleSwitch: onOuterRoleSwitch }) => {
             align-items: center;
             justify-content: center;
             min-height: 100vh;
-            background-color: #f5f5f5;
+            background: var(--admin-bg-primary);
+            position: relative;
+            z-index: 100;
           }
 
           .loading-spinner {
@@ -84,8 +87,13 @@ const AdminAppContent = ({ onRoleSwitch: onOuterRoleSwitch }) => {
           }
 
           .spinner-icon {
-            font-size: 48px;
+            font-size: 56px;
             animation: spin 1s linear infinite;
+            background: linear-gradient(135deg, var(--admin-btn-primary) 0%, var(--admin-bonus-gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 20px rgba(59, 130, 246, 0.3));
           }
 
           @keyframes spin {
@@ -125,36 +133,36 @@ const AdminAppContent = ({ onRoleSwitch: onOuterRoleSwitch }) => {
   };
 
   return (
-    <AdminLayout
-      userRole={currentUser?.role || 'admin'}
-      currentPage={currentPage}
-      onPageChange={setCurrentPage}
-      onRoleSwitch={handleRoleSwitch}
-    >
-      {renderPage()}
-      <style>{`
-        /* 全局样式重置 */
-        * {
-          margin: 0;
-          padding: 0;
-          box-sizing: border-box;
-        }
+    <div className="admin-theme">
+      <AdminLayout
+        userRole={currentUser?.role || 'admin'}
+        currentPage={currentPage}
+        onPageChange={setCurrentPage}
+        onRoleSwitch={handleRoleSwitch}
+      >
+        {renderPage()}
+        <style>{`
+          /* 管理后台全局样式重置 */
+          * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+          }
 
-        body {
-          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-            'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-            sans-serif;
-          -webkit-font-smoothing: antialiased;
-          -moz-osx-font-smoothing: grayscale;
-          background-color: #f5f5f5;
-        }
+          .admin-theme body {
+            font-family: var(--admin-font-sans);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background: var(--admin-bg-primary);
+          }
 
-        code {
-          font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-            monospace;
-        }
-      `}</style>
-    </AdminLayout>
+          .admin-theme code {
+            font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+              monospace;
+          }
+        `}</style>
+      </AdminLayout>
+    </div>
   );
 };
 

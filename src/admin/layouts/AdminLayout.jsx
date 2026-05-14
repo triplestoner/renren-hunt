@@ -102,7 +102,7 @@ const AdminLayout = ({ children, userRole = 'admin', currentPage, onPageChange, 
 
   // 点击页面其他区域关闭菜单
   const handleClickOutside = (e) => {
-    if (!e.target.closest('.notification') && !e.target.closest('.user-profile')) {
+    if (!e.target.closest('.notification') && !e.target.closest('.notification-sidebar') && !e.target.closest('.user-profile') && !e.target.closest('.user-profile-sidebar')) {
       setNotificationOpen(false);
       setUserMenuOpen(false);
     }
@@ -177,70 +177,67 @@ const AdminLayout = ({ children, userRole = 'admin', currentPage, onPageChange, 
             </div>
           ))}
         </div>
-      </div>
 
-      <div className="main-content">
-        <header className="header">
-          <div className="header-left">
-            <button className="collapse-btn" onClick={() => setCollapsed(!collapsed)}>
-              {collapsed ? '☰' : '✕'}
-            </button>
-            <div className="breadcrumb">
-              <span className="breadcrumb-item">管理后台</span>
-              <span className="breadcrumb-item active">{filteredMenuItems.find(item => item.key === currentPage)?.label || '仪表盘'}</span>
-            </div>
+        <div className="sidebar-footer">
+          {/* 通知模块 */}
+          <div className="notification-sidebar" onClick={handleNotificationClick}>
+            <span className="notification-icon">🔔</span>
+            {!collapsed && (
+              <div className="notification-info">
+                <span className="notification-text">通知</span>
+                <span className="notification-badge">{notifications.filter(n => n.unread).length}</span>
+              </div>
+            )}
+
+            {/* 通知下拉菜单 */}
+            {notificationOpen && !collapsed && (
+              <div className="notification-dropdown-sidebar">
+                <div className="dropdown-header">
+                  <span className="dropdown-title">通知</span>
+                  <span className="dropdown-link">查看全部</span>
+                </div>
+                <div className="notification-list">
+                  {notifications.map(notification => (
+                    <div key={notification.id} className="notification-item">
+                      <div className="notification-content">
+                        <div className="notification-title">{notification.title}</div>
+                        <div className="notification-text">{notification.content}</div>
+                        <div className="notification-time">{notification.time}</div>
+                      </div>
+                      {notification.unread && <div className="unread-dot" />}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
 
-          <div className="header-right">
-            <div className="notification" onClick={handleNotificationClick}>
-              <span className="notification-icon">🔔</span>
-              <span className="notification-badge">{notifications.filter(n => n.unread).length}</span>
-
-              {/* 通知下拉菜单 */}
-              {notificationOpen && (
-                <div className="notification-dropdown">
-                  <div className="dropdown-header">
-                    <span className="dropdown-title">通知</span>
-                    <span className="dropdown-link">查看全部</span>
-                  </div>
-                  <div className="notification-list">
-                    {notifications.map(notification => (
-                      <div key={notification.id} className="notification-item">
-                        <div className="notification-content">
-                          <div className="notification-title">{notification.title}</div>
-                          <div className="notification-text">{notification.content}</div>
-                          <div className="notification-time">{notification.time}</div>
-                        </div>
-                        {notification.unread && <div className="unread-dot" />}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-
-            <div className="user-profile" onClick={handleUserProfileClick}>
-              <img src={currentUser.avatar} alt={currentUser.name} className="user-avatar" />
+          {/* 用户角色模块 */}
+          <div className="user-profile-sidebar" onClick={handleUserProfileClick}>
+            <img src={currentUser.avatar} alt={currentUser.name} className="user-avatar" />
+            {!collapsed && (
               <div className="user-info">
                 <span className="user-name">{currentUser.name}</span>
                 <span className="user-role">{currentUser.roleName || currentUser.role}</span>
               </div>
+            )}
 
-              {/* 用户菜单下拉 */}
-              {userMenuOpen && (
-                <div className="user-dropdown">
-                  {userMenuItems.map(item => (
-                    <div key={item.key} className="user-menu-item">
-                      <span className="menu-item-icon">{item.icon}</span>
-                      <span className="menu-item-label">{item.label}</span>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
+            {/* 用户菜单下拉 */}
+            {userMenuOpen && !collapsed && (
+              <div className="user-dropdown-sidebar">
+                {userMenuItems.map(item => (
+                  <div key={item.key} className="user-menu-item">
+                    <span className="menu-item-icon">{item.icon}</span>
+                    <span className="menu-item-label">{item.label}</span>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
-        </header>
+        </div>
+      </div>
 
+      <div className="main-content">
         <div className="content">
           {children}
         </div>
@@ -251,7 +248,7 @@ const AdminLayout = ({ children, userRole = 'admin', currentPage, onPageChange, 
           display: flex;
           flex-direction: column;
           min-height: 100vh;
-          background: #f5f5f5;
+          background: var(--admin-bg-primary);
         }
 
         .admin-role-switcher {
@@ -259,17 +256,17 @@ const AdminLayout = ({ children, userRole = 'admin', currentPage, onPageChange, 
           justify-content: center;
           align-items: center;
           padding: 16px 20px;
-          background: #001529;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+          background: var(--admin-bg-card);
+          border-bottom: 1px solid var(--admin-border-default);
         }
 
         .admin-role-switcher .role-tabs {
           display: flex;
           background: rgba(255, 255, 255, 0.08);
-          border-radius: 10px;
+          border-radius: var(--admin-radius-md);
           padding: 4px;
           gap: 4px;
-          border: 1px solid rgba(255, 255, 255, 0.1);
+          border: 1px solid var(--admin-border-default);
         }
 
         .admin-role-switcher .role-tab {
@@ -279,32 +276,33 @@ const AdminLayout = ({ children, userRole = 'admin', currentPage, onPageChange, 
           padding: 10px 20px;
           background: transparent;
           border: none;
-          border-radius: 8px;
-          color: rgba(255, 255, 255, 0.6);
+          border-radius: var(--admin-radius-sm);
+          color: var(--admin-text-secondary);
           font-size: 0.9rem;
           font-weight: 500;
           cursor: pointer;
           transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+          font-family: var(--admin-font-sans);
         }
 
         .admin-role-switcher .role-tab:hover {
-          color: rgba(255, 255, 255, 0.9);
+          color: var(--admin-text-primary);
           background: rgba(255, 255, 255, 0.08);
         }
 
         .admin-role-switcher .role-tab.active {
-          background: #667eea;
+          background: var(--admin-btn-primary-gradient);
           color: white;
-          box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+          box-shadow: var(--admin-shadow-glow);
         }
 
         .admin-role-switcher .role-tab.admin-tab {
-          background: rgba(102, 126, 234, 0.25);
-          color: #a9b4ff;
+          background: rgba(59, 130, 246, 0.25);
+          color: var(--admin-text-light);
         }
 
         .admin-role-switcher .role-tab.admin-tab.active {
-          background: #667eea;
+          background: var(--admin-btn-primary-gradient);
           color: white;
         }
 
@@ -322,8 +320,8 @@ const AdminLayout = ({ children, userRole = 'admin', currentPage, onPageChange, 
 
         .sidebar {
           width: ${collapsed ? '64px' : '240px'};
-          background: #001529;
-          color: white;
+          background: var(--admin-bg-card);
+          color: var(--admin-text-primary);
           display: flex;
           flex-direction: column;
           transition: all 0.3s ease;
@@ -332,6 +330,7 @@ const AdminLayout = ({ children, userRole = 'admin', currentPage, onPageChange, 
           top: 0;
           bottom: 0;
           z-index: 1000;
+          border-right: 1px solid var(--admin-border-default);
         }
 
         .logo {
@@ -342,8 +341,9 @@ const AdminLayout = ({ children, userRole = 'admin', currentPage, onPageChange, 
           gap: 8px;
           font-size: 18px;
           font-weight: 600;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+          border-bottom: 1px solid var(--admin-border-default);
           padding: 0 16px;
+          font-family: var(--admin-font-sans);
         }
 
         .logo-icon {
@@ -352,6 +352,10 @@ const AdminLayout = ({ children, userRole = 'admin', currentPage, onPageChange, 
 
         .logo-text {
           white-space: nowrap;
+          background: var(--admin-bonus-gold-gradient);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
         }
 
         .menu {
@@ -366,9 +370,10 @@ const AdminLayout = ({ children, userRole = 'admin', currentPage, onPageChange, 
           gap: 12px;
           padding: 12px 16px;
           cursor: pointer;
-          border-radius: 4px;
+          border-radius: var(--admin-radius-md);
           transition: all 0.3s ease;
           white-space: nowrap;
+          font-family: var(--admin-font-sans);
         }
 
         .menu-item:hover {
@@ -376,7 +381,8 @@ const AdminLayout = ({ children, userRole = 'admin', currentPage, onPageChange, 
         }
 
         .menu-item.active {
-          background: #1890ff;
+          background: rgba(59, 130, 246, 0.2);
+          color: var(--admin-btn-primary);
         }
 
         .menu-icon {
@@ -389,68 +395,204 @@ const AdminLayout = ({ children, userRole = 'admin', currentPage, onPageChange, 
           font-size: 14px;
         }
 
+        .sidebar-footer {
+          padding: 16px 8px;
+          border-top: 1px solid var(--admin-border-default);
+          margin-top: auto;
+        }
+
+        .notification-sidebar {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          padding: 12px 8px;
+          border-radius: var(--admin-radius-md);
+          transition: all 0.3s ease;
+          cursor: pointer;
+          margin-bottom: 8px;
+          position: relative;
+        }
+
+        .notification-sidebar:hover {
+          background: rgba(255, 255, 255, 0.1);
+        }
+
+        .notification-sidebar .notification-info {
+          display: flex;
+          flex-direction: column;
+        }
+
+        .notification-sidebar .notification-text {
+          font-size: 14px;
+          font-weight: 600;
+          color: var(--admin-text-primary);
+        }
+
+        .notification-sidebar .notification-badge {
+          display: inline-block;
+          background: var(--admin-error);
+          color: white;
+          font-size: 12px;
+          font-weight: 600;
+          padding: 2px 6px;
+          border-radius: 10px;
+          min-width: 20px;
+          text-align: center;
+          margin-top: 4px;
+        }
+
+        .notification-dropdown-sidebar {
+          position: absolute;
+          bottom: 100%;
+          left: 8px;
+          right: 8px;
+          background: var(--admin-bg-card);
+          border: 1px solid var(--admin-border-accent);
+          border-radius: var(--admin-radius-lg);
+          box-shadow: var(--admin-shadow-glow);
+          overflow: hidden;
+          z-index: 1001;
+          margin-bottom: 8px;
+          max-height: 400px;
+          overflow-y: auto;
+        }
+
+        .notification-dropdown-sidebar .dropdown-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 16px 20px;
+          border-bottom: 1px solid var(--admin-border-default);
+        }
+
+        .notification-dropdown-sidebar .dropdown-title {
+          font-size: 16px;
+          font-weight: 600;
+          color: var(--admin-text-primary);
+        }
+
+        .notification-dropdown-sidebar .dropdown-link {
+          font-size: 14px;
+          color: var(--admin-btn-primary);
+          cursor: pointer;
+          transition: color 0.3s ease;
+        }
+
+        .notification-dropdown-sidebar .dropdown-link:hover {
+          color: var(--admin-btn-primary-hover);
+        }
+
+        .notification-dropdown-sidebar .notification-list {
+          padding: 8px 0;
+        }
+
+        .notification-dropdown-sidebar .notification-item {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+          padding: 16px 20px;
+          border-bottom: 1px solid var(--admin-border-default);
+          transition: all 0.3s ease;
+        }
+
+        .notification-dropdown-sidebar .notification-item:hover {
+          background: rgba(255, 255, 255, 0.05);
+        }
+
+        .notification-dropdown-sidebar .notification-content {
+          flex: 1;
+        }
+
+        .notification-dropdown-sidebar .notification-title {
+          font-size: 14px;
+          font-weight: 600;
+          color: var(--admin-text-primary);
+          margin-bottom: 4px;
+        }
+
+        .notification-dropdown-sidebar .notification-text {
+          font-size: 12px;
+          color: var(--admin-text-secondary);
+          margin-bottom: 8px;
+          line-height: 1.4;
+        }
+
+        .notification-dropdown-sidebar .notification-time {
+          font-size: 11px;
+          color: var(--admin-text-tertiary);
+        }
+
+        .notification-dropdown-sidebar .unread-dot {
+          width: 6px;
+          height: 6px;
+          background: var(--admin-accent-secondary);
+          border-radius: 50%;
+          margin-top: 6px;
+          flex-shrink: 0;
+        }
+
+        .user-profile-sidebar {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          padding: 12px 8px;
+          border-radius: var(--admin-radius-md);
+          transition: all 0.3s ease;
+          cursor: pointer;
+        }
+
+        .user-profile-sidebar:hover {
+          background: rgba(255, 255, 255, 0.1);
+        }
+
+        .user-profile-sidebar .user-info {
+          display: flex;
+          flex-direction: column;
+        }
+
+        .user-profile-sidebar .user-name {
+          font-size: 14px;
+          font-weight: 600;
+          color: var(--admin-text-primary);
+        }
+
+        .user-profile-sidebar .user-role {
+          font-size: 12px;
+          color: var(--admin-text-secondary);
+        }
+
+        .user-dropdown-sidebar {
+          position: absolute;
+          bottom: 100%;
+          left: 8px;
+          right: 8px;
+          background: var(--admin-bg-card);
+          border: 1px solid var(--admin-border-accent);
+          border-radius: var(--admin-radius-lg);
+          box-shadow: var(--admin-shadow-glow);
+          overflow: hidden;
+          z-index: 1001;
+          margin-bottom: 8px;
+        }
+
+        .user-dropdown-sidebar .user-menu-item {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          padding: 12px 16px;
+          cursor: pointer;
+          transition: background 0.3s ease;
+          color: var(--admin-text-primary);
+        }
+
+        .user-dropdown-sidebar .user-menu-item:hover {
+          background: rgba(255, 255, 255, 0.1);
+        }
+
         .main-content {
           flex: 1;
           margin-left: ${collapsed ? '64px' : '240px'};
           transition: all 0.3s ease;
-        }
-
-        .header {
-          height: 64px;
-          background: white;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          padding: 0 24px;
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-          position: sticky;
-          top: 0;
-          z-index: 100;
-        }
-
-        .header-left {
-          display: flex;
-          align-items: center;
-          gap: 16px;
-        }
-
-        .collapse-btn {
-          width: 32px;
-          height: 32px;
-          border: none;
-          background: none;
-          cursor: pointer;
-          font-size: 18px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          border-radius: 4px;
-          transition: background 0.3s ease;
-        }
-
-        .collapse-btn:hover {
-          background: #f0f0f0;
-        }
-
-        .breadcrumb {
-          display: flex;
-          gap: 8px;
-          font-size: 14px;
-        }
-
-        .breadcrumb-item {
-          color: #666;
-        }
-
-        .breadcrumb-item.active {
-          color: #1890ff;
-          font-weight: 500;
-        }
-
-        .header-right {
-          display: flex;
-          align-items: center;
-          gap: 24px;
         }
 
         .notification {
@@ -634,6 +776,9 @@ const AdminLayout = ({ children, userRole = 'admin', currentPage, onPageChange, 
         .content {
           padding: 24px;
           min-height: calc(100vh - 64px);
+          background: var(--admin-bg-primary);
+          position: relative;
+          z-index: 1;
         }
 
         /* 移动端样式 */
