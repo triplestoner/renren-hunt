@@ -27,3 +27,22 @@ dist-ssr
 .worktrees
 worktrees
 .gstack/
+
+# Local project documents and research exports
+entry-flow-preview.png
+research_soho_headhunter/
+slides_renrenlie-investor/
+设计文档/ppt-product/
+设计文档/ppt-renrenlie-1page/
+设计文档/ppt/
+设计文档/prd-review/
+设计文档/renrenlie-one-pager-v1.8.md
+设计文档/renrenlie-prd-v1.0-mvp-reorganized.md
+设计文档/renrenlie-prd-v1.7.md
+设计文档/renrenlie-prd-v1.8-backend.md
+设计文档/renrenlie-prd-v1.8.md
+设计文档/renrenlie-prd-v1.9-hewa-role-supplement.md
+设计文档/renrenlie-technical-spec-v1.8.md
+设计文档/renrenlie-technical-spec-v1.8.pdf
+设计文档/人人猎产品介绍.pdf
+设计文档/竞品调研/
