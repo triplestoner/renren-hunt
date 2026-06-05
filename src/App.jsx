@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Layout from './components/Layout'
 import JobHall from './components/JobHall'
 import TrustScore from './components/TrustScore'
@@ -9,6 +9,77 @@ import CandidatePortal from './components/CandidatePortal'
 import EmployerPortal from './components/EmployerPortal'
 import RecommenderOnboarding from './components/RecommenderOnboarding'
 import AdminPortal from './admin/AdminPortal'
+import NewUserCampaign from './components/NewUserCampaign'
+import RecommenderEntryFlow from './components/RecommenderEntryFlow'
+import RecommenderAuthFlow from './components/RecommenderAuthFlow'
+import { RecommenderMessageCenter, RecommenderMine, RecommenderTaskCenter } from './components/RecommenderMobilePages'
+
+const recommenderMobileNavItems = [
+  { id: 'home', label: '首页', icon: 'home', aliases: ['hall', 'campaign'] },
+  { id: 'recommend', label: '做推荐', icon: 'recommend', aliases: ['referrals', 'circles'] },
+  { id: 'tasks', label: '做任务', icon: 'tasks', aliases: ['onboarding', 'trust', 'earnings'] },
+  { id: 'messages', label: '消息', icon: 'messages', aliases: [] },
+  { id: 'mine', label: '我的', icon: 'mine', aliases: [] },
+]
+
+function RecommenderNavIcon({ name }) {
+  const commonProps = {
+    viewBox: '0 0 24 24',
+    fill: 'none',
+    stroke: 'currentColor',
+    strokeWidth: 2,
+    strokeLinecap: 'round',
+    strokeLinejoin: 'round',
+    'aria-hidden': true,
+  }
+
+  switch (name) {
+    case 'home':
+      return (
+        <svg {...commonProps}>
+          <path d="M3 11.5 12 4l9 7.5" />
+          <path d="M5.5 10.5V20h13v-9.5" />
+          <path d="M9.5 20v-6h5v6" />
+        </svg>
+      )
+    case 'recommend':
+      return (
+        <svg {...commonProps}>
+          <path d="M7 12.5 10.5 16 17 9" />
+          <path d="M4.5 19.5h15" />
+          <path d="M6 5.5h12a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2Z" />
+        </svg>
+      )
+    case 'tasks':
+      return (
+        <svg {...commonProps}>
+          <path d="M8 6h10" />
+          <path d="M8 12h10" />
+          <path d="M8 18h7" />
+          <path d="m3.5 6 1 1 2-2" />
+          <path d="m3.5 12 1 1 2-2" />
+          <path d="m3.5 18 1 1 2-2" />
+        </svg>
+      )
+    case 'messages':
+      return (
+        <svg {...commonProps}>
+          <path d="M4 5.5h16v11H8l-4 3v-14Z" />
+          <path d="M8 10h8" />
+          <path d="M8 13h5" />
+        </svg>
+      )
+    case 'mine':
+      return (
+        <svg {...commonProps}>
+          <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" />
+          <path d="M4.5 21a7.5 7.5 0 0 1 15 0" />
+        </svg>
+      )
+    default:
+      return null
+  }
+}
 
 const initialJobs = [
   {
@@ -65,15 +136,53 @@ const initialJobs = [
   },
 ];
 
+const getInitialTab = () => {
+  if (typeof window === 'undefined') {
+    return 'home'
+  }
+  const tab = new URLSearchParams(window.location.search).get('tab')
+  return ['campaign', 'onboarding', 'hall', 'home', 'recommend', 'tasks', 'messages', 'mine'].includes(tab) ? tab : 'home'
+}
+
+const getInitialRecommenderAuth = () => {
+  if (typeof window === 'undefined') {
+    return false
+  }
+  const params = new URLSearchParams(window.location.search)
+  if (params.get('resetAuth') === '1') {
+    window.localStorage.removeItem('renrenlie_recommender_authed')
+    return false
+  }
+  return params.get('authed') === '1' || window.localStorage.getItem('renrenlie_recommender_authed') === 'true'
+}
+
+const isMobilePreview = () => {
+  if (typeof window === 'undefined') {
+    return false
+  }
+  return new URLSearchParams(window.location.search).get('mobile') === '1'
+}
+
 function App() {
-  const [isRecommenderOnboarded, setIsRecommenderOnboarded] = useState(false)
+  const forceMobile = isMobilePreview()
+  const forceResetAuth = typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('resetAuth') === '1'
+  const [isRecommenderOnboarded, setIsRecommenderOnboarded] = useState(true)
+  const [isRecommenderAuthed, setIsRecommenderAuthed] = useState(getInitialRecommenderAuth)
   const [activeRole, setActiveRole] = useState('c1')
-  const [activeTab, setActiveTab] = useState('hall')
+  const [activeTab, setActiveTab] = useState(getInitialTab)
   const [publishedJobs, setPublishedJobs] = useState(initialJobs)
   const [c2ReceivedRecommendations, setC2ReceivedRecommendations] = useState([])
   const [employerCandidates, setEmployerCandidates] = useState([])
   const [submittedRecommendations, setSubmittedRecommendations] = useState([])
   const [showAdminPortal, setShowAdminPortal] = useState(false)
+
+  useEffect(() => {
+    if (forceResetAuth) {
+      window.localStorage.removeItem('renrenlie_recommender_authed')
+    }
+  }, [forceResetAuth])
+
+  const effectiveRecommenderAuthed = forceResetAuth ? false : isRecommenderAuthed
 
   const handleRecommend = (recommendation) => {
     const newRecommendation = {
@@ -122,10 +231,28 @@ function App() {
 
   const renderC1Content = () => {
     switch (activeTab) {
+      case 'campaign':
+        return (
+          <NewUserCampaign
+            onGoHall={() => setActiveTab('hall')}
+            onGoEarnings={() => setActiveTab('earnings')}
+            onGoReferrals={() => setActiveTab('referrals')}
+          />
+        )
+      case 'onboarding':
+        return <RecommenderEntryFlow />
       case 'hall':
+      case 'home':
         return <JobHall publishedJobs={publishedJobs} onRecommend={handleRecommend} submittedRecommendations={submittedRecommendations} />
       case 'referrals':
+      case 'recommend':
         return <Referrals />
+      case 'tasks':
+        return <RecommenderTaskCenter />
+      case 'messages':
+        return <RecommenderMessageCenter />
+      case 'mine':
+        return <RecommenderMine />
       case 'circles':
         return <Circles />
       case 'trust':
@@ -148,8 +275,50 @@ function App() {
     }
   }
 
+  const renderRecommenderMobileNav = () => {
+    if (activeRole !== 'c1') {
+      return null
+    }
+    return (
+      <nav className="app-mobile-bottom-nav" aria-label="推荐人移动端导航">
+        {recommenderMobileNavItems.map((item) => {
+          const isActive = activeTab === item.id || item.aliases.includes(activeTab)
+          return (
+            <button
+              key={item.id}
+              type="button"
+              className={`app-mobile-nav-item ${isActive ? 'active' : ''}`}
+              onClick={() => setActiveTab(item.id)}
+            >
+              <span className="app-mobile-nav-icon">
+                <RecommenderNavIcon name={item.icon} />
+              </span>
+              <span>{item.label}</span>
+            </button>
+          )
+        })}
+      </nav>
+    )
+  }
+
   const renderLayout = (children) => {
     if (activeRole === 'c1') {
+      if (!effectiveRecommenderAuthed) {
+        return <RecommenderAuthFlow onComplete={() => {
+          window.localStorage.setItem('renrenlie_recommender_authed', 'true')
+          if (forceResetAuth) {
+            const nextUrl = new URL(window.location.href)
+            nextUrl.searchParams.delete('resetAuth')
+            nextUrl.searchParams.set('tab', 'home')
+            window.history.replaceState({}, '', nextUrl)
+          }
+          setIsRecommenderAuthed(true)
+          setActiveTab('home')
+        }} />
+      }
+      if (activeTab === 'campaign') {
+        return children
+      }
       if (!isRecommenderOnboarded) {
         return <RecommenderOnboarding onComplete={() => {
           setIsRecommenderOnboarded(true)
@@ -180,11 +349,18 @@ function App() {
   }
 
   return (
-    <div className="app">
+    <div className={`app ${forceMobile ? 'force-mobile' : ''}`}>
       <header className="role-switcher">
         <div className="role-tabs">
           <button
-            className={`role-tab ${activeRole === 'c1' ? 'active' : ''}`}
+            className={`role-tab ${activeRole === 'c1' && activeTab === 'campaign' ? 'active' : ''}`}
+            onClick={() => { setActiveRole('c1'); setActiveTab('campaign'); }}
+          >
+            <span className="tab-icon">🎁</span>
+            新人福利站
+          </button>
+          <button
+            className={`role-tab ${activeRole === 'c1' && activeTab !== 'campaign' ? 'active' : ''}`}
             onClick={() => { setActiveRole('c1'); setActiveTab('hall'); }}
           >
             <span className="tab-icon">👤</span>
@@ -218,6 +394,7 @@ function App() {
       {activeRole === 'c1' && renderLayout(renderC1Content())}
       {activeRole === 'c2' && <CandidatePortal onSwitchRole={handleSwitchRole} recommendations={c2ReceivedRecommendations} onAccept={handleC2Accept} />}
       {activeRole === 'b' && <EmployerPortal publishedJobs={publishedJobs} setPublishedJobs={setPublishedJobs} />}
+      {renderRecommenderMobileNav()}
 
       <footer className="app-footer">
         <span>最后更新：2026-05-13 16:37:04</span>
@@ -228,6 +405,10 @@ function App() {
       <style>{`
         .app {
           min-height: 100vh;
+        }
+
+        .app-mobile-bottom-nav {
+          display: none;
         }
 
         .role-switcher {
@@ -331,12 +512,89 @@ function App() {
         }
 
         @media (max-width: 768px) {
+          .app {
+            background: #f7f8fa;
+            padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px));
+            width: min(390px, 100vw);
+            max-width: 100vw;
+            margin: 0;
+            overflow-x: hidden;
+          }
+
+          .role-switcher {
+            display: none;
+          }
+
+          .app-mobile-bottom-nav {
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 500;
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 2px;
+            width: min(390px, 100vw);
+            max-width: 100vw;
+            box-sizing: border-box;
+            padding: 8px 10px calc(8px + env(safe-area-inset-bottom, 0px));
+            background: rgba(255, 255, 255, 0.98);
+            border-top: 1px solid rgba(15, 23, 42, 0.08);
+            box-shadow: 0 -10px 30px rgba(15, 23, 42, 0.1);
+          }
+
+          .app-mobile-nav-item {
+            min-height: 60px;
+            border-radius: 14px;
+            background: transparent;
+            color: #8b929c;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            font-size: 0.78rem;
+            font-weight: 650;
+            min-width: 0;
+          }
+
+          .app-mobile-nav-icon {
+            width: 30px;
+            height: 30px;
+            display: grid;
+            place-items: center;
+            color: #1f2a44;
+            background: #f4f6f8;
+            border-radius: 12px;
+            line-height: 1;
+            transition: transform 0.18s ease, background 0.18s ease, color 0.18s ease;
+          }
+
+          .app-mobile-nav-icon svg {
+            width: 22px;
+            height: 22px;
+          }
+
+          .app-mobile-nav-item.active {
+            color: #16c3aa;
+          }
+
+          .app-mobile-nav-item.active .app-mobile-nav-icon {
+            color: #16c3aa;
+            background: #e8fbf6;
+            border-radius: 10px;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(22, 195, 170, 0.16);
+          }
+
           .role-tabs {
             width: 100%;
-            justify-content: center;
+            justify-content: flex-start;
+            overflow-x: auto;
           }
 
           .role-tab {
+            flex: 0 0 auto;
             padding: 10px 16px;
             font-size: 0.85rem;
           }
@@ -355,6 +613,10 @@ function App() {
             gap: 12px;
             padding: 12px;
           }
+
+          .app-footer {
+            display: none;
+          }
         }
 
         @media (max-width: 480px) {
@@ -366,7 +628,7 @@ function App() {
           .role-tab {
             padding: 8px 12px;
             font-size: 0.75rem;
-            flex: 1;
+            flex: 0 0 auto;
             justify-content: center;
           }
 
@@ -414,6 +676,99 @@ function App() {
 
         .admin-link:hover {
           color: #667eea;
+        }
+
+        .app.force-mobile {
+          width: min(390px, 100vw);
+          max-width: 100vw;
+          min-height: 100vh;
+          margin: 0;
+          overflow-x: hidden;
+          background: #f7f8fa;
+          padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px));
+        }
+
+        .app.force-mobile .role-switcher,
+        .app.force-mobile .app-footer {
+          display: none;
+        }
+
+        .app.force-mobile .layout {
+          display: block;
+          background: #f7f8fa;
+        }
+
+        .app.force-mobile .sidebar,
+        .app.force-mobile .mobile-menu-btn {
+          display: none;
+        }
+
+        .app.force-mobile .main-content {
+          margin-left: 0;
+          min-height: 100vh;
+          padding: calc(12px + env(safe-area-inset-top, 0px)) 14px calc(96px + env(safe-area-inset-bottom, 0px));
+        }
+
+        .app.force-mobile .app-mobile-bottom-nav {
+          position: fixed;
+          left: 0;
+          right: auto;
+          bottom: 0;
+          z-index: 500;
+          display: grid;
+          grid-template-columns: repeat(5, minmax(0, 1fr));
+          gap: 2px;
+          width: min(390px, 100vw);
+          max-width: 100vw;
+          box-sizing: border-box;
+          padding: 8px 10px calc(8px + env(safe-area-inset-bottom, 0px));
+          background: #fff;
+          border-top: 1px solid rgba(15, 23, 42, 0.08);
+          box-shadow: 0 -10px 30px rgba(15, 23, 42, 0.1);
+        }
+
+        .app.force-mobile .app-mobile-nav-item {
+          min-height: 60px;
+          border-radius: 14px;
+          background: transparent;
+          color: #8b929c;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 3px;
+          font-size: 0.78rem;
+          font-weight: 650;
+          min-width: 0;
+        }
+
+        .app.force-mobile .app-mobile-nav-icon {
+          width: 30px;
+          height: 30px;
+          display: grid;
+          place-items: center;
+          color: #1f2a44;
+          background: #f4f6f8;
+          border-radius: 12px;
+          line-height: 1;
+          transition: transform 0.18s ease, background 0.18s ease, color 0.18s ease;
+        }
+
+        .app.force-mobile .app-mobile-nav-icon svg {
+          width: 22px;
+          height: 22px;
+        }
+
+        .app.force-mobile .app-mobile-nav-item.active {
+          color: #16c3aa;
+        }
+
+        .app.force-mobile .app-mobile-nav-item.active .app-mobile-nav-icon {
+          color: #16c3aa;
+          background: #e8fbf6;
+          border-radius: 10px;
+          transform: translateY(-2px);
+          box-shadow: 0 8px 16px rgba(22, 195, 170, 0.16);
         }
       `}</style>
     </div>

@@ -278,13 +278,13 @@ const FinanceManagement = () => {
 
         .page-header h1 {
           font-size: 28px;
-          color: #333;
+          color: var(--admin-text-primary);
           margin-bottom: 8px;
           font-weight: 600;
         }
 
         .page-header p {
-          color: #666;
+          color: var(--admin-text-secondary);
           font-size: 14px;
         }
 
@@ -292,31 +292,31 @@ const FinanceManagement = () => {
           display: flex;
           gap: 8px;
           margin-bottom: 24px;
-          border-bottom: 2px solid #f0f0f0;
+          border-bottom: 2px solid var(--admin-border-default);
         }
 
         .finance-tab {
           padding: 12px 24px;
-          background: white;
-          border: 1px solid #e8e8e8;
+          background: var(--admin-bg-card);
+          border: 1px solid var(--admin-border-default);
           border-bottom: none;
-          border-radius: 8px 8px 0 0;
+          border-radius: var(--admin-radius-md) var(--admin-radius-md) 0 0;
           font-size: 16px;
           font-weight: 500;
           cursor: pointer;
           transition: all 0.3s ease;
-          color: #666;
+          color: var(--admin-text-secondary);
         }
 
         .finance-tab:hover {
-          color: #667eea;
-          border-color: #667eea;
+          color: var(--admin-btn-primary);
+          border-color: var(--admin-border-accent);
         }
 
         .finance-tab.active {
-          background: #667eea;
+          background: var(--admin-btn-primary-gradient);
           color: white;
-          border-color: #667eea;
+          border-color: var(--admin-btn-primary);
         }
 
         .date-filter {
@@ -328,51 +328,55 @@ const FinanceManagement = () => {
 
         .date-select {
           padding: 10px 16px;
-          border: 1px solid #ddd;
-          border-radius: 8px;
+          border: 1px solid var(--admin-border-default);
+          border-radius: var(--admin-radius-md);
           font-size: 14px;
+          background: var(--admin-bg-card);
+          color: var(--admin-text-primary);
         }
 
         .search-btn {
           padding: 10px 20px;
-          background: #667eea;
+          background: var(--admin-btn-primary-gradient);
           color: white;
           border: none;
-          border-radius: 8px;
+          border-radius: var(--admin-radius-md);
           font-size: 14px;
           cursor: pointer;
           transition: all 0.3s ease;
         }
 
         .search-btn:hover {
-          background: #5568d3;
+          transform: translateY(-1px);
+          box-shadow: var(--admin-shadow-glow);
         }
 
         .export-btn {
           padding: 10px 20px;
-          background: #4ade80;
+          background: var(--admin-success);
           color: white;
           border: none;
-          border-radius: 8px;
+          border-radius: var(--admin-radius-md);
           font-size: 14px;
           cursor: pointer;
           transition: all 0.3s ease;
         }
 
         .export-btn:hover {
-          background: #3dbf73;
+          transform: translateY(-1px);
+          box-shadow: var(--admin-shadow-glow);
         }
 
         .finance-card {
-          background: white;
-          border-radius: 12px;
+          background: var(--admin-bg-card);
+          border-radius: var(--admin-radius-lg);
           padding: 24px;
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+          box-shadow: var(--admin-shadow-card);
         }
 
         .finance-card h3 {
           font-size: 20px;
-          color: #333;
+          color: var(--admin-text-primary);
           margin-bottom: 24px;
           font-weight: 600;
         }
@@ -386,16 +390,16 @@ const FinanceManagement = () => {
           padding: 16px;
           text-align: left;
           font-weight: 600;
-          color: #333;
+          color: var(--admin-text-primary);
           font-size: 14px;
-          border-bottom: 2px solid #e8e8e8;
+          border-bottom: 2px solid var(--admin-border-accent);
         }
 
         .data-table td {
           padding: 16px;
-          border-bottom: 1px solid #f0f0f0;
+          border-bottom: 1px solid var(--admin-border-default);
           font-size: 14px;
-          color: #666;
+          color: var(--admin-text-secondary);
         }
 
         .user-cell {
@@ -408,7 +412,7 @@ const FinanceManagement = () => {
           width: 36px;
           height: 36px;
           border-radius: 50%;
-          background: linear-gradient(135deg, #667eea, #764ba2);
+          background: var(--admin-btn-primary-gradient);
           color: white;
           display: flex;
           align-items: center;
@@ -419,67 +423,67 @@ const FinanceManagement = () => {
 
         .amount-cell {
           font-weight: 600;
-          color: #333;
+          color: var(--admin-text-primary);
         }
 
         .amount-cell.income {
-          color: #4ade80;
+          color: var(--admin-success);
         }
 
         .amount-cell.expense {
-          color: #f87171;
+          color: var(--admin-error);
         }
 
         .status-badge {
           padding: 4px 12px;
-          border-radius: 12px;
+          border-radius: var(--admin-radius-full);
           font-size: 12px;
           font-weight: 500;
         }
 
         .status-badge.pending {
-          background: rgba(96, 165, 250, 0.1);
-          color: #60a5fa;
+          background: var(--admin-info-muted);
+          color: var(--admin-info);
         }
 
         .status-badge.processing {
-          background: rgba(245, 158, 11, 0.1);
-          color: #f59e0b;
+          background: var(--admin-warning-muted);
+          color: var(--admin-warning);
         }
 
         .status-badge.completed {
-          background: rgba(74, 222, 128, 0.1);
-          color: #4ade80;
+          background: var(--admin-success-muted);
+          color: var(--admin-success);
         }
 
         .status-badge.failed {
-          background: rgba(248, 113, 113, 0.1);
-          color: #f87171;
+          background: var(--admin-error-muted);
+          color: var(--admin-error);
         }
 
         .type-badge {
           padding: 4px 12px;
-          border-radius: 12px;
+          border-radius: var(--admin-radius-full);
           font-size: 12px;
           font-weight: 500;
         }
 
         .type-badge.income {
-          background: rgba(74, 222, 128, 0.1);
-          color: #4ade80;
+          background: var(--admin-success-muted);
+          color: var(--admin-success);
         }
 
         .type-badge.expense {
-          background: rgba(248, 113, 113, 0.1);
-          color: #f87171;
+          background: var(--admin-error-muted);
+          color: var(--admin-error);
         }
 
         .action-btn {
           padding: 6px 12px;
-          background: #667eea;
+          background: var(--admin-btn-primary-gradient);
           color: white;
           border: none;
-          border-radius: 6px;
+          border-radius: var(--admin-radius-sm);
           font-size: 12px;
           cursor: pointer;
           transition: all 0.3s ease;
@@ -487,7 +491,7 @@ const FinanceManagement = () => {
         }
 
         .action-btn.confirm {
-          background: #4ade80;
+          background: var(--admin-success);
         }
 
         .stats-grid {
@@ -502,9 +506,9 @@ const FinanceManagement = () => {
           align-items: center;
           gap: 16px;
           padding: 24px;
-          background: #f9f9f9;
-          border-radius: 8px;
-          border: 1px solid #e0e0e0;
+          background: var(--admin-bg-secondary);
+          border-radius: var(--admin-radius-md);
+          border: 1px solid var(--admin-border-default);
         }
 
         .stat-icon {
@@ -514,13 +518,13 @@ const FinanceManagement = () => {
         .stat-value {
           font-size: 24px;
           font-weight: 600;
-          color: #333;
+          color: var(--admin-text-primary);
           margin-bottom: 4px;
         }
 
         .stat-label {
           font-size: 14px;
-          color: #666;
+          color: var(--admin-text-secondary);
         }
 
         .chart-placeholder {
@@ -529,8 +533,8 @@ const FinanceManagement = () => {
           align-items: center;
           justify-content: center;
           padding: 60px 20px;
-          background: #f9f9f9;
-          border-radius: 8px;
+          background: var(--admin-bg-secondary);
+          border-radius: var(--admin-radius-md);
         }
 
         .chart-icon {
@@ -539,7 +543,7 @@ const FinanceManagement = () => {
         }
 
         .chart-placeholder p {
-          color: #666;
+          color: var(--admin-text-secondary);
           font-size: 14px;
         }
 

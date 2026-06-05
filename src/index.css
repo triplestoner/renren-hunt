@@ -276,6 +276,14 @@ button {
 
 /* Mobile landscape and portrait */
 @media (max-width: 768px) {
+  html,
+  body,
+  #root {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
   body {
     background-image: 
       linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);

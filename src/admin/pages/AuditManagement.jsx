@@ -281,13 +281,13 @@ const AuditManagement = () => {
 
         .page-header h1 {
           font-size: 28px;
-          color: #333;
+          color: var(--admin-text-primary);
           margin-bottom: 8px;
           font-weight: 600;
         }
 
         .page-header p {
-          color: #666;
+          color: var(--admin-text-secondary);
           font-size: 14px;
         }
 
@@ -295,31 +295,31 @@ const AuditManagement = () => {
           display: flex;
           gap: 8px;
           margin-bottom: 24px;
-          border-bottom: 2px solid #f0f0f0;
+          border-bottom: 2px solid var(--admin-border-default);
         }
 
         .audit-tab {
           padding: 12px 24px;
-          background: white;
-          border: 1px solid #e8e8e8;
+          background: var(--admin-bg-card);
+          border: 1px solid var(--admin-border-default);
           border-bottom: none;
-          border-radius: 8px 8px 0 0;
+          border-radius: var(--admin-radius-md) var(--admin-radius-md) 0 0;
           font-size: 16px;
           font-weight: 500;
           cursor: pointer;
           transition: all 0.3s ease;
-          color: #666;
+          color: var(--admin-text-secondary);
         }
 
         .audit-tab:hover {
-          color: #667eea;
-          border-color: #667eea;
+          color: var(--admin-btn-primary);
+          border-color: var(--admin-border-accent);
         }
 
         .audit-tab.active {
-          background: #667eea;
+          background: var(--admin-btn-primary-gradient);
           color: white;
-          border-color: #667eea;
+          border-color: var(--admin-btn-primary);
         }
 
         .filter-section {
@@ -335,10 +335,10 @@ const AuditManagement = () => {
           display: flex;
           flex: 1;
           min-width: 300px;
-          border: 1px solid #ddd;
-          border-radius: 8px;
+          border: 1px solid var(--admin-border-default);
+          border-radius: var(--admin-radius-md);
           overflow: hidden;
-          background: white;
+          background: var(--admin-bg-card);
         }
 
         .search-input {
@@ -347,11 +347,13 @@ const AuditManagement = () => {
           border: none;
           font-size: 14px;
           outline: none;
+          color: var(--admin-text-primary);
+          background: var(--admin-bg-card);
         }
 
         .search-btn {
           padding: 10px 16px;
-          background: #f0f0f0;
+          background: var(--admin-bg-secondary);
           border: none;
           cursor: pointer;
           font-size: 18px;
@@ -359,7 +361,7 @@ const AuditManagement = () => {
         }
 
         .search-btn:hover {
-          background: #e0e0e0;
+          background: var(--admin-border-default);
         }
 
         .filter-controls {
@@ -370,31 +372,34 @@ const AuditManagement = () => {
 
         .filter-select {
           padding: 10px 16px;
-          border: 1px solid #ddd;
-          border-radius: 8px;
+          border: 1px solid var(--admin-border-default);
+          border-radius: var(--admin-radius-md);
           font-size: 14px;
-          background: white;
+          background: var(--admin-bg-card);
+          color: var(--admin-text-primary);
         }
 
         .refresh-btn {
           padding: 10px 16px;
-          background: #f0f0f0;
-          border: 1px solid #ddd;
-          border-radius: 8px;
+          background: var(--admin-bg-card);
+          border: 1px solid var(--admin-border-default);
+          border-radius: var(--admin-radius-md);
           font-size: 14px;
           cursor: pointer;
           transition: all 0.3s ease;
+          color: var(--admin-text-primary);
         }
 
         .refresh-btn:hover {
-          background: #e0e0e0;
+          background: var(--admin-bg-secondary);
+          border-color: var(--admin-border-accent);
         }
 
         .audit-list {
-          background: white;
-          border-radius: 12px;
+          background: var(--admin-bg-card);
+          border-radius: var(--admin-radius-lg);
           overflow: hidden;
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+          box-shadow: var(--admin-shadow-card);
         }
 
         .audit-table {
@@ -403,27 +408,27 @@ const AuditManagement = () => {
         }
 
         .audit-table thead {
-          background: #fafafa;
+          background: var(--admin-info-muted);
         }
 
         .audit-table th {
           padding: 16px;
           text-align: left;
           font-weight: 600;
-          color: #333;
+          color: var(--admin-text-primary);
           font-size: 14px;
-          border-bottom: 2px solid #e8e8e8;
+          border-bottom: 2px solid var(--admin-border-accent);
         }
 
         .audit-table td {
           padding: 16px;
-          border-bottom: 1px solid #f0f0f0;
+          border-bottom: 1px solid var(--admin-border-default);
           font-size: 14px;
-          color: #666;
+          color: var(--admin-text-secondary);
         }
 
         .audit-table tbody tr:hover {
-          background: #f5f5f5;
+          background: var(--admin-bg-secondary);
         }
 
         .user-info {
@@ -445,13 +450,13 @@ const AuditManagement = () => {
 
         .user-name {
           font-weight: 600;
-          color: #333;
+          color: var(--admin-text-primary);
           margin-bottom: 4px;
         }
 
         .user-role {
           font-size: 12px;
-          color: #999;
+          color: var(--admin-text-tertiary);
         }
 
         .job-info {
@@ -460,19 +465,19 @@ const AuditManagement = () => {
 
         .job-title {
           font-weight: 600;
-          color: #333;
+          color: var(--admin-text-primary);
           margin-bottom: 4px;
         }
 
         .job-company {
           font-size: 14px;
-          color: #666;
+          color: var(--admin-text-secondary);
           margin-bottom: 4px;
         }
 
         .job-salary {
           font-size: 12px;
-          color: #f59e0b;
+          color: var(--admin-bonus-gold);
         }
 
         .content-preview {
@@ -481,7 +486,7 @@ const AuditManagement = () => {
 
         .content-text {
           font-size: 14px;
-          color: #666;
+          color: var(--admin-text-secondary);
           line-height: 1.4;
           white-space: nowrap;
           overflow: hidden;
@@ -489,30 +494,30 @@ const AuditManagement = () => {
         }
 
         .audit-type {
-          color: #667eea;
+          color: var(--admin-btn-primary);
           font-weight: 500;
         }
 
         .status-badge {
           padding: 4px 12px;
-          border-radius: 12px;
+          border-radius: var(--admin-radius-full);
           font-size: 12px;
           font-weight: 500;
         }
 
         .status-badge.pending {
-          background: rgba(96, 165, 250, 0.1);
-          color: #60a5fa;
+          background: var(--admin-info-muted);
+          color: var(--admin-info);
         }
 
         .status-badge.approved {
-          background: rgba(74, 222, 128, 0.1);
-          color: #4ade80;
+          background: var(--admin-success-muted);
+          color: var(--admin-success);
         }
 
         .status-badge.rejected {
-          background: rgba(248, 113, 113, 0.1);
-          color: #f87171;
+          background: var(--admin-error-muted);
+          color: var(--admin-error);
         }
 
         .audit-actions {
@@ -522,40 +527,43 @@ const AuditManagement = () => {
 
         .action-btn {
           padding: 6px 12px;
-          border: 1px solid #ddd;
-          background: white;
-          border-radius: 6px;
+          border: 1px solid var(--admin-border-default);
+          background: var(--admin-bg-card);
+          border-radius: var(--admin-radius-sm);
           font-size: 14px;
           cursor: pointer;
           transition: all 0.3s ease;
+          color: var(--admin-text-primary);
         }
 
         .action-btn.view:hover {
-          background: #667eea;
+          background: var(--admin-btn-primary-gradient);
           color: white;
-          border-color: #667eea;
+          border-color: var(--admin-btn-primary);
         }
 
         .action-btn.approve {
-          background: #4ade80;
+          background: var(--admin-success);
           color: white;
-          border-color: #4ade80;
+          border-color: var(--admin-success);
         }
 
         .action-btn.approve:hover {
-          background: #34d399;
-          border-color: #34d399;
+          background: var(--admin-success);
+          opacity: 0.9;
+          border-color: var(--admin-success);
         }
 
         .action-btn.reject {
-          background: #f87171;
+          background: var(--admin-error);
           color: white;
-          border-color: #f87171;
+          border-color: var(--admin-error);
         }
 
         .action-btn.reject:hover {
-          background: #ef4444;
-          border-color: #ef4444;
+          background: var(--admin-error);
+          opacity: 0.9;
+          border-color: var(--admin-error);
         }
 
         .pagination {
@@ -569,31 +577,33 @@ const AuditManagement = () => {
 
         .page-btn {
           padding: 8px 16px;
-          background: white;
-          border: 1px solid #ddd;
-          border-radius: 6px;
+          background: var(--admin-bg-card);
+          border: 1px solid var(--admin-border-default);
+          border-radius: var(--admin-radius-sm);
           font-size: 14px;
           cursor: pointer;
           transition: all 0.3s ease;
+          color: var(--admin-text-primary);
         }
 
         .page-btn:hover:not(:disabled) {
-          background: #667eea;
+          background: var(--admin-btn-primary-gradient);
           color: white;
-          border-color: #667eea;
+          border-color: var(--admin-btn-primary);
         }
 
         .page-info {
           font-size: 14px;
-          color: #666;
+          color: var(--admin-text-secondary);
         }
 
         .page-size {
           padding: 8px 16px;
-          border: 1px solid #ddd;
-          border-radius: 6px;
+          border: 1px solid var(--admin-border-default);
+          border-radius: var(--admin-radius-sm);
           font-size: 14px;
-          background: white;
+          background: var(--admin-bg-card);
+          color: var(--admin-text-primary);
         }
 
         @media (max-width: 768px) {

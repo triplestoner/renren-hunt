@@ -242,13 +242,13 @@ const DataAnalysis = () => {
 
         .page-header h1 {
           font-size: 28px;
-          color: #333;
+          color: var(--admin-text-primary);
           margin-bottom: 8px;
           font-weight: 600;
         }
 
         .page-header p {
-          color: #666;
+          color: var(--admin-text-secondary);
           font-size: 14px;
         }
 
@@ -256,31 +256,31 @@ const DataAnalysis = () => {
           display: flex;
           gap: 8px;
           margin-bottom: 24px;
-          border-bottom: 2px solid #f0f0f0;
+          border-bottom: 2px solid var(--admin-border-default);
         }
 
         .analysis-tab {
           padding: 12px 24px;
-          background: white;
-          border: 1px solid #e8e8e8;
+          background: var(--admin-bg-card);
+          border: 1px solid var(--admin-border-default);
           border-bottom: none;
-          border-radius: 8px 8px 0 0;
+          border-radius: var(--admin-radius-md) var(--admin-radius-md) 0 0;
           font-size: 16px;
           font-weight: 500;
           cursor: pointer;
           transition: all 0.3s ease;
-          color: #666;
+          color: var(--admin-text-secondary);
         }
 
         .analysis-tab:hover {
-          color: #667eea;
-          border-color: #667eea;
+          color: var(--admin-btn-primary);
+          border-color: var(--admin-border-accent);
         }
 
         .analysis-tab.active {
-          background: #667eea;
+          background: var(--admin-btn-primary-gradient);
           color: white;
-          border-color: #667eea;
+          border-color: var(--admin-btn-primary);
         }
 
         .time-range-filter {
@@ -291,24 +291,24 @@ const DataAnalysis = () => {
 
         .time-btn {
           padding: 8px 16px;
-          background: white;
-          border: 1px solid #ddd;
-          border-radius: 8px;
+          background: var(--admin-bg-card);
+          border: 1px solid var(--admin-border-default);
+          border-radius: var(--admin-radius-md);
           font-size: 14px;
           cursor: pointer;
           transition: all 0.3s ease;
-          color: #666;
+          color: var(--admin-text-secondary);
         }
 
         .time-btn:hover {
-          border-color: #667eea;
-          color: #667eea;
+          border-color: var(--admin-border-accent);
+          color: var(--admin-btn-primary);
         }
 
         .time-btn.active {
-          background: #667eea;
+          background: var(--admin-btn-primary-gradient);
           color: white;
-          border-color: #667eea;
+          border-color: var(--admin-btn-primary);
         }
 
         .data-grid {
@@ -319,16 +319,16 @@ const DataAnalysis = () => {
         }
 
         .data-card {
-          background: white;
-          border-radius: 12px;
+          background: var(--admin-bg-card);
+          border-radius: var(--admin-radius-lg);
           padding: 24px;
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+          box-shadow: var(--admin-shadow-card);
           transition: all 0.3s ease;
         }
 
         .data-card:hover {
           transform: translateY(-2px);
-          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+          box-shadow: var(--admin-shadow-elevated);
         }
 
         .data-header {
@@ -340,30 +340,30 @@ const DataAnalysis = () => {
 
         .data-label {
           font-size: 14px;
-          color: #666;
+          color: var(--admin-text-secondary);
         }
 
         .data-trend {
           font-size: 13px;
           padding: 4px 8px;
-          border-radius: 6px;
+          border-radius: var(--admin-radius-sm);
           font-weight: 600;
         }
 
         .data-trend.up {
-          background: rgba(74, 222, 128, 0.1);
-          color: #4ade80;
+          background: var(--admin-success-muted);
+          color: var(--admin-success);
         }
 
         .data-trend.down {
-          background: rgba(248, 113, 113, 0.1);
-          color: #f87171;
+          background: var(--admin-error-muted);
+          color: var(--admin-error);
         }
 
         .data-value {
           font-size: 28px;
           font-weight: 600;
-          color: #333;
+          color: var(--admin-text-primary);
         }
 
         .charts-section {
@@ -373,10 +373,10 @@ const DataAnalysis = () => {
         }
 
         .chart-card {
-          background: white;
-          border-radius: 12px;
+          background: var(--admin-bg-card);
+          border-radius: var(--admin-radius-lg);
           padding: 24px;
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+          box-shadow: var(--admin-shadow-card);
         }
 
         .chart-header {
@@ -385,7 +385,7 @@ const DataAnalysis = () => {
 
         .chart-header h3 {
           font-size: 20px;
-          color: #333;
+          color: var(--admin-text-primary);
           margin-bottom: 8px;
           font-weight: 600;
         }
@@ -396,8 +396,8 @@ const DataAnalysis = () => {
           align-items: center;
           justify-content: center;
           padding: 60px 20px;
-          background: #f9f9f9;
-          border-radius: 8px;
+          background: var(--admin-bg-secondary);
+          border-radius: var(--admin-radius-md);
         }
 
         .chart-icon {
@@ -406,7 +406,7 @@ const DataAnalysis = () => {
         }
 
         .chart-placeholder p {
-          color: #666;
+          color: var(--admin-text-secondary);
           font-size: 14px;
         }
 
@@ -419,16 +419,16 @@ const DataAnalysis = () => {
         }
 
         .stat-card {
-          background: white;
-          border-radius: 12px;
+          background: var(--admin-bg-card);
+          border-radius: var(--admin-radius-lg);
           padding: 24px;
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+          box-shadow: var(--admin-shadow-card);
           transition: all 0.3s ease;
         }
 
         .stat-card:hover {
           transform: translateY(-4px);
-          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+          box-shadow: var(--admin-shadow-elevated);
         }
 
         .stat-card-header {
@@ -446,24 +446,24 @@ const DataAnalysis = () => {
           font-size: 14px;
           font-weight: 600;
           padding: 4px 10px;
-          border-radius: 6px;
+          border-radius: var(--admin-radius-sm);
         }
 
         .stat-change.positive {
-          background: rgba(74, 222, 128, 0.1);
-          color: #4ade80;
+          background: var(--admin-success-muted);
+          color: var(--admin-success);
         }
 
         .stat-card-body h3 {
           font-size: 28px;
           font-weight: 700;
-          color: #333;
+          color: var(--admin-text-primary);
           margin: 0 0 8px 0;
         }
 
         .stat-card-body p {
           font-size: 14px;
-          color: #666;
+          color: var(--admin-text-secondary);
           margin: 0;
         }
 
@@ -477,27 +477,27 @@ const DataAnalysis = () => {
 
         .chart-btn {
           padding: 12px 24px;
-          background: white;
-          border: 2px solid #e8e8e8;
-          border-radius: 10px;
+          background: var(--admin-bg-card);
+          border: 2px solid var(--admin-border-default);
+          border-radius: var(--admin-radius-md);
           font-size: 15px;
           font-weight: 500;
           cursor: pointer;
           transition: all 0.3s ease;
-          color: #555;
+          color: var(--admin-text-primary);
         }
 
         .chart-btn:hover {
-          border-color: #667eea;
-          color: #667eea;
+          border-color: var(--admin-border-accent);
+          color: var(--admin-btn-primary);
           transform: translateY(-2px);
         }
 
         .chart-btn.active {
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          background: var(--admin-btn-primary-gradient);
           color: white;
           border-color: transparent;
-          box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+          box-shadow: var(--admin-shadow-glow);
         }
 
         /* 图表展示区域样式 */
@@ -506,10 +506,10 @@ const DataAnalysis = () => {
         }
 
         .chart-display .card {
-          background: white;
-          border-radius: 12px;
+          background: var(--admin-bg-card);
+          border-radius: var(--admin-radius-lg);
           padding: 24px;
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+          box-shadow: var(--admin-shadow-card);
         }
 
         .chart-display .card-header {
@@ -521,19 +521,19 @@ const DataAnalysis = () => {
 
         .chart-display .card-header h3 {
           font-size: 20px;
-          color: #333;
+          color: var(--admin-text-primary);
           margin: 0;
           font-weight: 600;
         }
 
         .chart-display .card-actions .time-range {
           padding: 8px 16px;
-          border: 1px solid #ddd;
-          border-radius: 8px;
-          background: white;
+          border: 1px solid var(--admin-border-default);
+          border-radius: var(--admin-radius-md);
+          background: var(--admin-bg-card);
           font-size: 14px;
           cursor: pointer;
-          color: #555;
+          color: var(--admin-text-primary);
         }
 
         .chart-display .card-body {
@@ -550,8 +550,8 @@ const DataAnalysis = () => {
           align-items: center;
           justify-content: center;
           padding: 80px 20px;
-          background: linear-gradient(135deg, #f9f9f9 0%, #f0f0f0 100%);
-          border-radius: 10px;
+          background: var(--admin-bg-secondary);
+          border-radius: var(--admin-radius-md);
         }
 
         .chart-display .chart-icon {
@@ -578,20 +578,20 @@ const DataAnalysis = () => {
 
         .export-btn {
           padding: 14px 28px;
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          background: var(--admin-btn-primary-gradient);
           color: white;
           border: none;
-          border-radius: 10px;
+          border-radius: var(--admin-radius-md);
           font-size: 15px;
           font-weight: 500;
           cursor: pointer;
           transition: all 0.3s ease;
-          box-shadow: 0 4px 12px rgba(102, 126, 234, 0.25);
+          box-shadow: var(--admin-shadow-glow);
         }
 
         .export-btn:hover {
           transform: translateY(-2px);
-          box-shadow: 0 6px 20px rgba(102, 126, 234, 0.35);
+          box-shadow: var(--admin-shadow-glow);
         }
 
         .export-btn:active {

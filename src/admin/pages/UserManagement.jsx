@@ -386,13 +386,13 @@ const UserManagement = () => {
 
         .page-header h1 {
           font-size: 28px;
-          color: #333;
+          color: var(--admin-text-primary);
           margin-bottom: 8px;
           font-weight: 600;
         }
 
         .page-header p {
-          color: #666;
+          color: var(--admin-text-secondary);
           font-size: 14px;
         }
 
@@ -400,31 +400,31 @@ const UserManagement = () => {
           display: flex;
           gap: 8px;
           margin-bottom: 24px;
-          border-bottom: 2px solid #f0f0f0;
+          border-bottom: 2px solid var(--admin-border-default);
         }
 
         .user-tab {
           padding: 12px 24px;
-          background: white;
-          border: 1px solid #e8e8e8;
+          background: var(--admin-bg-card);
+          border: 1px solid var(--admin-border-default);
           border-bottom: none;
-          border-radius: 8px 8px 0 0;
+          border-radius: var(--admin-radius-md) var(--admin-radius-md) 0 0;
           font-size: 16px;
           font-weight: 500;
           cursor: pointer;
           transition: all 0.3s ease;
-          color: #666;
+          color: var(--admin-text-secondary);
         }
 
         .user-tab:hover {
-          color: #667eea;
-          border-color: #667eea;
+          color: var(--admin-btn-primary);
+          border-color: var(--admin-border-accent);
         }
 
         .user-tab.active {
-          background: #667eea;
+          background: var(--admin-btn-primary-gradient);
           color: white;
-          border-color: #667eea;
+          border-color: var(--admin-btn-primary);
         }
 
         .filter-section {
@@ -440,10 +440,10 @@ const UserManagement = () => {
           display: flex;
           flex: 1;
           min-width: 300px;
-          border: 1px solid #ddd;
-          border-radius: 8px;
+          border: 1px solid var(--admin-border-default);
+          border-radius: var(--admin-radius-md);
           overflow: hidden;
-          background: white;
+          background: var(--admin-bg-card);
         }
 
         .search-input {
@@ -452,11 +452,13 @@ const UserManagement = () => {
           border: none;
           font-size: 14px;
           outline: none;
+          color: var(--admin-text-primary);
+          background: var(--admin-bg-card);
         }
 
         .search-btn {
           padding: 10px 16px;
-          background: #f0f0f0;
+          background: var(--admin-bg-secondary);
           border: none;
           cursor: pointer;
           font-size: 18px;
@@ -464,7 +466,7 @@ const UserManagement = () => {
         }
 
         .search-btn:hover {
-          background: #e0e0e0;
+          background: var(--admin-border-default);
         }
 
         .filter-controls {
@@ -475,25 +477,27 @@ const UserManagement = () => {
 
         .filter-select {
           padding: 10px 16px;
-          border: 1px solid #ddd;
-          border-radius: 8px;
+          border: 1px solid var(--admin-border-default);
+          border-radius: var(--admin-radius-md);
           font-size: 14px;
-          background: white;
+          background: var(--admin-bg-card);
+          color: var(--admin-text-primary);
         }
 
         .export-btn {
           padding: 10px 16px;
-          background: #667eea;
+          background: var(--admin-btn-primary-gradient);
           color: white;
           border: none;
-          border-radius: 8px;
+          border-radius: var(--admin-radius-md);
           font-size: 14px;
           cursor: pointer;
           transition: all 0.3s ease;
         }
 
         .export-btn:hover {
-          background: #5a6fdb;
+          transform: translateY(-1px);
+          box-shadow: var(--admin-shadow-glow);
         }
 
         .batch-actions {
@@ -504,29 +508,30 @@ const UserManagement = () => {
 
         .batch-btn {
           padding: 10px 16px;
-          background: #667eea;
+          background: var(--admin-btn-primary-gradient);
           color: white;
           border: none;
-          border-radius: 8px;
+          border-radius: var(--admin-radius-md);
           font-size: 14px;
           cursor: pointer;
           transition: all 0.3s ease;
         }
 
         .batch-btn:hover:not(:disabled) {
-          background: #5a6fdb;
+          transform: translateY(-1px);
+          box-shadow: var(--admin-shadow-glow);
         }
 
         .batch-btn:disabled {
-          background: #ccc;
+          background: var(--admin-text-muted);
           cursor: not-allowed;
         }
 
         .user-list {
-          background: white;
-          border-radius: 12px;
+          background: var(--admin-bg-card);
+          border-radius: var(--admin-radius-lg);
           overflow: hidden;
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+          box-shadow: var(--admin-shadow-card);
         }
 
         .user-table {
@@ -535,27 +540,27 @@ const UserManagement = () => {
         }
 
         .user-table thead {
-          background: #fafafa;
+          background: var(--admin-info-muted);
         }
 
         .user-table th {
           padding: 16px;
           text-align: left;
           font-weight: 600;
-          color: #333;
+          color: var(--admin-text-primary);
           font-size: 14px;
-          border-bottom: 2px solid #e8e8e8;
+          border-bottom: 2px solid var(--admin-border-accent);
         }
 
         .user-table td {
           padding: 16px;
-          border-bottom: 1px solid #f0f0f0;
+          border-bottom: 1px solid var(--admin-border-default);
           font-size: 14px;
-          color: #666;
+          color: var(--admin-text-secondary);
         }
 
         .user-table tbody tr:hover {
-          background: #f5f5f5;
+          background: var(--admin-bg-secondary);
         }
 
         .user-info {
@@ -572,7 +577,7 @@ const UserManagement = () => {
         }
 
         .company-logo {
-          background: #f0f0f0;
+          background: var(--admin-bg-secondary);
         }
 
         .user-details {
@@ -581,45 +586,45 @@ const UserManagement = () => {
 
         .user-name {
           font-weight: 600;
-          color: #333;
+          color: var(--admin-text-primary);
           margin-bottom: 4px;
         }
 
         .user-role {
           font-size: 12px;
-          color: #999;
+          color: var(--admin-text-tertiary);
         }
 
         .user-level {
-          color: #f59e0b;
+          color: var(--admin-bonus-gold);
           font-weight: 600;
         }
 
         .user-score {
-          color: #4ade80;
+          color: var(--admin-success);
           font-weight: 600;
         }
 
         .status-badge {
           padding: 4px 12px;
-          border-radius: 12px;
+          border-radius: var(--admin-radius-full);
           font-size: 12px;
           font-weight: 500;
         }
 
         .status-badge.active {
-          background: rgba(74, 222, 128, 0.1);
-          color: #4ade80;
+          background: var(--admin-success-muted);
+          color: var(--admin-success);
         }
 
         .status-badge.pending {
-          background: rgba(96, 165, 250, 0.1);
-          color: #60a5fa;
+          background: var(--admin-info-muted);
+          color: var(--admin-info);
         }
 
         .status-badge.inactive {
-          background: rgba(248, 113, 113, 0.1);
-          color: #f87171;
+          background: var(--admin-error-muted);
+          color: var(--admin-error);
         }
 
         .user-actions {
@@ -629,36 +634,37 @@ const UserManagement = () => {
 
         .action-btn {
           padding: 6px 12px;
-          border: 1px solid #ddd;
-          background: white;
-          border-radius: 6px;
+          border: 1px solid var(--admin-border-default);
+          background: var(--admin-bg-card);
+          border-radius: var(--admin-radius-sm);
           font-size: 14px;
           cursor: pointer;
           transition: all 0.3s ease;
+          color: var(--admin-text-primary);
         }
 
         .action-btn.view:hover {
-          background: #667eea;
+          background: var(--admin-btn-primary-gradient);
           color: white;
-          border-color: #667eea;
+          border-color: var(--admin-btn-primary);
         }
 
         .action-btn.edit:hover {
-          background: #4ade80;
+          background: var(--admin-success);
           color: white;
-          border-color: #4ade80;
+          border-color: var(--admin-success);
         }
 
         .action-btn.ban:hover {
-          background: #f87171;
+          background: var(--admin-error);
           color: white;
-          border-color: #f87171;
+          border-color: var(--admin-error);
         }
 
         .action-btn.unban:hover {
-          background: #4ade80;
+          background: var(--admin-success);
           color: white;
-          border-color: #4ade80;
+          border-color: var(--admin-success);
         }
 
         .pagination {
@@ -672,31 +678,33 @@ const UserManagement = () => {
 
         .page-btn {
           padding: 8px 16px;
-          background: white;
-          border: 1px solid #ddd;
-          border-radius: 6px;
+          background: var(--admin-bg-card);
+          border: 1px solid var(--admin-border-default);
+          border-radius: var(--admin-radius-sm);
           font-size: 14px;
           cursor: pointer;
           transition: all 0.3s ease;
+          color: var(--admin-text-primary);
         }
 
         .page-btn:hover:not(:disabled) {
-          background: #667eea;
+          background: var(--admin-btn-primary-gradient);
           color: white;
-          border-color: #667eea;
+          border-color: var(--admin-btn-primary);
         }
 
         .page-info {
           font-size: 14px;
-          color: #666;
+          color: var(--admin-text-secondary);
         }
 
         .page-size {
           padding: 8px 16px;
-          border: 1px solid #ddd;
-          border-radius: 6px;
+          border: 1px solid var(--admin-border-default);
+          border-radius: var(--admin-radius-sm);
           font-size: 14px;
-          background: white;
+          background: var(--admin-bg-card);
+          color: var(--admin-text-primary);
         }
 
         @media (max-width: 768px) {

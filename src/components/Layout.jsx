@@ -4,6 +4,7 @@ export default function Layout({ children, activeTab, onTabChange }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navItems = [
+    { id: 'onboarding', label: '入驻流程', icon: '▦' },
     { id: 'hall', label: '职位大厅', icon: '📋' },
     { id: 'referrals', label: '我的推荐', icon: '👥' },
     { id: 'circles', label: '我的圈子', icon: '🌐' },
@@ -277,6 +278,24 @@ export default function Layout({ children, activeTab, onTabChange }) {
             margin-left: 0;
             padding: 80px 20px 20px;
           }
+        }
+
+        @media (max-width: 768px) {
+          .layout {
+            display: block;
+            background: #f7f8fa;
+          }
+
+          .sidebar,
+          .mobile-menu-btn {
+            display: none;
+          }
+
+          .main-content {
+            min-height: 100vh;
+            padding: calc(12px + env(safe-area-inset-top, 0px)) 14px calc(96px + env(safe-area-inset-bottom, 0px));
+          }
+
         }
       `}</style>
     </div>

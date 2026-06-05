@@ -72,7 +72,7 @@ export default function Referrals() {
   return (
     <div className="referrals">
       <header className="page-header">
-        <h1>我的推荐</h1>
+        <h1><span className="desktop-title">我的推荐</span><span className="mobile-title">做推荐</span></h1>
         <p className="subtitle">追踪推荐进度，管理候选人关系</p>
       </header>
 
@@ -191,6 +191,10 @@ export default function Referrals() {
         .subtitle {
           color: var(--text-secondary);
           margin-top: 8px;
+        }
+
+        .mobile-title {
+          display: none;
         }
 
         .filter-tabs {
@@ -420,6 +424,14 @@ export default function Referrals() {
         }
 
         @media (max-width: 768px) {
+          .desktop-title {
+            display: none;
+          }
+
+          .mobile-title {
+            display: inline;
+          }
+
           .card-main {
             flex-direction: column;
             gap: 16px;

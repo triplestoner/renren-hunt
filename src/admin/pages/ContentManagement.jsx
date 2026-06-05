@@ -203,13 +203,13 @@ const ContentManagement = () => {
 
         .page-header h1 {
           font-size: 28px;
-          color: #333;
+          color: var(--admin-text-primary);
           margin-bottom: 8px;
           font-weight: 600;
         }
 
         .page-header p {
-          color: #666;
+          color: var(--admin-text-secondary);
           font-size: 14px;
         }
 
@@ -217,31 +217,31 @@ const ContentManagement = () => {
           display: flex;
           gap: 8px;
           margin-bottom: 24px;
-          border-bottom: 2px solid #f0f0f0;
+          border-bottom: 2px solid var(--admin-border-default);
         }
 
         .content-tab {
           padding: 12px 24px;
-          background: white;
-          border: 1px solid #e8e8e8;
+          background: var(--admin-bg-card);
+          border: 1px solid var(--admin-border-default);
           border-bottom: none;
-          border-radius: 8px 8px 0 0;
+          border-radius: var(--admin-radius-md) var(--admin-radius-md) 0 0;
           font-size: 16px;
           font-weight: 500;
           cursor: pointer;
           transition: all 0.3s ease;
-          color: #666;
+          color: var(--admin-text-secondary);
         }
 
         .content-tab:hover {
-          color: #667eea;
-          border-color: #667eea;
+          color: var(--admin-btn-primary);
+          border-color: var(--admin-border-accent);
         }
 
         .content-tab.active {
-          background: #667eea;
+          background: var(--admin-btn-primary-gradient);
           color: white;
-          border-color: #667eea;
+          border-color: var(--admin-btn-primary);
         }
 
         .actions-bar {
@@ -252,45 +252,48 @@ const ContentManagement = () => {
 
         .add-btn {
           padding: 10px 20px;
-          background: #4ade80;
+          background: var(--admin-success);
           color: white;
           border: none;
-          border-radius: 8px;
+          border-radius: var(--admin-radius-md);
           font-size: 14px;
           cursor: pointer;
           transition: all 0.3s ease;
         }
 
         .add-btn:hover {
-          background: #3dbf73;
+          background: var(--admin-success);
+          opacity: 0.9;
         }
 
         .filter-btn,
         .search-btn {
           padding: 10px 20px;
-          background: white;
-          border: 1px solid #ddd;
-          border-radius: 8px;
+          background: var(--admin-bg-card);
+          border: 1px solid var(--admin-border-default);
+          border-radius: var(--admin-radius-md);
           font-size: 14px;
           cursor: pointer;
           transition: all 0.3s ease;
+          color: var(--admin-text-primary);
         }
 
         .filter-btn:hover,
         .search-btn:hover {
-          border-color: #667eea;
+          border-color: var(--admin-border-accent);
+          color: var(--admin-btn-primary);
         }
 
         .content-card {
-          background: white;
-          border-radius: 12px;
+          background: var(--admin-bg-card);
+          border-radius: var(--admin-radius-lg);
           padding: 24px;
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+          box-shadow: var(--admin-shadow-card);
         }
 
         .content-card h3 {
           font-size: 20px;
-          color: #333;
+          color: var(--admin-text-primary);
           margin-bottom: 24px;
           font-weight: 600;
         }
@@ -304,23 +307,23 @@ const ContentManagement = () => {
           padding: 16px;
           text-align: left;
           font-weight: 600;
-          color: #333;
+          color: var(--admin-text-primary);
           font-size: 14px;
-          border-bottom: 2px solid #e8e8e8;
+          border-bottom: 2px solid var(--admin-border-accent);
         }
 
         .data-table td {
           padding: 16px;
-          border-bottom: 1px solid #f0f0f0;
+          border-bottom: 1px solid var(--admin-border-default);
           font-size: 14px;
-          color: #666;
+          color: var(--admin-text-secondary);
         }
 
         .thumbnail {
           width: 120px;
           height: 45px;
           object-fit: cover;
-          border-radius: 4px;
+          border-radius: var(--admin-radius-sm);
         }
 
         .content-cell {
@@ -332,49 +335,49 @@ const ContentManagement = () => {
 
         .priority-badge {
           padding: 4px 12px;
-          border-radius: 12px;
+          border-radius: var(--admin-radius-full);
           font-size: 12px;
           font-weight: 500;
         }
 
         .priority-badge.high {
-          background: rgba(248, 113, 113, 0.1);
-          color: #f87171;
+          background: var(--admin-error-muted);
+          color: var(--admin-error);
         }
 
         .priority-badge.normal {
-          background: rgba(96, 165, 250, 0.1);
-          color: #60a5fa;
+          background: var(--admin-info-muted);
+          color: var(--admin-info);
         }
 
         .priority-badge.low {
-          background: rgba(74, 222, 128, 0.1);
-          color: #4ade80;
+          background: var(--admin-success-muted);
+          color: var(--admin-success);
         }
 
         .status-badge {
           padding: 4px 12px;
-          border-radius: 12px;
+          border-radius: var(--admin-radius-full);
           font-size: 12px;
           font-weight: 500;
         }
 
         .status-badge.active {
-          background: rgba(74, 222, 128, 0.1);
-          color: #4ade80;
+          background: var(--admin-success-muted);
+          color: var(--admin-success);
         }
 
         .status-badge.inactive {
-          background: rgba(156, 163, 175, 0.1);
-          color: #9ca3af;
+          background: var(--admin-text-muted);
+          color: var(--admin-text-tertiary);
         }
 
         .action-btn {
           padding: 6px 12px;
-          background: #667eea;
+          background: var(--admin-btn-primary-gradient);
           color: white;
           border: none;
-          border-radius: 6px;
+          border-radius: var(--admin-radius-sm);
           font-size: 12px;
           cursor: pointer;
           transition: all 0.3s ease;
@@ -382,7 +385,7 @@ const ContentManagement = () => {
         }
 
         .action-btn:hover {
-          background: #5568d3;
+          background: var(--admin-btn-primary);
         }
 
         @media (max-width: 768px) {

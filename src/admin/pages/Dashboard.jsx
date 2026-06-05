@@ -213,13 +213,13 @@ const Dashboard = () => {
 
         .page-header h1 {
           font-size: 28px;
-          color: #333;
+          color: var(--admin-text-primary);
           margin-bottom: 8px;
           font-weight: 600;
         }
 
         .page-header p {
-          color: #666;
+          color: var(--admin-text-secondary);
           font-size: 14px;
         }
 
@@ -231,10 +231,10 @@ const Dashboard = () => {
         }
 
         .stat-card {
-          background: white;
-          border-radius: 12px;
+          background: var(--admin-bg-card);
+          border-radius: var(--admin-radius-lg);
           padding: 24px;
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+          box-shadow: var(--admin-shadow-card);
           transition: all 0.3s ease;
           position: relative;
           overflow: hidden;
@@ -242,7 +242,7 @@ const Dashboard = () => {
 
         .stat-card:hover {
           transform: translateY(-4px);
-          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+          box-shadow: var(--admin-shadow-elevated);
         }
 
         .stat-card::before {
@@ -265,7 +265,7 @@ const Dashboard = () => {
         .stat-icon {
           width: 48px;
           height: 48px;
-          border-radius: 12px;
+          border-radius: var(--admin-radius-md);
           display: flex;
           align-items: center;
           justify-content: center;
@@ -275,29 +275,29 @@ const Dashboard = () => {
         .trend {
           font-size: 14px;
           padding: 4px 8px;
-          border-radius: 4px;
+          border-radius: var(--admin-radius-sm);
           font-weight: 500;
         }
 
         .trend.up {
-          color: #4ade80;
-          background: rgba(74, 222, 128, 0.1);
+          color: var(--admin-success);
+          background: var(--admin-success-muted);
         }
 
         .trend.down {
-          color: #f87171;
-          background: rgba(248, 113, 113, 0.1);
+          color: var(--admin-error);
+          background: var(--admin-error-muted);
         }
 
         .stat-card-body h3 {
           font-size: 28px;
-          color: #333;
+          color: var(--admin-text-primary);
           margin-bottom: 8px;
           font-weight: 700;
         }
 
         .stat-card-body p {
-          color: #666;
+          color: var(--admin-text-secondary);
           font-size: 14px;
         }
 
@@ -318,9 +318,9 @@ const Dashboard = () => {
         }
 
         .card {
-          background: white;
-          border-radius: 12px;
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+          background: var(--admin-bg-card);
+          border-radius: var(--admin-radius-lg);
+          box-shadow: var(--admin-shadow-card);
           overflow: hidden;
         }
 
@@ -329,17 +329,17 @@ const Dashboard = () => {
           justify-content: space-between;
           align-items: center;
           padding: 20px 24px;
-          border-bottom: 1px solid #f0f0f0;
+          border-bottom: 1px solid var(--admin-border-default);
         }
 
         .card-header h3 {
           font-size: 16px;
-          color: #333;
+          color: var(--admin-text-primary);
           font-weight: 600;
         }
 
         .view-all {
-          color: #667eea;
+          color: var(--admin-btn-primary);
           font-size: 14px;
           text-decoration: none;
         }
@@ -350,14 +350,14 @@ const Dashboard = () => {
 
         .badge {
           padding: 4px 12px;
-          border-radius: 12px;
+          border-radius: var(--admin-radius-full);
           font-size: 12px;
           font-weight: 500;
         }
 
         .badge.warning {
-          background: rgba(245, 158, 11, 0.1);
-          color: #f59e0b;
+          background: var(--admin-warning-muted);
+          color: var(--admin-warning);
         }
 
         .card-actions {
@@ -367,10 +367,11 @@ const Dashboard = () => {
 
         .time-range {
           padding: 6px 12px;
-          border: 1px solid #ddd;
-          border-radius: 6px;
+          border: 1px solid var(--admin-border-default);
+          border-radius: var(--admin-radius-sm);
           font-size: 14px;
-          background: white;
+          background: var(--admin-bg-card);
+          color: var(--admin-text-primary);
         }
 
         .card-body {
@@ -387,7 +388,7 @@ const Dashboard = () => {
           display: flex;
           gap: 12px;
           padding-bottom: 20px;
-          border-bottom: 1px solid #f0f0f0;
+          border-bottom: 1px solid var(--admin-border-default);
         }
 
         .activity-item:last-child {
@@ -399,7 +400,7 @@ const Dashboard = () => {
           width: 40px;
           height: 40px;
           border-radius: 50%;
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          background: var(--admin-btn-primary-gradient);
           color: white;
           display: flex;
           align-items: center;
@@ -421,26 +422,26 @@ const Dashboard = () => {
 
         .activity-user {
           font-weight: 600;
-          color: #333;
+          color: var(--admin-text-primary);
           font-size: 14px;
         }
 
         .activity-role {
           font-size: 12px;
-          color: #667eea;
-          background: rgba(102, 126, 234, 0.1);
+          color: var(--admin-btn-primary);
+          background: var(--admin-info-muted);
           padding: 2px 8px;
-          border-radius: 4px;
+          border-radius: var(--admin-radius-sm);
         }
 
         .activity-action {
-          color: #666;
+          color: var(--admin-text-secondary);
           font-size: 14px;
           margin-bottom: 4px;
         }
 
         .activity-time {
-          color: #999;
+          color: var(--admin-text-tertiary);
           font-size: 12px;
         }
 
@@ -454,8 +455,8 @@ const Dashboard = () => {
           display: flex;
           gap: 12px;
           padding: 16px;
-          background: #f9f9f9;
-          border-radius: 8px;
+          background: var(--admin-bg-secondary);
+          border-radius: var(--admin-radius-md);
         }
 
         .priority-indicator {
@@ -465,15 +466,15 @@ const Dashboard = () => {
         }
 
         .priority-indicator.high {
-          background: #ff4d4f;
+          background: var(--admin-error);
         }
 
         .priority-indicator.medium {
-          background: #f59e0b;
+          background: var(--admin-warning);
         }
 
         .priority-indicator.low {
-          background: #4ade80;
+          background: var(--admin-success);
         }
 
         .pending-content {
@@ -482,7 +483,7 @@ const Dashboard = () => {
 
         .pending-type {
           font-weight: 600;
-          color: #333;
+          color: var(--admin-text-primary);
           font-size: 14px;
           margin-bottom: 8px;
         }
@@ -495,7 +496,7 @@ const Dashboard = () => {
         }
 
         .pending-name {
-          color: #666;
+          color: var(--admin-text-secondary);
           font-size: 14px;
         }
 
@@ -503,12 +504,12 @@ const Dashboard = () => {
         .pending-company,
         .pending-amount {
           font-size: 12px;
-          color: #999;
+          color: var(--admin-text-tertiary);
         }
 
         .pending-status {
           font-size: 12px;
-          color: #f59e0b;
+          color: var(--admin-warning);
           font-weight: 500;
         }
 
