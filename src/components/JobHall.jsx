@@ -3196,7 +3196,8 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
         @media (max-width: 720px) {
           .job-hall {
             max-width: none;
-            margin: -12px -14px 0;
+            width: 100%;
+            margin: 0;
             padding: 0 0 18px;
             background: #f3f6f7;
           }
@@ -3204,7 +3205,8 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
           .mobile-hewa-home {
             display: ${mobileDetailJob || mobileListPage ? 'none' : 'block'};
             min-height: 100vh;
-            padding: calc(14px + env(safe-area-inset-top, 0px)) 16px calc(112px + env(safe-area-inset-bottom, 0px));
+            width: 100%;
+            padding: calc(14px + env(safe-area-inset-top, 0px)) 0 calc(112px + env(safe-area-inset-bottom, 0px));
             color: #272d37;
           }
 
@@ -7596,14 +7598,15 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
         .app.force-mobile .job-hall:not(.mobile-detail-open):not(.mobile-list-open) {
           max-width: none;
           width: 100%;
-          margin: -12px -14px 0;
+          margin: 0;
           background: #f3f6f7;
         }
 
         .app.force-mobile .job-hall:not(.mobile-detail-open):not(.mobile-list-open) .mobile-hewa-home {
           display: block;
           min-height: 100vh;
-          padding: 16px 16px calc(112px + env(safe-area-inset-bottom, 0px));
+          width: 100%;
+          padding: 16px 0 calc(112px + env(safe-area-inset-bottom, 0px));
           color: #272d37;
         }
 
@@ -7634,6 +7637,7 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
           align-items: center;
           justify-content: space-between;
           gap: 12px;
+          padding: 0 16px;
           margin-bottom: 10px;
         }
 
@@ -7687,7 +7691,7 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
           position: sticky;
           top: 0;
           z-index: 120;
-          margin: 0 -16px 12px;
+          margin: 0 0 12px;
           padding: 8px 16px 10px;
           background: rgba(243, 246, 247, 0.94);
         }
@@ -7711,7 +7715,7 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
           gap: 5px;
           margin-bottom: 14px;
           padding: 14px 18px;
-          border-radius: 8px;
+          border-radius: 0;
           text-align: left;
           background: linear-gradient(135deg, #7c8cff 0%, #f4d2ff 48%, #ffe49d 100%);
         }
@@ -7748,6 +7752,7 @@ export default function JobHall({ publishedJobs = mockJobs, onRecommend, recomme
         .app.force-mobile .mobile-hewa-entrances {
           justify-content: space-between;
           gap: 10px;
+          padding: 0 16px;
           margin-bottom: 12px;
         }
 

@@ -55,7 +55,7 @@ export default function Layout({ children, activeTab, onTabChange }) {
         {mobileMenuOpen ? '✕' : '☰'}
       </button>
 
-      <main className="main-content">
+      <main className={`main-content ${activeTab === 'home' || activeTab === 'hall' ? 'recommender-home-content' : ''}`}>
         {children}
       </main>
 
@@ -294,6 +294,11 @@ export default function Layout({ children, activeTab, onTabChange }) {
           .main-content {
             min-height: 100vh;
             padding: calc(12px + env(safe-area-inset-top, 0px)) 14px calc(96px + env(safe-area-inset-bottom, 0px));
+          }
+
+          .main-content.recommender-home-content {
+            padding: 0;
+            background: #f3f6f7;
           }
 
         }

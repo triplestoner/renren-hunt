@@ -709,6 +709,11 @@ function App() {
           padding: calc(12px + env(safe-area-inset-top, 0px)) 14px calc(96px + env(safe-area-inset-bottom, 0px));
         }
 
+        .app.force-mobile .main-content.recommender-home-content {
+          padding: 0;
+          background: #f3f6f7;
+        }
+
         .app.force-mobile .app-mobile-bottom-nav {
           position: fixed;
           left: 0;
